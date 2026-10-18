@@ -2,25 +2,25 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 // Add your real projects here. Use status: "completed" or status: "ongoing".
 const projects = [
-  { title: "DEV 202 Contributions Tracker", type: "Dashboard", year: "OFPPT", description: "A class contribution tracker with payment history, weekly summaries, rankings, fines, withdrawals, and data import/export.", tools: "HTML, CSS, JavaScript, LocalStorage", status: "completed" },
-  { title: "BioProduits", type: "E-commerce website", year: "OFPPT", description: "A multi-page organic products storefront with product listings, product details, and a shopping cart interface.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/bioproduits/", source: "https://github.com/milion999-lgtm/bioproduits" },
-  { title: "MedRendez", type: "Healthcare landing page", year: "OFPPT", description: "A healthcare booking concept that presents doctor discovery, appointment booking, and service information.", tools: "HTML, CSS, Bootstrap 5, Bootstrap Icons", status: "completed" },
-  { title: "Bella Cucina", type: "Team project · Restaurant website", year: "OFPPT", description: "A restaurant website featuring a menu, restaurant story, gallery, and contact section.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/portfolio/projects/bella-cucina/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/bella-cucina" },
-  { title: "Book Catalogue", type: "Web application", year: "OFPPT", description: "A Laravel application that reads book records from a MySQL database and displays them in a catalogue.", tools: "PHP, Laravel, MySQL, Blade", status: "completed" },
-  { title: "Car Rental Manager", type: "React application", year: "OFPPT", description: "A small application for adding and displaying cars in a rental management interface.", tools: "React, Vite, Axios", status: "completed" },
-  { title: "Product Inventory Manager", type: "React application", year: "OFPPT", description: "Manage a product list with search, stock counts, adding and removing products, and stock updates.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Team Score Manager", type: "React application", year: "OFPPT", description: "Add and remove players, adjust scores, and reset the team scoreboard.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Training Registration Form", type: "React application", year: "OFPPT", description: "A component-based registration form for collecting training and applicant information.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Student Profile & Dice Games", type: "React exercises", year: "OFPPT", description: "Component-based student profile cards, counters, and interactive dice game exercises.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Web Development Practical Work", type: "Coursework collection", year: "OFPPT", description: "Practical exercises covering page structure, styling, responsive layouts, forms, DOM interaction, and JavaScript fundamentals.", tools: "HTML, CSS, JavaScript, Bootstrap", status: "completed" },
-  { title: "Python & SQL Exercises", type: "Coursework collection", year: "OFPPT", description: "Programming exercises in Python and database query practice in SQL.", tools: "Python, SQL", status: "completed" },
+  { title: "DEV 202 Contributions Tracker", type: "Dashboard", year: "OFPPT", description: "Tableau de bord pour suivre les contributions, historiques, classements, pénalités, retraits et bilans hebdomadaires.", tools: "HTML, CSS, JavaScript, LocalStorage", status: "completed", live: "https://milion999-lgtm.github.io/portfolio/projects/count/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/count" },
+  { title: "BioProduits", type: "Site e-commerce", year: "OFPPT", description: "Boutique de produits biologiques avec catalogue, pages de présentation, panier et navigation entre les produits.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/bioproduits/", source: "https://github.com/milion999-lgtm/bioproduits" },
+  { title: "MedRendez", type: "Concept de site santé", year: "OFPPT", description: "Page d’accueil conceptuelle pour découvrir des médecins, rechercher des services et présenter une prise de rendez-vous.", tools: "HTML, CSS, Bootstrap 5", status: "completed" },
+  { title: "Bella Cucina", type: "Projet en équipe · Restaurant", year: "OFPPT", description: "Site de présentation d’un restaurant avec menu, histoire, galerie et section de contact. Concept fictif de démonstration.", tools: "HTML, CSS, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/portfolio/projects/bella-cucina/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/bella-cucina" },
+  { title: "Book Catalogue", type: "Application web", year: "OFPPT", description: "Catalogue de livres avec Laravel, PHP, Blade et une base de données MySQL.", tools: "PHP, Laravel, MySQL, Blade", status: "completed" },
+  { title: "Car Rental Manager", type: "Application React", year: "OFPPT", description: "Interface React pour ajouter et consulter des véhicules dans une petite application de location.", tools: "React, Vite, Axios", status: "completed" },
+  { title: "Product Inventory Manager", type: "Application React", year: "OFPPT", description: "Gestion d’une liste de produits avec recherche, quantités en stock, ajout, suppression et mise à jour.", tools: "React, JavaScript, Vite", status: "completed" },
+  { title: "Team Score Manager", type: "Application React", year: "OFPPT", description: "Gestion d’une équipe de joueurs, modification des scores et réinitialisation du tableau.", tools: "React, JavaScript, Vite", status: "completed" },
+  { title: "Training Registration Form", type: "Formulaire React", year: "OFPPT", description: "Formulaire d’inscription à une formation construit avec des composants React.", tools: "React, JavaScript, Vite", status: "completed" },
+  { title: "Student Profile & Dice Games", type: "Exercices React", year: "OFPPT", description: "Exercices avec fiches de profil, compteurs et petits jeux de dés interactifs.", tools: "React, JavaScript, Vite", status: "completed" },
+  { title: "Travaux pratiques web", type: "Ensemble d’exercices", year: "OFPPT", description: "Exercices HTML, CSS et JavaScript sur les pages, formulaires, mises en page adaptatives et interactions DOM.", tools: "HTML, CSS, JavaScript, Bootstrap", status: "completed" },
+  { title: "Exercices Python & SQL", type: "Ensemble d’exercices", year: "OFPPT", description: "Exercices de programmation Python et de requêtes sur bases de données SQL.", tools: "Python, SQL", status: "completed" },
 ];
 
 function renderProjects(status, targetId) {
   const target = document.getElementById(targetId);
   const matchingProjects = projects.filter((project) => project.status === status);
   if (!matchingProjects.length) {
-    target.innerHTML = `<p class="empty-projects">Your ${status === 'completed' ? 'finished' : 'in progress'} projects will show up here.</p>`;
+    target.innerHTML = `<p class="empty-projects">${status === 'completed' ? 'Les réalisations terminées' : 'Les projets en cours'} apparaîtront ici.</p>`;
     return;
   }
   target.innerHTML = matchingProjects.map((project, index) => {

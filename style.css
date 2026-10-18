@@ -4,3 +4,16 @@
 @media(max-width:800px){.wrap{width:calc(100% - 48px)}.topbar{padding:0 24px}.hero{grid-template-columns:1fr;min-height:auto;padding-top:77px;padding-bottom:70px;gap:49px}.hero-art{height:400px;margin:0}.scroll-hint{bottom:18px}.hero-note{margin-top:40px}.projects{grid-template-columns:1fr 1fr;row-gap:34px}.project:last-child{grid-column:1/-1}.project:last-child .project-visual{height:330px}.about-grid{grid-template-columns:1fr;gap:20px}.about-copy{padding-top:0}.contact{padding-top:85px}.contact-bottom{margin-top:70px}}
 @media(max-width:520px){.wrap{width:calc(100% - 38px)}.topbar{height:68px;padding:0 19px}.topbar nav{gap:15px}.topbar nav a{font-size:9px}.availability{display:none}.brand{font-size:9px}.hero{padding-top:65px;gap:39px}h1{font-size:61px}.intro{font-size:13px}.hero-art{height:330px}.art-disc{width:250px;height:250px}.art-sun{width:95px;height:95px;right:45px}.work-section{padding-top:72px;padding-bottom:83px}.section-heading h2,.about-grid h2{font-size:42px}.projects{grid-template-columns:1fr;gap:30px}.project:last-child{grid-column:auto}.project-visual,.project:last-child .project-visual{height:280px}.about-section{padding:73px 0}.contact{padding-top:76px;padding-bottom:50px}.contact h2{font-size:76px}.contact-link{font-size:12px}.contact-bottom{font-size:7px;gap:20px;align-items:flex-start;flex-direction:column;margin-top:60px}.footer{font-size:7px}.footer span:nth-child(2){display:none}}
 
+/* Bader's profile-first presentation */
+.topbar nav{gap:24px}.availability{white-space:nowrap}
+.profile-panel{height:450px!important;margin-left:5%;background:transparent!important;display:flex;align-items:center;justify-content:center;overflow:visible!important}
+.profile-panel:before{display:none!important}
+.profile-photo-frame{width:min(100%,410px);aspect-ratio:1;border-radius:50%;padding:12px;background:linear-gradient(135deg,#d5f36b,#8b9d65);box-shadow:0 28px 75px #0008;position:relative}
+.profile-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:50%;border:1px solid #efeee766}
+.profile-label{position:absolute;bottom:12px;right:0;background:#111210;border:1px solid var(--line);padding:13px 16px;font:8px 'DM Mono',monospace;letter-spacing:.09em;color:var(--ink);display:flex;gap:18px;box-shadow:0 12px 30px #0005}
+.profile-label span{color:var(--lime)}
+.hero h1{max-width:650px}.intro{max-width:500px}
+.project-links{gap:14px}.project-card-bottom{align-items:flex-end}.project-card-bottom>span:first-child{max-width:70%;line-height:1.7}
+@media(max-width:800px){.profile-panel{height:380px!important;margin:0}.profile-photo-frame{width:min(100%,360px)}}
+@media(max-width:520px){.topbar nav{gap:11px}.topbar nav a{font-size:8px}.brand{gap:8px}.brand-mark{width:26px;height:26px;font-size:12px}.profile-panel{height:315px!important}.profile-photo-frame{width:min(100%,285px)}.profile-label{right:0;bottom:3px;padding:10px 12px;font-size:7px}.project-card-bottom{align-items:flex-start;flex-direction:column}.project-card-bottom>span:first-child{max-width:none}.project-links{margin-top:12px}}
+
