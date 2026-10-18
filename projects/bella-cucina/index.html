@@ -1,0 +1,783 @@
+<!DOCTYPE html>F
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Cucina - Fine Dining Experience</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.9) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #d4af37 !important;
+        }
+        
+        .nav-link {
+            color: #fff !important;
+            margin: 0 15px;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            color: #d4af37 !important;
+        }
+        
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #d4af37;
+            font-style: italic;
+        }
+        
+        .btn-gold {
+            background: #d4af37;
+            color: #000;
+            padding: 15px 40px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-gold:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Menu Section */
+        #menu {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .section-title p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .menu-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .menu-card img {
+            height: 250px;
+            object-fit: cover;
+            transition: all 0.3s;
+        }
+        
+        .menu-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .price {
+            color: #d4af37;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        /* About Section */
+        #about {
+            padding: 80px 0;
+            background: #fff;
+        }
+        
+        .about-img {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .feature-box {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #d4af37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1.5rem;
+        }
+        
+        /* Gallery Section */
+        #gallery {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+        
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: all 0.3s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.2);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(212, 175, 55, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-overlay i {
+            font-size: 3rem;
+            color: #fff;
+        }
+        
+        /* Contact Section */
+        #contact {
+            padding: 80px 0;
+            background: #fff;
+        }
+        
+        .contact-info {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            height: 100%;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: #d4af37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .social-links a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #d4af37;
+            transform: translateY(-3px);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">Bella Cucina</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">A Propos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallerie</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="hero-content">
+            <h1>Bella Cucina</h1>
+            <p>Où Chaque Repas Raconte une Histoire</p>
+            <a href="#menu" class="btn btn-gold">Explorer le Menu</a>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Notre Menu</h2>
+                <p>Savourez les meilleurs plats préparés avec passion et perfection</p>
+            </div>
+            <div class="row g-4">
+                <!-- Appetizers -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://www.stephiecooks.com/wp-content/uploads/2014/08/board-of-tomato-bruschetta.webp" alt="Bruschetta">
+                        <div class="card-body">
+                            <h3 class="card-title">Classic Bruschetta</h3>
+                            <p class="card-text">Toasted bread topped with fresh tomatoes, basil, garlic, and olive oil</p>
+                            <p class="price">69 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://i0.wp.com/www.russianfilipinokitchen.com/wp-content/uploads/2015/04/crispy-fried-calamari-01.jpg" alt="Calamari">
+                        <div class="card-body">
+                            <h3 class="card-title">Crispy Calamari</h3>
+                            <p class="card-text">Lightly fried calamari rings with marinara and lemon aioli</p>
+                            <p class="price">109 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://sugarspunrun.com/wp-content/uploads/2024/08/Fresh-Roasted-Tomato-Basil-Soup-7-of-9.jpg" alt="Soup">
+                        <div class="card-body">
+                            <h3 class="card-title">Tomato Basil Soup</h3>
+                            <p class="card-text">Creamy tomato soup with fresh basil and croutons</p>
+                            <p class="price">29 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Salads -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://simple-veganista.com/wp-content/uploads/2020/09/best-mediterranean-salad-chopped-style.jpg" alt="Salad">
+                        <div class="card-body">
+                            <h3 class="card-title">Mediterranean Salad</h3>
+                            <p class="card-text">Fresh greens with feta cheese, olives, and house vinaigrette</p>
+                            <p class="price">39 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://damndelicious.net/wp-content/uploads/2023/01/220905_DD_Chx-Caesar-Salad_051-1365x2048.jpg.webp" alt="Caesar Salad">
+                        <div class="card-body">
+                            <h3 class="card-title">Caesar Salad</h3>
+                            <p class="card-text">Crisp romaine, parmesan, croutons, and classic Caesar dressing</p>
+                            <p class="price">39 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pizzas -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://images.prismic.io/eataly-us/ed3fcec7-7994-426d-a5e4-a24be5a95afd_pizza-recipe-main.jpg?auto=compress,format" alt="Pizza">
+                        <div class="card-body">
+                            <h3 class="card-title">Margherita Pizza</h3>
+                            <p class="card-text">Wood-fired pizza with mozzarella, basil, and San Marzano tomatoes</p>
+                            <p class="price">69 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://img.freepik.com/premium-photo/high-angle-view-pizza_1048944-16372407.jpg?semt=ais_hybrid&w=740&q=80" alt="Pepperoni Pizza">
+                        <div class="card-body">
+                            <h3 class="card-title">Pepperoni Pizza</h3>
+                            <p class="card-text">Classic pepperoni with mozzarella and our signature tomato sauce</p>
+                            <p class="price">79 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://delishglobe.com/wp-content/uploads/2024/09/Buddhas-Delight-2048x1499.png" alt="Vegetarian Pizza">
+                        <div class="card-body">
+                            <h3 class="card-title">Vegetarian Delight</h3>
+                            <p class="card-text">Bell peppers, mushrooms, olives, onions, and fresh tomatoes</p>
+                            <p class="price">55 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pasta -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://www.budgetbytes.com/wp-content/uploads/2016/05/Spaghetti-Carbonara-V3-1152x1536.jpeg" alt="Carbonara">
+                        <div class="card-body">
+                            <h3 class="card-title">Spaghetti Carbonara</h3>
+                            <p class="card-text">Creamy egg sauce with pancetta, parmesan, and black pepper</p>
+                            <p class="price">67 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://somuchfoodblog.com/wp-content/uploads/2025/03/Truffle-Mushroom-Pasta9.jpg" alt="Pasta">
+                        <div class="card-body">
+                            <h3 class="card-title">Truffle Pasta</h3>
+                            <p class="card-text">Handmade pasta with black truffle, parmesan, and butter sauce</p>
+                            <p class="price">85 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://www.midwestliving.com/thmb/pYyTjGYR6gE6cVqtaXzkRT_M9Ew=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(1236x906:1238x908):format(webp)/101926650_classic-lasagna-robert-jacobs-c7faea11930c4512b7f5e7293bbc2444.jpg" alt="Lasagna">
+                        <div class="card-body">
+                            <h3 class="card-title">Classic Lasagna</h3>
+                            <p class="card-text">Layers of pasta, meat sauce, ricotta, and mozzarella cheese</p>
+                            <p class="price">89 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://tastesbetterfromscratch.com/wp-content/uploads/2020/03/Penne-Arrabbiata-1-2.jpg" alt="Penne Arrabbiata">
+                        <div class="card-body">
+                            <h3 class="card-title">Penne Arrabbiata</h3>
+                            <p class="card-text">Spicy tomato sauce with garlic, red chili peppers, and parsley</p>
+                            <p class="price">99 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Courses -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://keviniscooking.com/wp-content/uploads/2016/06/Perfect-Rib-Eye-Steak-11.jpg" alt="Steak">
+                        <div class="card-body">
+                            <h3 class="card-title">Grilled Ribeye</h3>
+                            <p class="card-text">Prime ribeye steak with roasted vegetables and herb butter</p>
+                            <p class="price">169 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://b3067249.smushcdn.com/3067249/wp-content/uploads/2019/02/Herb-crusted-salmon.jpg?lossy=0&strip=1&webp=1" alt="Salmon">
+                        <div class="card-body">
+                            <h3 class="card-title">Herb Crusted Salmon</h3>
+                            <p class="card-text">Atlantic salmon with lemon butter sauce and asparagus</p>
+                            <p class="price">139 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://www.onceuponachef.com/images/2022/10/chicken-parmesan-1.jpg" alt="Chicken">
+                        <div class="card-body">
+                            <h3 class="card-title">Chicken Parmesan</h3>
+                            <p class="card-text">Breaded chicken breast with marinara sauce and melted mozzarella</p>
+                            <p class="price">119 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://www.tablefortwoblog.com/wp-content/uploads/2021/07/grilled-lamb-chops-recipe-photo-tablefortwoblog-4.jpg" alt="Lamb Chops">
+                        <div class="card-body">
+                            <h3 class="card-title">Grilled Lamb Chops</h3>
+                            <p class="card-text">Tender lamb chops with rosemary, garlic, and mint sauce</p>
+                            <p class="price">109 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Desserts -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://www.billyparisi.com/wp-content/uploads/2022/02/lava-cake-1.jpg" alt="Dessert">
+                        <div class="card-body">
+                            <h3 class="card-title">Chocolate Lava Cake</h3>
+                            <p class="card-text">Warm chocolate cake with vanilla ice cream and berry compote</p>
+                            <p class="price">49 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://staticcookist.akamaized.net/wp-content/uploads/sites/22/2024/09/THUMB-VIDEO-2_rev1-56-1200x675.jpeg?im=Resize,width=570;" alt="Tiramisu">
+                        <div class="card-body">
+                            <h3 class="card-title">Classic Tiramisu</h3>
+                            <p class="card-text">Coffee-soaked ladyfingers with mascarpone cream and cocoa</p>
+                            <p class="price">45 MAD</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card menu-card">
+                        <img src="https://www.spicebangla.com/wp-content/uploads/2024/02/Classic-New-York-cheesecake-recipe-2.jpg" alt="Cheesecake">
+                        <div class="card-body">
+                            <h3 class="card-title">New York Cheesecake</h3>
+                            <p class="card-text">Rich and creamy cheesecake with strawberry sauce</p>
+                            <p class="price">59 MAD</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800" alt="Restaurant Interior" class="img-fluid about-img">
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <h2>Notre Histoire</h2>
+                        <p>Fondée en 2010, Bella Cucina sert la plus fine cuisine d'inspiration italienne avec une touche moderne. Notre passion pour les ingrédients frais et les saveurs authentiques a fait de nous une destination prisée des amateurs de gastronomie.</p>
+                        <p>Nous croyons que chaque repas doit être une expérience, alliant une cuisine exceptionnelle à une hospitalité chaleureuse dans une atmosphère élégante.</p>
+                        
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div>
+                                <h5>Ingredients Frais</h5>
+                                <p class="mb-0">Produits locaux et biologiques quotidiennement</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div>
+                                <h5>Prime</h5>
+                                <p class="mb-0">Reconnu pour l'excellence culinaire</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div>
+                                <h5>Fais avec Amour</h5>
+                                <p class="mb-0">Chaque plat préparé avec soin et passion</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Gallerie</h2>
+                <p>Un aperçu de notre univers culinaire</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800" alt="Gallery 1">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800" alt="Gallery 2">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2?w=800" alt="Gallery 3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1562007908-17c67e878c88?w=800" alt="Gallery 4">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=800" alt="Gallery 5">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?w=800" alt="Gallery 6">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contactez-Nous</h2>
+                <p>Nous serions ravis de vous entendre</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <h3 class="mb-4">Informations de Contact</h3>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h5>Localisation</h5>
+                                <p class="mb-0">Casablanca .......<br>Maroc</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h5>Telephone</h5>
+                                <p class="mb-0">+212 500000000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h5>Email</h5>
+                                <p class="mb-0">info@bellacucina.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h5>Heurs</h5>
+                                <p class="mb-0">Lun-Ven: 11:00 AM - 10:00 PM<br>Sam-Dim: 10:00 AM - 11:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <form>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Ton Nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Ton Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="Sujet">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" placeholder="Ton Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-gold w-100">Envoyer un Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links mb-3">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="mb-0">&copy; 2026 Bella Cucina. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
