@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b0e0c" />
+  <meta name="theme-color" content="#08090b" />
   <meta name="description" content="Portfolio de Bader Al Mudhahki, étudiant en Développement Digital Full Stack à l’OFPPT." />
   <title>Bader Al Mudhahki — Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261018-intro1" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261018-reel2" />
   <script>
     try {
-      if (!sessionStorage.getItem("bader-intro-seen") && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (!sessionStorage.getItem("bader-cinematic-intro-seen-v2") && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         document.documentElement.classList.add("has-intro");
       }
     } catch {}
@@ -21,27 +21,20 @@
 <body>
   <div class="intro-screen" id="intro-screen" role="dialog" aria-modal="true" aria-label="Bienvenue sur le portfolio de Bader Al Mudhahki">
     <button class="intro-skip" id="intro-skip" type="button">PASSER L’INTRO <span>↗</span></button>
-    <div class="intro-copy">
-      <p class="intro-kicker"><span class="intro-live-dot"></span> PORTFOLIO PERSONNEL <span class="intro-kicker-year">2026</span></p>
-      <p class="intro-role">DÉVELOPPEMENT DIGITAL · FULL STACK · OFPPT</p>
-      <h1 class="intro-title"><span>BIENVENUE,</span><span class="intro-name">BADER</span><span class="intro-last">AL MUDHAHKI<span class="intro-period">.</span></span></h1>
-      <p class="intro-tagline">Je construis le web,<br><em>projet après projet.</em></p>
-      <div class="intro-progress">
-        <div class="intro-progress-meta"><span>ÉTUDIANT · CASABLANCA, MAROC</span><span id="intro-percent" aria-live="polite">00%</span></div>
-        <div class="intro-progress-track"><span id="intro-progress-bar"></span></div>
+    <div class="intro-masthead"><span><b>BM</b> BADER AL MUDHAHKI</span><span>CASABLANCA · MAROC · 2026</span></div>
+    <div class="intro-stage" aria-hidden="true">
+      <div class="intro-energy">!</div>
+      <div class="intro-wordmark"><strong>PORTFOLIO</strong><span>FULL STACK DEVELOPER · OFPPT</span></div>
+      <div class="intro-window">
+        <div class="intro-window-top"><span>BM — BADER AL MUDHAHKI</span><div><i>ACCUEIL</i><i>PROJETS</i><i>CONTACT</i></div></div>
+        <div class="intro-window-body">
+          <div class="intro-window-copy"><p>ÉTUDIANT EN DÉVELOPPEMENT DIGITAL</p><h2>BIENVENUE,<br><em>BADER AL MUDHAHKI</em></h2><span>Full Stack · OFPPT · Casablanca</span></div>
+          <div class="intro-window-photo"><img src="assets/bader-al-mudhahki.webp" alt=""></div>
+        </div>
+        <div class="intro-window-bottom"><span>DES PROJETS CONCRETS, UNE COMPÉTENCE À LA FOIS</span><span>SCROLL TO EXPLORE ↓</span></div>
       </div>
     </div>
-    <div class="intro-visual" aria-hidden="true">
-      <span class="intro-coordinate intro-coordinate-top">BM · 2026<br>33°34′ N — 7°36′ W</span>
-      <span class="intro-coordinate intro-coordinate-bottom">EN APPRENTISSAGE<br>TOUJOURS EN CRÉATION</span>
-      <div class="intro-glow"></div>
-      <div class="intro-orbit intro-orbit-one"></div>
-      <div class="intro-orbit intro-orbit-two"></div>
-      <div class="intro-portrait-wrap"><img src="assets/bader-al-mudhahki.webp" alt="" class="intro-portrait"></div>
-      <span class="intro-orb intro-orb-one"></span>
-      <span class="intro-orb intro-orb-two"></span>
-      <span class="intro-image-tag">DÉVELOPPEUR EN DEVENIR</span>
-    </div>
+    <div class="intro-footer"><span>MON PARCOURS · MES PROJETS</span><div class="intro-progress"><span id="intro-percent" aria-live="polite">00%</span><div class="intro-progress-track"><span id="intro-progress-bar"></span></div></div></div>
   </div>
   <div class="grain" aria-hidden="true"></div>
   <header class="topbar">
@@ -79,7 +72,7 @@
     <section class="contact wrap" id="contact"><p class="eyebrow">CONTACT</p><h2>Un projet<br><em>en tête ?</em></h2><a class="contact-link" href="mailto:badourabader460@gmail.com">badourabader460@gmail.com <span>↗</span></a><div class="contact-bottom"><span>CASABLANCA · MAROC</span><div><a href="https://github.com/milion999-lgtm" target="_blank" rel="noreferrer">GITHUB ↗</a></div></div></section>
   </main>
   <footer class="footer wrap"><span>© <span id="year"></span> BADER AL MUDHAHKI</span><span>MADE WITH CARE <b>✳</b></span><a href="#home">RETOUR EN HAUT ↑</a></footer>
-  <script src="script.js?v=20261018-intro1"></script>
+  <script src="script.js?v=20261018-reel2"></script>
 </body>
 </html>
 
