@@ -1,3 +1,41 @@
+const introScreen = document.getElementById('intro-screen');
+const introSkip = document.getElementById('intro-skip');
+const introPercent = document.getElementById('intro-percent');
+const introProgressBar = document.getElementById('intro-progress-bar');
+
+if (introScreen && document.documentElement.classList.contains('has-intro')) {
+  let introStartedAt = null;
+  let introClosing = false;
+  const closeIntro = () => {
+    if (introClosing) return;
+    introClosing = true;
+    try { sessionStorage.setItem('bader-intro-seen', '1'); } catch {}
+    document.documentElement.classList.add('intro-finished');
+    introScreen.classList.add('is-leaving');
+    window.setTimeout(() => {
+      introScreen.remove();
+      document.documentElement.classList.remove('has-intro');
+    }, 900);
+  };
+  const animateIntro = (timestamp) => {
+    if (introStartedAt === null) introStartedAt = timestamp;
+    const progress = Math.min((timestamp - introStartedAt) / 2800, 1);
+    const percentage = String(Math.round(progress * 100)).padStart(2, '0') + '%';
+    introPercent.textContent = percentage;
+    introProgressBar.style.width = percentage;
+    if (progress >= 1) closeIntro();
+    else window.requestAnimationFrame(animateIntro);
+  };
+  introSkip.addEventListener('click', closeIntro);
+  introSkip.focus({ preventScroll: true });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !introClosing) closeIntro();
+  });
+  window.requestAnimationFrame(animateIntro);
+} else {
+  introScreen?.remove();
+}
+
 document.getElementById('year').textContent = new Date().getFullYear();
 
 // Add your real projects here. Use status: "completed" or status: "ongoing".
@@ -33,7 +71,7 @@ renderProjects('completed', 'completed-projects');
 renderProjects('ongoing', 'ongoing-projects');
 
 // A small reveal on scroll keeps the page lively without getting in the way.
-const revealItems = document.querySelectorAll('.project, .about-grid, .contact h2, .contact-link');
+const revealItems = document.querySelectorAll('.project-card, .about-grid, .contact h2, .contact-link');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
@@ -43,8 +81,11 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 
-revealItems.forEach((item) => {
+revealItems.forEach((item, index) => {
   item.classList.add('reveal');
+  if (item.classList.contains('project-card')) {
+    item.style.setProperty('--reveal-delay', ((index % 3) * 90) + 'ms');
+  }
   observer.observe(item);
 });
 
