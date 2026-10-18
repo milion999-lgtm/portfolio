@@ -1,136 +1,141 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#050608" />
-  <meta name="description" content="Portfolio de Bader Al Mudhahki, étudiant en Développement Digital Full Stack à l’OFPPT." />
-  <title>Bader Al Mudhahki — Portfolio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070809">
+  <meta name="description" content="Bader Al Mudhahki — étudiant développeur Full Stack à l’OFPPT, Casablanca. Projets, compétences et contact.">
+  <title>Bader Al Mudhahki — Développement digital</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261018-reel-full2" />
-  <script>
-    try {
-      if ((new URLSearchParams(location.search).has("intro") || !sessionStorage.getItem("bader-cinematic-intro-seen-v2")) && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        document.documentElement.classList.add("has-intro");
-      }
-    } catch {}
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261018-v34">
 </head>
 <body>
-  <div class="intro-screen" id="intro-screen" role="dialog" aria-modal="true" aria-label="Bienvenue sur le portfolio de Bader Al Mudhahki">
-    <header class="intro-topline">
-      <a class="intro-brand" href="#home"><span class="intro-monogram">BM</span><span>BADER AL MUDHAHKI</span></a>
-      <nav aria-label="Navigation de l’introduction">
-        <a href="#services">SERVICES</a><a href="#work">PROJETS</a><a href="#about">À PROPOS</a><a href="#contact">CONTACT</a>
-      </nav>
-      <span class="intro-location">CASABLANCA · MAROC</span>
-    </header>
-    <div class="intro-kicker"><span></span> DÉVELOPPEMENT DIGITAL · FULL STACK</div>
-    <div class="intro-portrait-frame"><canvas class="intro-portrait" width="120" height="180" data-particle-portrait="intro" aria-hidden="true"></canvas></div>
-    <h1 class="intro-wordmark" aria-hidden="true">PORTFOLIO</h1>
-    <div class="intro-nameplate"><span class="intro-name-index">01 / 2026</span><strong>BADER AL MUDHAHKI</strong><span>ÉTUDIANT EN DÉVELOPPEMENT DIGITAL · OFPPT</span></div>
-    <div class="intro-progress" aria-hidden="true"><span id="intro-progress-bar"></span></div>
-    <button class="intro-skip" id="intro-skip" type="button">PASSER <span>↗</span></button>
-    <div class="intro-footer"><span>CONSTRUIT AVEC DU CODE, PIXEL PAR PIXEL.</span><span>SCROLL TO EXPLORE ↓</span></div>
-  </div>
-
-  <div class="grain" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Passer au contenu</a>
+  <section class="welcome-screen" id="welcome-screen" aria-label="Écran de bienvenue">
+    <canvas class="welcome-particles" id="welcome-particles" aria-hidden="true"></canvas>
+    <div class="welcome-topline"><span>BM — PORTFOLIO</span><span>CASABLANCA · MAROC</span></div>
+    <div class="welcome-center">
+      <p class="welcome-name">BADER AL MUDHAHKI <span>·</span> DÉVELOPPEMENT DIGITAL</p>
+      <button class="start-button" id="start-button" type="button"><span>CLICK ANYWHERE TO START</span><i aria-hidden="true">↗</i></button>
+      <p class="welcome-hint">FULL STACK · OFPPT · 2025—2027</p>
+    </div>
+    <div class="welcome-footer"><span>PORTFOLIO PERSONNEL</span><span>CLIQUE POUR ENTRER ↓</span></div>
+    <p class="welcome-live-text" id="welcome-live-text" aria-live="polite"></p>
+  </section>
   <header class="topbar">
-    <a class="brand" href="#home" aria-label="Retour à l’accueil"><span class="brand-mark">BM</span><span>BADER AL MUDHAHKI</span></a>
+    <a class="brand" href="#home" aria-label="Bader Al Mudhahki, accueil"><span class="brand-mark">BM</span><span>BADER AL MUDHAHKI</span></a>
     <nav aria-label="Navigation principale">
-      <a href="#services">Services</a><a href="#work">Projets</a><a href="#about">À propos</a><a href="#contact">Contact</a>
+      <a href="#about">À propos</a><a href="#services">Services</a><a href="#work">Projets</a><a href="#components">Technologies</a><a href="#game">Mini-jeu</a><a href="#contact">Contact</a>
     </nav>
-    <a class="availability" href="#contact"><span></span> OFPPT · 2026</a>
+    <a class="header-contact" href="mailto:badourabader460@gmail.com">ÉCRIRE <span aria-hidden="true">↗</span></a>
   </header>
 
-  <main>
-    <section class="hero wrap" id="home" aria-labelledby="hero-title">
-      <p class="hero-kicker"><span class="status-dot"></span> PORTFOLIO · CASABLANCA, MAROC</p>
-      <div class="hero-stage">
-        <h1 class="hero-title" id="hero-title">PORTFOLIO</h1>
-        <div class="hero-portrait" aria-label="Portrait de Bader Al Mudhahki animé avec des particules de code">
-          <div class="portrait-aura" aria-hidden="true"></div>
-          <canvas class="particle-portrait" width="120" height="180" data-particle-portrait="hero" aria-hidden="true"></canvas>
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-rail hero-rail--top"><span>CASABLANCA, MAROC</span><span>OFPPT · DÉVELOPPEMENT DIGITAL</span><span>2025 — 2027</span></div>
+      <div class="hero-profile">
+        <div class="hero-profile-copy">
+          <p class="hero-welcome-label">BIENVENUE DANS<br>MON PORTFOLIO</p>
+          <p class="hero-kicker"><span class="live-dot"></span> PORTFOLIO PERSONNEL <span class="kicker-divider">/</span> FULL STACK</p>
+          <p class="hero-overline">BONJOUR, JE SUIS</p>
+          <h1 class="hero-title" id="hero-title">BADER<br><em>AL MUDHAHKI</em></h1>
+          <p class="hero-role">Étudiant développeur <span>·</span> Développement Digital Full Stack</p>
+          <p class="hero-description">Étudiant en deuxième année à l’OFPPT, je transforme mes idées en sites web et applications concrètes.</p>
+          <div class="hero-profile-meta"><span>FORMATION <strong>OFPPT · 2025—2027</strong></span><span>OBJECTIF <strong>Licence Informatique</strong></span></div>
+          <a class="hero-cta" href="#work">DÉCOUVRIR MES PROJETS <span aria-hidden="true">↓</span></a>
         </div>
-        <p class="hero-subtitle">BADER AL MUDHAHKI <span>—</span> DÉVELOPPEMENT DIGITAL FULL STACK</p>
+        <figure class="hero-photo">
+          <img src="bader-portrait.jpeg" alt="Portrait en noir et blanc de Bader Al Mudhahki">
+          <figcaption><span>BADER AL MUDHAHKI</span><span>CASABLANCA · MAROC</span></figcaption>
+          <span class="photo-index" aria-hidden="true">01 / 05</span>
+        </figure>
       </div>
-      <div class="hero-bottomline">
-        <p>Étudiant à l’OFPPT, je crée des sites et des applications pour transformer mes idées en projets concrets.</p>
-        <a class="hero-cta" href="#work">VOIR MES PROJETS <span>↘</span></a>
-        <span class="hero-scroll"><i></i> DÉFILER</span>
+      <div class="hero-rail hero-rail--bottom"><span>ARABE · FRANÇAIS · ANGLAIS</span><span>ÉTUDIANT EN 2ᵉ ANNÉE</span><span>SCROLL TO EXPLORE ↓</span></div>
+    </section>
+
+    <section class="about-section section-shell" id="about" aria-labelledby="about-title">
+      <div class="section-tag"><span>01</span><span>À PROPOS</span><span class="tag-rule"></span></div>
+      <div class="about-layout">
+        <div class="about-heading"><p class="section-overline">APPRENDRE PAR LA PRATIQUE</p><h2 id="about-title">Du raisonnement<br>au <em>code.</em></h2><p class="about-index">BADER AL MUDHAHKI <span>·</span> CASABLANCA</p></div>
+        <div class="about-body">
+          <p class="about-lead">Je suis en deuxième année de Développement Digital, option Full Stack, à l’OFPPT.</p>
+          <p>Après un baccalauréat en Sciences Physiques obtenu en 2024, j’ai choisi de poursuivre mon parcours dans le développement logiciel. Les travaux pratiques me permettent d’apprendre en construisant des interfaces, des applications et des outils de gestion.</p>
+          <p>Mon objectif est de continuer mes études en Licence Informatique et d’approfondir le développement logiciel et les systèmes informatiques.</p>
+          <div class="fact-strip"><div><span>FORMATION</span><strong>OFPPT · Full Stack</strong><small>2025–2027 · en cours</small></div><div><span>OBJECTIF</span><strong>Licence Informatique</strong><small>Développement & systèmes</small></div><div><span>LANGUES</span><strong>Arabe · Français · Anglais</strong><small>Natif · Intermédiaire · Bon niveau</small></div></div>
+        </div>
       </div>
     </section>
 
-    <section class="services wrap" id="services">
-      <div class="section-heading services-heading">
-        <div><p class="eyebrow">01 / SERVICES</p><h2>CE QUE JE PEUX FAIRE</h2></div>
-        <p class="section-intro">Des compétences en développement web et logiciel, acquises en formation et mises en pratique sur des projets.</p>
+    <section class="services-section section-shell" id="services" aria-labelledby="services-title">
+      <div class="section-heading">
+        <div class="section-tag"><span>02</span><span>SERVICES</span><span class="tag-rule"></span></div>
+        <h2 id="services-title">Ce que je peux <em>construire.</em></h2>
       </div>
+      <p class="section-intro">Des compétences travaillées en formation et mises en pratique dans mes projets.</p>
       <div class="service-list">
-        <details class="service-row" open>
-          <summary><span class="service-no">01</span><strong>Sites web responsives</strong><span class="service-tools">HTML · CSS · JAVASCRIPT</span><span class="service-toggle">+</span></summary>
-          <div class="service-detail"><p>Des pages claires, accessibles et adaptées aux écrans mobiles, avec une mise en page soignée et une navigation simple.</p><span>HTML / CSS · Bootstrap · responsive design</span></div>
-        </details>
-        <details class="service-row">
-          <summary><span class="service-no">02</span><strong>Interfaces interactives</strong><span class="service-tools">JAVASCRIPT · REACT</span><span class="service-toggle">+</span></summary>
-          <div class="service-detail"><p>Des interfaces réactives avec formulaires, filtres, tableaux de bord et composants réutilisables.</p><span>JavaScript · React · Vite</span></div>
-        </details>
-        <details class="service-row">
-          <summary><span class="service-no">03</span><strong>Applications & gestion de données</strong><span class="service-tools">PHP · SQL · MYSQL</span><span class="service-toggle">+</span></summary>
-          <div class="service-detail"><p>Des projets de formation connectés à des bases de données et des fonctionnalités de gestion simples.</p><span>PHP · Laravel · MySQL · SQL</span></div>
-        </details>
-        <details class="service-row">
-          <summary><span class="service-no">04</span><strong>Prototypes & concepts web</strong><span class="service-tools">MAQUETTES · UI</span><span class="service-toggle">+</span></summary>
-          <div class="service-detail"><p>Des concepts de sites et d’applications pour explorer une idée, organiser son contenu et en présenter les principales fonctionnalités.</p><span>Structure · contenu · intégration front-end</span></div>
-        </details>
-        <details class="service-row">
-          <summary><span class="service-no">05</span><strong>Modélisation & résolution de problèmes</strong><span class="service-tools">UML · MERISE · PYTHON</span><span class="service-toggle">+</span></summary>
-          <div class="service-detail"><p>Des exercices de programmation et de conception pour comprendre un besoin et construire une solution étape par étape.</p><span>Python · UML · Merise · algorithmique</span></div>
-        </details>
+        <details class="service-row" open><summary><span class="service-no">01</span><strong>Sites web responsives</strong><span class="service-tools">HTML · CSS · JAVASCRIPT</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-detail"><p>Des pages structurées, adaptées aux écrans mobiles, avec une navigation claire et des interactions utiles.</p><span>HTML / CSS · Bootstrap · JavaScript</span></div></details>
+        <details class="service-row"><summary><span class="service-no">02</span><strong>Interfaces interactives</strong><span class="service-tools">REACT · VITE</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-detail"><p>Des composants réutilisables pour formulaires, tableaux de bord et outils de gestion.</p><span>React · JavaScript · Vite · Axios</span></div></details>
+        <details class="service-row"><summary><span class="service-no">03</span><strong>Applications & données</strong><span class="service-tools">PHP · SQL · MYSQL</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-detail"><p>Des applications de formation connectées à des bases de données et des fonctionnalités CRUD.</p><span>PHP · Laravel · MySQL · SQL</span></div></details>
+        <details class="service-row"><summary><span class="service-no">04</span><strong>Modélisation & logique</strong><span class="service-tools">UML · MERISE · PYTHON</span><span class="service-toggle" aria-hidden="true"></span></summary><div class="service-detail"><p>Comprendre un besoin, organiser les données et avancer vers une solution étape par étape.</p><span>UML · Merise · Python · Algorithmique</span></div></details>
       </div>
     </section>
 
-    <section class="work-section wrap" id="work">
+    <section class="work-section section-shell" id="work" aria-labelledby="work-title">
       <div class="section-heading work-heading">
-        <div><p class="eyebrow">02 / SÉLECTION</p><h2>PROJETS CHOISIS<span class="heading-period">.</span></h2></div>
-        <span class="section-count">12 PROJETS · OFPPT</span>
+        <div><div class="section-tag"><span>03</span><span>PROJETS</span><span class="tag-rule"></span></div><h2 id="work-title">Du travail <em>concret.</em></h2></div>
+        <p class="section-intro">Travaux réalisés pendant ma formation à l’OFPPT. Les aperçus ouvrent les sites réels quand ils sont disponibles.</p>
       </div>
-      <div class="project-group">
-        <div class="group-heading"><h3>Réalisations</h3><span>PROJETS TERMINÉS</span></div>
-        <div class="projects" id="completed-projects"></div>
+      <div class="project-group"><div class="group-heading"><h3>Projets réalisés</h3><span>12 ENTRÉES · OFPPT</span></div><div class="projects" id="completed-projects"></div></div>
+      <div class="project-group ongoing-group" id="ongoing-group"><div class="group-heading"><h3>En cours</h3><span>EN DÉVELOPPEMENT</span></div><div class="projects" id="ongoing-projects"></div></div>
+    </section>
+
+    <section class="components-section section-shell" id="components" aria-labelledby="components-title">
+      <div class="section-heading tech-heading">
+        <div><div class="section-tag"><span>04</span><span>TECHNOLOGIES</span><span class="tag-rule"></span></div><h2 id="components-title">Les outils de mon <em>parcours.</em></h2></div>
+        <p class="section-intro">Logos des technologies que j’ai utilisées dans les travaux et projets présentés ici.</p>
       </div>
-      <div class="project-group ongoing-group" id="ongoing-group">
-        <div class="group-heading"><h3>En cours</h3><span>EN COURS DE CRÉATION</span></div>
-        <div class="projects" id="ongoing-projects"></div>
+      <div class="technology-grid" aria-label="Technologies utilisées">
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="" loading="lazy"><span>HTML5</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="" loading="lazy"><span>CSS3</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="" loading="lazy"><span>JavaScript</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" alt="" loading="lazy"><span>Bootstrap</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="" loading="lazy"><span>React</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" alt="" loading="lazy"><span>Vite</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="" loading="lazy"><span>PHP</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" alt="" loading="lazy"><span>Laravel</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" loading="lazy"><span>MySQL · SQL</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" loading="lazy"><span>Python</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="" loading="lazy"><span>Git</span></div>
+        <div class="technology-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="" loading="lazy"><span>GitHub</span></div>
+        <div class="technology-item technology-item--text"><span class="text-logo">UML</span><span>UML</span></div>
+        <div class="technology-item technology-item--text"><span class="text-logo">M</span><span>Merise</span></div>
       </div>
     </section>
 
-    <section class="about-section" id="about">
-      <div class="wrap about-grid">
-        <div class="about-title"><p class="eyebrow">03 / À PROPOS</p><h2>APPRENDRE.<br>CRÉER.<br><em>PROGRESSER.</em></h2><span class="about-index">BADER AL MUDHAHKI · ÉTUDIANT DÉVELOPPEUR</span></div>
-        <div class="about-copy">
-          <p class="about-lead">Je suis étudiant en deuxième année de Développement Digital, option Full Stack, à l’OFPPT.</p>
-          <p>Titulaire d’un baccalauréat en Sciences Physiques obtenu en 2024, j’apprends à concevoir des sites et des applications en construisant des projets pratiques. Je souhaite poursuivre mes études en Licence Informatique et approfondir mes connaissances en développement logiciel et en systèmes informatiques.</p>
-          <div class="about-facts"><div><span>FORMATION</span><strong>Développement Digital · Full Stack</strong><small>OFPPT · 2025–2027 · en cours</small></div><div><span>OBJECTIF</span><strong>Licence en informatique</strong><small>Développement logiciel & systèmes</small></div></div>
-          <p class="skills-label">OUTILS & COMPÉTENCES</p>
-          <div class="skills"><span>HTML / CSS</span><span>JavaScript</span><span>React</span><span>PHP</span><span>Laravel</span><span>SQL / MySQL</span><span>Python</span><span>Git / GitHub</span><span>UML / Merise</span></div>
-          <p class="language-summary"><strong>Langues</strong> · Arabe (langue maternelle), Français (intermédiaire), Anglais (bon niveau).</p>
-        </div>
+    <section class="game-section section-shell" id="game" aria-labelledby="game-title">
+      <div class="section-heading game-heading">
+        <div><div class="section-tag"><span>05</span><span>MINI-JEU</span><span class="tag-rule"></span></div><h2 id="game-title">Code <em>sprint.</em></h2></div>
+        <p class="section-intro">Cinq questions tirées au hasard, avec des exemples renouvelés à chaque partie. Tu as 30 secondes pour marquer un maximum de points.</p>
+      </div>
+      <div class="code-game-panel" id="code-game">
+        <div class="game-topline"><span>BM — CODE SPRINT</span><span id="game-score">SCORE&nbsp; 0 / 5</span></div>
+        <div class="game-status"><span id="game-progress-label">PRÊT À JOUER</span><span id="game-time-label">30 S</span></div>
+        <div class="game-time-track" aria-hidden="true"><span id="game-time-fill"></span></div>
+        <h3 class="game-question" id="game-question" aria-live="polite">Prêt à tester tes réflexes de développeur&nbsp;?</h3>
+        <div class="game-answers" id="game-answers" hidden></div>
+        <p class="game-feedback" id="game-feedback" role="status" aria-live="polite">Chaque partie compose une nouvelle série de questions.</p>
+        <button class="game-start" id="game-start" type="button">LANCER LE DÉFI <span aria-hidden="true">↗</span></button>
       </div>
     </section>
 
-    <section class="contact wrap" id="contact">
-      <p class="eyebrow">04 / CONTACT</p>
-      <p class="contact-overline">UNE IDÉE, UN PROJET OU UNE OPPORTUNITÉ ?</p>
-      <h2 class="contact-title">HELLO<br>WORLD<span>.</span></h2>
-      <a class="contact-link" href="mailto:badourabader460@gmail.com">badourabader460@gmail.com <span>↗</span></a>
-      <div class="contact-bottom"><span>CASABLANCA · MAROC</span><div><a href="https://github.com/milion999-lgtm" target="_blank" rel="noreferrer">GITHUB ↗</a><a href="#home">RETOUR EN HAUT ↑</a></div></div>
+    <section class="contact-section section-shell" id="contact" aria-labelledby="contact-title">
+      <div class="section-tag"><span>06</span><span>CONTACT</span><span class="tag-rule"></span></div>
+      <div class="contact-layout"><div><p class="section-overline">UNE QUESTION, UNE IDÉE OU UN STAGE ?</p><h2 id="contact-title">Parlons<br><em>développement.</em></h2><a class="contact-cta" href="mailto:badourabader460@gmail.com">ENVOYER UN E-MAIL <span aria-hidden="true">↗</span></a></div><div class="contact-details"><div><span>EMAIL</span><a href="mailto:badourabader460@gmail.com">badourabader460@gmail.com</a></div><div><span>LOCALISATION</span><strong>Casablanca · Maroc</strong></div><div><span>CODE & PROJETS</span><a href="https://github.com/milion999-lgtm" target="_blank" rel="noreferrer">github.com/milion999-lgtm ↗</a></div></div></div>
     </section>
   </main>
-  <footer class="footer wrap"><span>© <span id="year"></span> BADER AL MUDHAHKI</span><span>CONSTRUIT AVEC DU CODE <b>·</b></span><a href="#home">PORTFOLIO · 2026</a></footer>
-  <script src="script.js?v=20261018-reel-full2"></script>
+  <footer class="footer"><a class="footer-mark" href="#home">BM</a><span>© <span id="year"></span> BADER AL MUDHAHKI</span><span>CASABLANCA · MAROC</span><a href="#home">RETOUR EN HAUT ↑</a></footer>
+  <script src="script.js?v=20261018-v35"></script>
 </body>
 </html>
-

@@ -1,158 +1,103 @@
-const introScreen = document.getElementById('intro-screen');
-const introSkip = document.getElementById('intro-skip');
-const introProgressBar = document.getElementById('intro-progress-bar');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const welcomeScreen = document.getElementById('welcome-screen');
+const startButton = document.getElementById('start-button');
+const welcomeCanvas = document.getElementById('welcome-particles');
+const welcomeLiveText = document.getElementById('welcome-live-text');
 
-if (introScreen && document.documentElement.classList.contains('has-intro')) {
-  const duration = 5600;
-  const startedAt = performance.now();
-  let closing = false;
-  const closeIntro = () => {
-    if (closing) return;
-    closing = true;
-    try { sessionStorage.setItem('bader-cinematic-intro-seen-v2', '1'); } catch {}
-    document.documentElement.classList.add('intro-finished');
-    introScreen.classList.add('is-leaving');
-    window.setTimeout(() => {
-      introScreen.remove();
-      document.documentElement.classList.remove('has-intro');
-    }, 900);
-  };
-  const animateIntro = (timestamp) => {
-    if (!introScreen.isConnected || closing) return;
-    const progress = Math.min((timestamp - startedAt) / duration, 1);
-    if (introProgressBar) introProgressBar.style.width = (progress * 100) + '%';
-    if (progress >= 1) closeIntro();
-    else window.requestAnimationFrame(animateIntro);
-  };
-  introSkip?.addEventListener('click', closeIntro);
-  introSkip?.focus({ preventScroll: true });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !closing) closeIntro();
-  });
-  window.requestAnimationFrame(animateIntro);
-} else {
-  introScreen?.remove();
-}
-
+document.body.classList.add('welcome-active');
 document.getElementById('year').textContent = new Date().getFullYear();
+let welcomeFinished = false;
 
-// This compact luminance map is generated from the supplied portrait.
-// The website draws it as a live particle field; it never loads or displays the photo.
-const portraitMap = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKqqqqoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqqqqqqgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKqqqqqqqqoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqqqqqqqqqqgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKqqqqqqqqqqqqoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqqqqqqqqqqqqqqgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqqqqmJiJmZmauqqqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKqqqoVEREVVVWeaqqsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqqYh1REM0REMzM1eKqwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqoZTNDM0REQzMzRDVXmqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKlzM0RDIjREM0QzNEREVWgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACXUkQzMzMjM0REREQzNENFRwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZTIkMzMzMiI0REQ0RDNDNFRGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMyIyIyMzMyIjMzNFRERFM0RUYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyMyIyIiMzMzIjMiMzRDI0MjNFVQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiMiMzMiMzMzIjIiMjMzIzM0Q0VQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIyIiMzIiIyMzIjMyIjMjMjMzM0VUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMiIjMzIiIiIzIiIjIkQiMzQyNEREUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIyMzMyIiIiIiIiQzMiIiMzQzM0Q0UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMyIzMyIiIyNDIiMyMiMzIjQzM0Q0UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiMiIiIiIiIiMyIiIjMiIiIjNDIzNFVQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiIiIiIiIiIzIyIjISIjIjIjMjQzRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiIiIiIhIiMyMyMiMjM0MzIjMkQzRUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiIiIiIiIiMzMzQzQzMyMzMyIiNDRUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiIiIiIiIiIzMzNEREVUM0QzMzMzRVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiIiIiIiIiIzNEVEVVVVZ3dVVEUzQzRUUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiIhIiIiMzRFZnZneHiImqqXZmZkRCRDUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiIiIjMzRFVXd4iImaqru7u6mZmYdjQzUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiIiIjMzRFZ4iZmqqru7y8zLu7uqmFQzVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIhEiNEQzVmeJmaqqu7vMzMzMzMy7u5ZDRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIhIiRVVWZ3iJmqq7u7vMzNzd3dzMzLpjNUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiIkVmZ3d3iJmqq7u7vMzN3d3d3d3cyUNVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiM1Zmd3iIiJmqqqu7vMzMzd3d3d3dzHNUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiNFZ3d4iIiJmZqru7zM3d3d3d3d3dzaVUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIIiIiNFZ3d3iIiJmaq7vMzM3d3d3d3d3d3cdVcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJMiIiNFd3d3iIiJmaq7zMzd3czd3d3d3d3dlVcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJMiIiNFZ3d3iIiJmqq7zMzd3Mzd3d3d3d3dplYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJIiIiNFZ3d3iIiJmqq7zN3dzMzd3d3d3d3dtlYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIIiIjNFZ3d3iIiJmqq7vM3dzM3d3d3d3d3dtkYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJIiIiNFZmd3iIiJmaqru83dzN3d3d3d3d3dxkcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJIiIiNGZmd3iIiZmZqqu7zMzMzd3Mzd3d3cxkgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKIiIjNWZmZ3iIiHiImaqrvLzMzMzLu7zd3cx0gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKMiIiRmZmZnhlVEREVniau7u7uql3Z3ec3Mx0kAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALQiIiRmZmZnUzMzIiI0V5qqu6qGQzNGZ3vcyEkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMUiIjRmZmZkMzMzMzM0RXmZu6dlM0RWd3es2UkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMYSIiRmZUQyIjNFZlVlVniavKdkRnmZmId3mFkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMgSIzRFQiMiNEZ4h3Z3ZWh4u6dFd4mrupmaZXawAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB2YiJEM0QyIkRWZmd3ZWZkMhM0RnVniqmqmclGWwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABWVDIjNVVVI1VURDNVVVVVM2ZTR1REZomJmahErQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFVVMiRmVWM2VDMyI2g0RFNry0WFUyVGWImZln3QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFVVUyVmZmRFQyNURIhUREJqzVWndUR6VGirtpyQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFVmZDVmZmU1RERVVnh2RENqzaWoZ3iYh3mstZqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFZmZDVmZnZGVVVmZ3ZmVTJ6zdWoZnmaqqvNtZmgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEZmVTZmZ3dGZmVWZnd2ZTN6veebmHiZqrzNtrqwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkZlREZmZ3dWiIh4iJmHdSV5vepsu6qqu8zNiMrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACVZVRUZmZ3hlmJmZmZmYczZ5vO1r3MzMzN3ca8zQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHVURkVmZneFeqqqqqqYU1aKvN6m3czMzd3njMzQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADLZTVkV2ZneIaJq7u7qFNVeavN7Zi93d3tx4283AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzMhURkVmZnd4l2Z4iHZFVWeqvN7sqYmqqZi+283MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu8pmRERmZneIiZmHd3eXVneavN3tu6qqq97t2szMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu8tmZDRmZ2d4iJmqqqqWZ3d5rN3d27zM3d3d2szMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7x2ZURWZ2d4iZqru7qFZ3Znq83M27zN3d3d2szMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7yWZkNGZ2d4iaqqu6l0Z0I2mrtnzLzN3d3dyszMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7ymZkNFZ2Z3iZqqu6hkVUQ0iaqIzLvM3d3dyszLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7ymZlNFZmZ3iZmqqphmVERFaKur3cu8zN3du9zLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7u3ZlM0VmZneJmamZh3ZURFaams3dy7zMzcq9zLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7u6dlM0VmZneImYiIeHZDRGeHeKzdzLu8zMm8zMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7u8uqQzRVZmd4iHdmZmRERXdlaIqru7u7vMi8zMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7u7zMUzRVZmd4h1VEVVRERXhVZ3iJiby7zKjMzMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7zMzMYzNEVmZ3dDMzRFVVZ4hmZ4d3d5u7y4nMzMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvMzMzMgzRERVaIdDREVmZ3ibqrqqmXZnrLuXrd3cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvM3d3NkzRERVZ4dVQ0VVZnd4mqqqqoZovLmIzd3dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzN3d3dtDNEREVohnZCIzNFZlZ4iHdmd4vKmJ3d3dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzd3d3dxTM1VERWiHd1RFVmZmZ3iJmbuZypmL3d3dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzd3d3d1zM0VURFeHeGZVaJm7q7zLu8yquYmd3e7tAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3d7u7d2DIzRERFeHeHZlVnmru8uqvMy6qIiu3u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3e7u7t6VMzM0RFZ2Z3ZmZmeJmZqrzMy6p4fO7u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3e7u7u6VQjMzRVZlZmZlVnd3iJq7vMyql1nd7u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3e7u7ux1UzMzRVVUVWZlRFVVVmiau8uqlm3d7u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3e7u7up2VTIjRFVEVWZmVERERFaKu7qqhK3d7u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3d7u7at1VUIiM0VDRmd3ZlRERWmru7qZV93d3u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzd3e1HuWVUMiIjRDRmd4iHZneKu7y6iGXMzd3u7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzN3dQqunVUQyIzMzRWaIiHiYmqu8y5Z1nMzN3d7uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvMzYFKqpVVRCIiMjNEVmZ3eHiZqqqYVIu7zM3d3dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAu7yiFKqqlVRDIiIiIzVEVmZ2eHiYh1R7u7u8zM3dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqroyFKqqqEREQyIyIjMzVVZlZmh2Zkaqqqqru8zMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmpMSEpqqqnREMyIiIiIzRERVRGZVQ1vamZmaqru8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACDEiIXqqqqhEQzMiIjIzNDRURFVENJzriIiJmaqwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxIiIVqqqqqEREQzMiIzIzMzMzMzR7vseHd4iJqgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiISmqqqqpU0REQzMyIzMyMzNGirrddmZmeJoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiIhaqqqqqljNEREREQzMzNEV4q8jOZVVVZ4kAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIhOaqqqqqoQ0RERERVZVVmeJq7fuZVVVZ4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiFqqru6qqlkRUVVVmZ2Z4iavKj+ZmZmeJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiE6qru7u6q4VVVWZmZ3iJmrvIz+VWd3iJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiInu7u7u7u7t1ZmZ3d3iJqruo/+VFV4mQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiIkq7u7u7u7zKdnd3h4iaq7uM//ZERFeQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiIie7vMzMzMzNyXiIiJmau7mf//Y1REQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiIiSrvMzMzd3d3siJmZmqu6jf//c1VEQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIiKLvMzd3d3u3u2pqqqruoz///c0VUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIiJKvMzd3d7u7u/rqqqrqM////YkRQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiIou8zN3e7u7u7/yqqqnP////cjQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiIlu8zN3e7u7u///amZ3+////kjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIinMzN3e7u7////+7e7/////sgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIiXMzd3u7u7v//6Ju6Vb////0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiKt3d3u7u7u7+Y0REVUjv//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjJu3d3u7u7u/VNVVWZmV+/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACM83d3u7u7v5SRVVWZmZX8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMn7d3u7u7uUjNEVVZmZlsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI0zt3u7u7mEiIzRVZmZVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyjt3u7u6CMiIjRVZmZQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjSu3u7uxkMyIiNFZmVgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADN87e7u22QyIiI0ZmUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJqzu7u7bZTIiIkVmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM7re7u7tlmMyIjRmAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAo6+3u7uyXUyIiRQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA03+3u7u3KZDIiMwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIzn+7u7u7clTIiNWYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMiIzXu7u7u7tyDIiNWWPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMiIzO/7u7u7t2SIiJGV/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMiIjJ/7u7u7u2SIiI1Vu//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzMzMiIjNN/u7u7u6SIiI1Zb/v/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzMzIjM5/u7u7u6CIiI0VX////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzMzMzMyIiM17+7u7u5zMiI0VUv+//7gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASMzMzMzMzIiMzv+7u7u5jMiI1VVbv///u6QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMhIzMzMzMzMiIzb+7u7u5jMiI1VVS/7//u6kIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMzMyEzMzMzMzMyIzTf7u7u5jMiM1VVV////u7FI0QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzMyEjMzMzMzMyIjOP7u7u5jMzNFVVVd/v/+7XMjREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIzMzMzMzITMzMzMzMyIjNe/u7u9zMzNFVVVZ/v/+7pMjREREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiIjMzMzMzISMzMzMzMyIjM6/u7u+DMzNFVVVX///+7rQjRERDRAAAAAAAAAAAAAAAAAAAAAAAAAAAAzIiIzMzMzMzMhMzMzMzMyIiM2/u7u+DQzRFVVVl3//+7sYjRERDRDRAAAAAAAAAAAAAAAAAAAAAAAAzMzIiIjMzMzMzMyIzMzMzMzIiM0z+7u+TRERFVVVlr///7tcyNERERDNERAAAAAAAAAAAAAAAAAAAADMzMzIiIiMzMzMzMyEjMzMzMzIiMzj+7u+jRERFVVVVj///7tgyNERERDNEREMAAAAAAAAAAAAAAAAAAjMzMzIiIiIzMzMzMzITMzMzMzIiIzXv7u/DRERVVVVVbv//7upCNERERDNEREMwAAAAAAAAAAAAAAAAIjMzMzIiIiIzMzMzMzISMzMzMzIiIzOv7u/UREVVVVVVXP//7utiM0RERDNEREM0AAAAAAAAAAAAAAACIiMzMzMiIiIiMzMzMzMhMzMzMzMyMjNv7u/kRVVVVVVVWv7/7uxzI0REQzNEREQ0QAAAAAAAAAAAAAAiIiMzMzMiIiIiMzMzMzMhIzMzMzMyIjM8/u72NVVVVVVVWP7//u2DI0RERDNERERERAAAAAAAAAAAAAIiIiIzMzMiIiIiMzMzMzMyEjMzMzMzIjM4/u73NVVVVVVVV+7//u2UI0RERDNENEREREAAAAAAAAAAADIiIiIzMzMiIiIiMzMzMzMzIjMzMzMzMiM17+75JVVVVVVVVd/v/u6lI0RERDM0REREREMAAAAAAAAAIjIiIiIzMzMyIiIiMzMzMzMzISMzMzMzMiMzv+77NVVVVVVVVb/u/+62MjREREM0REQzREMzAAAAAAACIjIiIiIjMzMyIiIiIiMzMzMzMhMzMzMzMzMzb+79NGVVVVVVVZ/u/+7GMjREREM0REMzNEMyMAAAAAAiIjIiIiIjMzMyIiIiIiMzMzMzMhIzMzMzMyMzTP7+VGVVVVVVVY/u7u7YMjREREM0REQ0NEMyMwAAAAIiIiMiIiIiMzMiIiIiIiMzMzMzMyEzMzMzMiIzOP7vc2ZVVVVVVW7+7u7pQjREREM0REQzNDMzMzAAACIiIiMiIiIiMzMyIiIiIiIzMzMzMyEjMzMzMzMzNe7vk2ZVVVVVVVz+7u7rQjREREM0NEMzRCMyMzMAAiIiIiIiIiIiIzMyIiIiIiIjMzMzMzISMzMzMzMzM7/vs1ZlVVVVVUr+7u7sUjNEREM0REMzQyMyIzNwIiIiIiIhIiIiIjMzMiIiIiIjMzMzMzISMzMzMzMjM3/v01ZlVVVVVUj+7u7tYiNEREM0REMzMzQyIzNsIiIiIiIhISIiIjMzMiIiIiIiMzMzMzMhIzMzMzMzM03/5EZVVVVVVVf/7u7tgiNEREQ0QzMzMzQyIzNbIiIiIiIhEhIiIjMyIiIiIiIiIzMzMzIhEzMzMzMjMzn+9jZVVVVVVVbv7u7ukyNEREQ0QzMzMzQyMzNLIiIiIiIiEREiIiIyIiIiIiIiIzMzMzMiEjMzMzMzMzbu+CZlVVVVVVXP7u7upCM0REQzMzMzMzQyMzNKIiIiIiIiEhEiIiIiIiIiIiIiIiMzMzMiISMzMzMzMzPP+iVlVVVVVVWv7u7upCM0REQ0QzMzMzQyMzM5IiIiIiIiEREiIiIiIiIiIiIiIiMzMzMyISMzMzMzMzN//DVlVVVVVVSP7u7utSM0REQ0QzMzMzQyIzM4IiIiIiIiERESIiIiIiIiIiIiIiIzMzMyIhIzMzMzMzNN/URlVVVVVVR+7u7utSI0REQzQzMzMzQyIjM3IiIiIiIiERESIiIiIiIiIiIiIiIjMzMzIhIzMzMzMzM6/lRlVVVVVVVt7u7uxjI0REM0QzMzMzMiIjM2IiIiIiIiERESIiIiIiIiIiIiIiIiMzMzIiEjMzMzMzM2/2NlVVVVVVVd/u7txjIzREM0QzMzMzMiIjM2IiIiIiIiERESIiIiIiIiIiIiIiIiIiMzIiEjMzMzMzM034JVVVVVVVVL/u7uxzIzREMzQzMzMzMiIiM1IiIiIiIiERERIiIiIiIiIiIiIiIiIjMyMiISMzMzMzMzr6JVVVVVVVVK/u7uxzIzREMzMzMzMzMiIjM0IiIiIiIiERERIiIiIiIiIiIiIiIiIjIzMiISMzMzMzMzf7JFVVVVVVVI/u7u2DIzREMzMzMzMzMiIzM0IiIiIiIiERERIiIiIiIiIiIiIiIiIiIjIiIhIzMzMzMzTsJFVVVVVVVG7u7u2EIjREQzMzMzMzMiIiMzIiIiIiIiERERIiIiIiIiIiIiIiIiIiIiIiIhEjMzMzMzO9M1VVVVVVVV3u7u2EIjREMzMzMzMzMiIzMzIiIiIiIiERERIiIiIiIiIiIiIiIiIiIiIiIiEjMzMzMzJ+Q1VVVVVVVUzu7u2EIjNEQzMzMzMzMiMzMzIiIiIiIiERERIiIiIiIiIiIiIiIiIiIiIiIiESMzMzMzNNU1VVVVVVVUvu7u2UIjNEQzMzMzMzIiIjMzIiIiIiIiERERIiIiIiIiIiIiIiIiIiIiIiIiISMzMzMzM7YlVVVEVVVUru7u2UIjNEQ0MzMzMzIiIjMzIiIiIiIiERERIiIiIiIiIiIiIiIiIiIiIiIiIRIzMzMzMpclVVVURVVUnt7u2kIjNEM0MzMzMzIiIiMzIiIiIiIiERERIiIiIiIiIiIiIiIiIiIiIiIiIRIzMzMzM2clVVVURERUft7u2kIjM0Q0MzMzMzIiIiIzIiIiIiIiEREREiIiIiIiIiIiIiIiIiIiIiIiIhEjMzMzM0YkRVVERERUbt3u2kIiM0Q0MzMzMzIiIiIzIiIiIiIiEREREiIiIiIiIiIiIiIiIiIiIiIiIhEiMzMzMzQkRVVUREREXe3e2UIjM0M0MzMzMzIiIiIjIiIiIiIiEREREiIiIiIiIiIiIiIiIiIiIiIiIiESMzMzMzMkRVVERERETO3eyEIiMzMzMzMzMzIiIiIjIiIiIiIhEREREiIiIiIiIiIiIiIiIiIiIiIiIiESIzMzMzMkVFRERERES+3dt0IiMzQzMzMzMzIiIiIjIiIiIiIhEREREiIiIiIiIiIiIiIiIiIiIiIiIiIRIzMzMzMjVURERERESu3dtkIiMzMzMzMzMzIiIiIjIiIiIiIhERERESIiIiIiIiIiIiIiIiIiIiIiIiIREzMzMzMzVERERERFSe3dplIiMzMzMzMzMzIiIiIjIiIiIiIhERERESIiIiIiIiIiIiIiIiIiIiIiIiIhEjMzMzMzRERERERER+3dpUISMzMzMzMzMzIiIiIzIiIiIiIhERERESIiIiIiIiIiIiIiIiIiIiIiIiIhESMzMzMzREREREVERt3dpUIiMzMzMzMzMzIiIiIzIiIiIiIhERERESIiIiIiIiIiIiIiIiIiIiIiIiIiESMzMzMzRERERERERd3dtUISMzMzMzMzMzIiIiMzIiIiIiIhERERERIiIiIiIiIiIiIiIiIiIiIiIiIiERIzMzMzRERERERERM3dtTIiMzMzMzMzMyIiIiMjIiIiIiIhEREREREiIiIiIiIiIiIiIiIiIiIiIiIiIRIzMzMzRERERERERL3dxTISMzM0MzMzMyIiIiIjIiIiIiIhEREREREiIiIiIiIiIiIiIiIiIiIiIiIiIREjMzMzREREREREQ63NxiIiMzMzMzMzMyIiIiIjIiIiIiIhERERERERIiIiIiIiIiIiIiIiIiIiIiIiIREjMzMzNEREREREQ53MtiIiMzMzMzMzMyIiIiIjIiIiIiIhERERERERIiIiIiIiIiIiIiIiIiIiIiIiIhESMzMzNEREREREQ43MtyIiIzMzMzMzMyIiIiIiIiIiIiIhERERERERIiIiIiIiIiIiIiIiIiIiIiIiIhESMzMzNEREREREQ33MtyEiIzMzMzMzMyIiIiIiIiIiIiIREREREREREiIiIiIiIiIiIiIiIiIiIiIiIiERIzMzNEREREREQ23MtzEiIzMzMzMzMyIiIiIiIiIiIiIRERERERERESIiIiIiIiIiIiIiIiIiIiIiIiERIzMzM0REREREQ1zLpzEiIzMzMzMzMyIiIiIi';
-const portraitColumns = 120;
-const portraitRows = 180;
-const portraitBytes = Uint8Array.from(atob(portraitMap), (character) => character.charCodeAt(0));
-
-function buildPortraitDots() {
-  const buckets = Array.from({ length: 16 }, () => []);
-  let seed = 48971;
-  const random = () => {
-    seed = (seed * 16807) % 2147483647;
-    return (seed - 1) / 2147483646;
-  };
-  const cellCount = portraitColumns * portraitRows;
-  for (let index = 0; index < cellCount; index++) {
-    const packed = portraitBytes[index >> 1];
-    const shade = (index & 1) === 0 ? packed >> 4 : packed & 15;
-    if (shade === 0) continue;
-    const col = index % portraitColumns;
-    const row = Math.floor(index / portraitColumns);
-    const centerDistance = Math.hypot((col / portraitColumns) - .5, (row / portraitRows) - .44);
-    buckets[shade].push({
-      x: col + .5 + (random() - .5) * .52,
-      y: row + .5 + (random() - .5) * .52,
-      radius: .28 + shade / 15 * .96,
-      alpha: .18 + shade / 15 * .76,
-      phase: random() * Math.PI * 2,
-      driftX: (random() - .5) * 1.65,
-      driftY: (random() - .5) * 1.65,
-      angle: random() * Math.PI * 2,
-      scatter: .22 + random() * .82,
-      stagger: .12 + centerDistance * .84 + random() * .18
-    });
-  }
-  return buckets;
+function startWelcome() {
+  if (!welcomeScreen || !startButton || startButton.disabled) return;
+  startButton.disabled = true;
+  welcomeScreen.classList.add('is-starting');
+  if (welcomeLiveText) welcomeLiveText.textContent = 'Bienvenue dans mon portfolio.';
+  if (reducedMotion || !welcomeCanvas) { window.setTimeout(finishWelcome, 350); return; }
+  animateWelcomeParticles(welcomeCanvas, finishWelcome);
 }
-
-const portraitDots = buildPortraitDots();
-
-function mountParticlePortrait(canvas) {
-  const context = canvas.getContext('2d', { alpha: true });
-  if (!context) return;
-  const isIntro = canvas.dataset.particlePortrait === 'intro';
-  const bornAt = performance.now();
-  let width = 0;
-  let height = 0;
-  let lastFrame = 0;
-
-  const resize = () => {
-    const box = canvas.getBoundingClientRect();
-    if (!box.width || !box.height) return;
-    width = box.width;
-    height = box.height;
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(width * pixelRatio);
-    canvas.height = Math.round(height * pixelRatio);
-    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-  };
-
-  const draw = (timestamp) => {
-    if (!canvas.isConnected) return;
-    if (timestamp - lastFrame < 32) {
-      window.requestAnimationFrame(draw);
-      return;
-    }
-    lastFrame = timestamp;
-    if (document.hidden) {
-      window.requestAnimationFrame(draw);
-      return;
-    }
-    const box = canvas.getBoundingClientRect();
-    if (box.width !== width || box.height !== height) resize();
-    if (!width || !height) {
-      window.requestAnimationFrame(draw);
-      return;
-    }
-
-    context.clearRect(0, 0, width, height);
-    const elapsed = timestamp - bornAt;
-    for (let shade = 1; shade < portraitDots.length; shade++) {
-      const dots = portraitDots[shade];
-      const red = Math.round(78 + shade * 8.05);
-      const green = Math.round(96 + shade * 8.0);
-      const blue = Math.round(121 + shade * 7.4);
-      context.fillStyle = 'rgb(' + red + ',' + green + ',' + blue + ')';
-      for (const dot of dots) {
-        let arrival = 1;
-        if (isIntro && !reducedMotion) {
-          const local = Math.max(0, Math.min(1, (elapsed / 1000 - dot.stagger) / 1.03));
-          arrival = local * local * (3 - 2 * local);
-          if (arrival < .015) continue;
-        }
-        const settle = isIntro && !reducedMotion ? 1 - arrival : 0;
-        const pulse = reducedMotion ? 0 : Math.sin(timestamp * .0015 + dot.phase) * (isIntro ? .42 : .55);
-        const x = ((dot.x + dot.driftX * settle * dot.scatter + pulse * .24) / portraitColumns) * width;
-        const y = ((dot.y + dot.driftY * settle * dot.scatter + Math.cos(timestamp * .001 + dot.phase) * .15) / portraitRows) * height;
-        context.globalAlpha = dot.alpha * (isIntro && !reducedMotion ? arrival : 1);
-        context.beginPath();
-        context.arc(x, y, dot.radius * (1 + pulse * .08), 0, Math.PI * 2);
-        context.fill();
-      }
-    }
-    context.globalAlpha = 1;
-    window.requestAnimationFrame(draw);
-  };
-
-  resize();
-  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas);
-  else window.addEventListener('resize', resize, { passive: true });
-  window.requestAnimationFrame(draw);
+function finishWelcome() {
+  if (!welcomeScreen || welcomeFinished) return;
+  welcomeFinished = true;
+  welcomeScreen.classList.add('is-leaving');
+  document.body.classList.remove('welcome-active', 'welcome-reveal', 'welcome-landed');
+  window.setTimeout(() => welcomeScreen.remove(), reducedMotion ? 0 : 550);
 }
+welcomeScreen?.addEventListener('click', startWelcome);
 
-document.querySelectorAll('[data-particle-portrait]').forEach(mountParticlePortrait);
-
-
+function animateWelcomeParticles(canvas, onComplete) {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) { onComplete(); return; }
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5), w = window.innerWidth, h = window.innerHeight;
+  canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const off = document.createElement('canvas'); off.width = canvas.width; off.height = canvas.height;
+  const octx = off.getContext('2d');
+  if (!octx) { onComplete(); return; }
+  octx.scale(dpr, dpr);
+  const mobile = w < 640;
+  const phraseLabel = document.querySelector('.hero-welcome-label');
+  const labelRect = phraseLabel?.getBoundingClientRect();
+  const labelStyle = phraseLabel ? getComputedStyle(phraseLabel) : null;
+  const targetFontSize = labelStyle ? Number.parseFloat(labelStyle.fontSize) : (mobile ? 36 : 56);
+  const targetLineHeight = labelStyle ? Number.parseFloat(labelStyle.lineHeight) : targetFontSize * .96;
+  const sourceFontSize = targetFontSize;
+  const landingScale = 1;
+  const lines = ['BIENVENUE DANS', 'MON PORTFOLIO'];
+  octx.textAlign = 'center'; octx.textBaseline = 'middle'; octx.fillStyle = '#fff';
+  octx.font = `800 ${sourceFontSize}px "Barlow Condensed", sans-serif`;
+  const gap = targetLineHeight;
+  lines.forEach((line, i) => octx.fillText(line, w / 2, h / 2 + (i - (lines.length - 1) / 2) * gap, w * .92));
+  const pixels = octx.getImageData(0, 0, off.width, off.height).data, step = Math.max(4, Math.round(sourceFontSize / 14)), targets = [];
+  for (let y = 0; y < off.height; y += step) for (let x = 0; x < off.width; x += step) if (pixels[(y * off.width + x) * 4 + 3] > 100) targets.push({ x: x / dpr, y: y / dpr });
+  const rect = startButton.getBoundingClientRect(), ox = rect.left + rect.width / 2, oy = rect.top + rect.height / 2;
+  const labelCenterX = labelRect ? labelRect.left + labelRect.width / 2 : w * .3;
+  const labelCenterY = labelRect ? labelRect.top + labelRect.height / 2 : h * .32;
+  const particles = targets.map(t => {
+    const a = Math.random() * Math.PI * 2, spread = Math.max(w, h) * (.45 + Math.random() * .4), z = (Math.random() - .5) * 240;
+    return { sx: ox + Math.cos(a) * spread, sy: oy + Math.sin(a) * spread, tx: t.x, ty: t.y, lx: labelCenterX + (t.x - w / 2) * landingScale, ly: labelCenterY + (t.y - h / 2) * landingScale, z, delay: Math.random() * 350, size: Math.min(3.4, (1.7 + Math.random() * .35) * Math.sqrt(step / 4)), phase: Math.random() * 6.28 };
+  });
+  const dust = Array.from({ length: mobile ? 450 : 900 }, () => {
+    const a = Math.random() * Math.PI * 2, r = Math.random() * Math.max(w, h) * .62, z = (Math.random() - .5) * 520;
+    return { x: ox, y: oy, sx: ox + Math.cos(a) * r, sy: oy + Math.sin(a) * r, z, size: .35 + Math.random() * 1.15, phase: Math.random() * 6.28, speed: .25 + Math.random() * .75 };
+  });
+  const timeline = { burst: 750, gatherStart: 600, gather: 3300, moveStart: 4200, move: 900, land: 5100, crossfade: 550, finish: 5900 };
+  const started = performance.now();
+  const ease = v => 1 - Math.pow(1 - Math.max(0, Math.min(v, 1)), 3);
+  const draw = now => {
+    ctx.clearRect(0, 0, w, h); const elapsed = now - started;
+    const burst = ease(elapsed / timeline.burst), formation = ease((elapsed - timeline.gatherStart) / timeline.gather);
+    ctx.fillStyle = '#d9dadd';
+    for (const p of dust) {
+      const depth = 520 / Math.max(180, 520 - p.z);
+      const x0 = p.x + (p.sx - p.x) * burst, y0 = p.y + (p.sy - p.y) * burst;
+      const x = w / 2 + (x0 - w / 2) * depth + Math.sin(now * .00035 * p.speed + p.phase) * 15;
+      const y = h / 2 + (y0 - h / 2) * depth + Math.cos(now * .0003 * p.speed + p.phase) * 13;
+      const alpha = (.18 + .4 * (1 - formation)) * (1 - ease((elapsed - timeline.moveStart) / 850));
+      ctx.globalAlpha = alpha; ctx.beginPath(); ctx.arc(x, y, p.size * depth, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.fillStyle = '#d9dadd'; ctx.shadowBlur = 0;
+    for (const p of particles) {
+      const gather = Math.max(0, Math.min(1, (elapsed - timeline.gatherStart - p.delay) / timeline.gather));
+      const local = gather * gather * (3 - 2 * gather), particleBurst = ease(elapsed / timeline.burst);
+      const depth = 360 / Math.max(190, 360 - p.z * (1 - local));
+      const targetX = p.tx, targetY = p.ty;
+      const dx = targetX - p.sx, dy = targetY - p.sy, length = Math.max(1, Math.hypot(dx, dy));
+      const arc = Math.sin(local * Math.PI) * (16 + (p.z + 120) * .035) * (Math.sin(p.phase) < 0 ? -1 : 1);
+      const x = ox + (p.sx - ox) * particleBurst + (targetX - p.sx) * local - (dy / length) * arc;
+      const y = oy + (p.sy - oy) * particleBurst + (targetY - p.sy) * local + (dx / length) * arc;
+      const perspectiveX = w / 2 + (x - w / 2) * depth, perspectiveY = h / 2 + (y - h / 2) * depth;
+      const fadePhrase = ease((elapsed - timeline.land) / timeline.crossfade);
+      ctx.globalAlpha = (.22 + local * .74) * (1 - fadePhrase); ctx.beginPath();
+      ctx.arc(perspectiveX + Math.sin(now * .001 + p.phase) * (1 - local) * 2, perspectiveY, p.size * (.8 + depth * .2), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+    if (elapsed >= timeline.moveStart && !document.body.classList.contains('welcome-reveal')) document.body.classList.add('welcome-reveal');
+    if (elapsed >= timeline.land && !document.body.classList.contains('welcome-landed')) document.body.classList.add('welcome-landed');
+    if (elapsed >= timeline.land && !welcomeScreen?.classList.contains('is-transitioning')) welcomeScreen?.classList.add('is-transitioning');
+    if (elapsed < timeline.finish) requestAnimationFrame(draw); else onComplete();
+  };
+  requestAnimationFrame(draw);
+}
 // Portfolio work is presented in four featured cards, followed by the rest of the training projects.
 const projects = [
   { title: "DEV 202 Contributions Tracker", type: "Dashboard", year: "OFPPT", description: "Tableau de bord pour suivre les contributions, l’historique, les classements, les pénalités, les retraits et les bilans hebdomadaires.", tools: "HTML · CSS · JavaScript · LocalStorage", status: "completed", preview: "dashboard", live: "https://milion999-lgtm.github.io/portfolio/projects/count/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/count" },
@@ -170,11 +115,8 @@ const projects = [
 ];
 
 function previewMarkup(project) {
-  const shop = project.preview === 'shop';
-  const food = project.preview === 'food';
-  const phone = project.preview === 'phone';
-  const name = project.title.replaceAll('"', '&quot;');
-  return `<div class="project-preview preview-${project.preview || 'dashboard'}" aria-hidden="true"><div class="preview-browser"><div class="preview-chrome"><i></i><i></i><i></i><span>${project.type}</span></div><div class="preview-layout"><div><span class="preview-label">BADER · PROJECT 0${projects.indexOf(project) + 1}</span><h5>${shop ? 'BIO<br>PRODUITS' : food ? 'BELLA<br>CUCINA' : phone ? 'MED<br>RENDEZ' : name}</h5><p>${shop ? 'Produits naturels · Boutique en ligne' : food ? 'Cuisine italienne · Restaurant' : phone ? 'Santé · Rendez-vous' : project.type}</p></div><div class="preview-side"><div class="preview-stat-row"><div class="preview-stat">${phone ? 'RENDEZ-VOUS' : 'ACTIVITÉ'}<b>${phone ? '09:30' : '24'}</b></div><div class="preview-stat">${phone ? 'SPÉCIALITÉS' : 'CE MOIS'}<b>${phone ? '08' : '+18%'}</b></div></div><div class="preview-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="preview-list"><i></i><i></i><i></i></div></div></div></div></div>`;
+  const safeTitle = project.title.replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  return `<div class="project-preview project-preview--live"><div class="live-preview-label"><span class="live-dot"></span> APERÇU DU SITE EN DIRECT</div><iframe src="${project.live}" title="Aperçu du site ${safeTitle}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
 }
 
 function renderProjects(status, targetId) {
@@ -188,9 +130,9 @@ function renderProjects(status, targetId) {
   }
   if (group) group.hidden = false;
   target.innerHTML = matchingProjects.map((project, index) => {
-    const feature = status === 'completed' && index < 4;
+    const feature = status === 'completed' && Boolean(project.live);
     const number = String(index + 1).padStart(2, '0');
-    const links = `${project.live ? `<a href="${project.live}" target="_blank" rel="noreferrer">SITE ↗</a>` : ''}${project.source ? `<a href="${project.source}" target="_blank" rel="noreferrer">CODE ↗</a>` : ''}`;
+    const links = `${project.live ? `<a href="${project.live}" target="_blank" rel="noreferrer">VOIR LE SITE ↗</a>` : ''}${project.source ? `<a href="${project.source}" target="_blank" rel="noreferrer">CODE ↗</a>` : ''}`;
     return `<article class="project-card ${feature ? 'project-card--feature' : 'project-card--compact'}">${feature ? previewMarkup(project) : `<span class="project-index">${number}</span>`}<div class="project-card-copy"><div class="project-card-top"><span>${project.type}</span><span>${project.year}</span></div><h4>${project.title}</h4><p>${project.description}</p><div class="project-card-bottom"><span>${project.tools}</span>${links ? `<span class="project-links">${links}</span>` : ''}</div></div></article>`;
   }).join('');
 }
@@ -198,7 +140,262 @@ function renderProjects(status, targetId) {
 renderProjects('completed', 'completed-projects');
 renderProjects('ongoing', 'ongoing-projects');
 
-const revealItems = document.querySelectorAll('.service-row, .project-card, .about-grid, .contact-title, .contact-link');
+// Run the short web fundamentals quiz.
+const codeGame = document.getElementById('code-game');
+if (codeGame) {
+  const gameStart = document.getElementById('game-start');
+  const gameQuestion = document.getElementById('game-question');
+  const gameAnswers = document.getElementById('game-answers');
+  const gameFeedback = document.getElementById('game-feedback');
+  const gameScore = document.getElementById('game-score');
+  const gameProgress = document.getElementById('game-progress-label');
+  const gameTimeLabel = document.getElementById('game-time-label');
+  const gameTimeFill = document.getElementById('game-time-fill');
+  const roundDuration = 30;
+  const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const shuffle = items => {
+    const shuffled = [...items];
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const swapIndex = randomInt(0, index);
+      [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+    }
+    return shuffled;
+  };
+  const pick = items => items[randomInt(0, items.length - 1)];
+  const numericChoices = answer => shuffle([-1, 1, -2, 2, -3, 3, -5, 5, 7].map(offset => String(answer + offset)))
+    .filter((option, index, all) => option !== String(answer) && all.indexOf(option) === index)
+    .slice(0, 3);
+  const makeQuestion = (question, correct, distractors) => {
+    const answers = shuffle([String(correct), ...distractors.map(String)]);
+    return { question, answers, correct: answers.indexOf(String(correct)) };
+  };
+  const questionFactories = [
+    () => {
+      const a = randomInt(4, 38), b = randomInt(3, 27), result = a + b;
+      return makeQuestion(`En JavaScript, quel résultat affiche console.log(${a} + ${b}) ?`, result, numericChoices(result));
+    },
+    () => {
+      const a = randomInt(3, 14), b = randomInt(2, 9), result = a * b;
+      return makeQuestion(`Combien vaut ${a} × ${b} dans ce calcul JavaScript ?`, result, numericChoices(result));
+    },
+    () => {
+      const a = randomInt(15, 59), b = randomInt(3, 11), result = a % b;
+      return makeQuestion(`Quel reste donne l’expression ${a} % ${b} en JavaScript ?`, result, numericChoices(result));
+    },
+    () => {
+      const word = pick(['CODE', 'BADER', 'WEB', 'REACT', 'PORTFOLIO', 'CASABLANCA', 'JAVASCRIPT', 'OFPPT']);
+      return makeQuestion(`Quelle valeur renvoie « ${word} ».length en JavaScript ?`, word.length, numericChoices(word.length));
+    },
+    () => {
+      const values = shuffle(['HTML', 'CSS', 'JavaScript', 'React', 'PHP', 'SQL']).slice(0, 3);
+      const index = randomInt(0, values.length - 1), correct = values[index];
+      const distractors = shuffle(['Python', 'Git', 'Laravel', 'MySQL', ...values.filter(value => value !== correct)]).slice(0, 3);
+      return makeQuestion(`Que renvoie technologies[${index}] pour le tableau [${values.map(value => `'${value}'`).join(', ')}] ?`, correct, distractors);
+    },
+    () => {
+      const elements = [
+        { tag: '<a>', purpose: 'créer un lien' },
+        { tag: '<img>', purpose: 'afficher une image' },
+        { tag: '<form>', purpose: 'créer un formulaire' },
+        { tag: '<nav>', purpose: 'regrouper les liens de navigation' },
+        { tag: '<button>', purpose: 'déclencher une action' },
+      ];
+      const item = pick(elements);
+      return makeQuestion(`Quelle balise HTML sert à ${item.purpose} ?`, item.tag, elements.filter(option => option !== item).map(option => option.tag).slice(0, 3));
+    },
+    () => {
+      const attributes = [
+        { name: 'href', purpose: 'indiquer la destination d’un lien' },
+        { name: 'alt', purpose: 'décrire une image aux lecteurs d’écran' },
+        { name: 'placeholder', purpose: 'afficher un exemple dans un champ' },
+        { name: 'target', purpose: 'choisir où ouvrir un lien' },
+        { name: 'required', purpose: 'rendre un champ obligatoire' },
+      ];
+      const item = pick(attributes);
+      return makeQuestion(`Quel attribut HTML permet de ${item.purpose} ?`, item.name, attributes.filter(option => option !== item).map(option => option.name).slice(0, 3));
+    },
+    () => {
+      const rules = [
+        { prompt: 'aligner les éléments sur l’axe principal', answer: 'justify-content' },
+        { prompt: 'définir un conteneur en grille', answer: 'display: grid' },
+        { prompt: 'arrondir les coins d’un élément', answer: 'border-radius' },
+        { prompt: 'créer une mise en page flexible', answer: 'display: flex' },
+        { prompt: 'changer la couleur du texte', answer: 'color' },
+      ];
+      const rule = pick(rules);
+      return makeQuestion(`Quelle règle CSS permet de ${rule.prompt} ?`, rule.answer, shuffle(rules.filter(option => option !== rule).map(option => option.answer)).slice(0, 3));
+    },
+    () => {
+      const a = randomInt(2, 30), b = randomInt(2, 30), operator = pick(['>', '<', '===']);
+      const result = operator === '>' ? a > b : operator === '<' ? a < b : a === b;
+      return makeQuestion(`Dans JavaScript, que renvoie ${a} ${operator} ${b} ?`, result ? 'true' : 'false', ['null', 'undefined', result ? 'false' : 'true']);
+    },
+    () => {
+      const concepts = [
+        { name: 'WHERE', meaning: 'filtrer les lignes selon une condition' },
+        { name: 'ORDER BY', meaning: 'trier les résultats' },
+        { name: 'COUNT(*)', meaning: 'compter le nombre de lignes' },
+        { name: 'INSERT INTO', meaning: 'ajouter de nouvelles lignes' },
+        { name: 'UPDATE', meaning: 'modifier des lignes existantes' },
+      ];
+      const item = pick(concepts);
+      return makeQuestion(`En SQL, à quoi sert ${item.name} ?`, item.meaning, shuffle(concepts.filter(option => option !== item).map(option => option.meaning)).slice(0, 3));
+    },
+    () => {
+      const tools = [
+        { command: 'git status', use: 'voir les changements du dépôt' },
+        { command: 'git add', use: 'préparer des fichiers pour un commit' },
+        { command: 'git commit', use: 'enregistrer un point dans l’historique' },
+        { command: 'git push', use: 'envoyer des commits vers le dépôt distant' },
+        { command: 'git clone', use: 'copier un dépôt distant en local' },
+      ];
+      const item = pick(tools);
+      return makeQuestion(`Quelle commande Git permet de ${item.use} ?`, item.command, shuffle(tools.filter(option => option !== item).map(option => option.command)).slice(0, 3));
+    },
+    () => {
+      const a = randomInt(3, 25), b = randomInt(2, 15), result = a + b;
+      return makeQuestion(`En Python, quelle valeur affiche print(${a} + ${b}) ?`, result, numericChoices(result));
+    },
+    () => {
+      const components = [
+        { name: 'props', meaning: 'recevoir des données depuis un composant parent' },
+        { name: 'state', meaning: 'gérer une donnée qui évolue dans un composant' },
+        { name: 'key', meaning: 'identifier chaque élément d’une liste' },
+        { name: 'useEffect', meaning: 'synchroniser un composant avec un effet externe' },
+      ];
+      const item = pick(components);
+      return makeQuestion(`En React, quel terme correspond à « ${item.meaning} » ?`, item.name, shuffle(components.filter(option => option !== item).map(option => option.name)).slice(0, 3));
+    },
+  ];
+  let previousRound = '';
+  const createRound = () => {
+    let selected;
+    let signature;
+    do {
+      selected = shuffle(questionFactories.map((factory, id) => ({ factory, id }))).slice(0, 5);
+      signature = selected.map(question => question.id).sort().join(',');
+    } while (signature === previousRound);
+    previousRound = signature;
+    return selected.map(question => question.factory());
+  };
+  let questions = [];
+  let currentQuestion = 0;
+  let score = 0;
+  let timeLeft = roundDuration;
+  let timerId = 0;
+  let gameRunning = false;
+  let answerLocked = false;
+
+  const updateTimer = () => {
+    gameTimeLabel.textContent = `${timeLeft} S`;
+    gameTimeFill.style.width = `${(timeLeft / roundDuration) * 100}%`;
+    gameTimeFill.classList.toggle('is-low', timeLeft <= 8);
+  };
+
+  const endGame = (timedOut = false) => {
+    if (!gameRunning) return;
+    gameRunning = false;
+    window.clearInterval(timerId);
+    gameAnswers.hidden = true;
+    gameStart.hidden = false;
+    gameStart.innerHTML = 'REJOUER <span aria-hidden="true">↻</span>';
+    gameProgress.textContent = 'DÉFI TERMINÉ';
+    gameQuestion.textContent = timedOut ? 'Le chrono est terminé.' : 'Bien joué, défi terminé.';
+    gameFeedback.textContent = `Score final : ${score} / ${questions.length}. ${score === questions.length ? 'Sans faute !' : 'Tu peux retenter le défi.'}`;
+    gameFeedback.className = 'game-feedback';
+  };
+
+  const showQuestion = () => {
+    const item = questions[currentQuestion];
+    answerLocked = false;
+    gameQuestion.classList.remove('is-entering');
+    void gameQuestion.offsetWidth;
+    gameQuestion.classList.add('is-entering');
+    gameProgress.textContent = `QUESTION ${currentQuestion + 1} / ${questions.length}`;
+    gameQuestion.textContent = item.question;
+    gameFeedback.textContent = 'Choisis ta réponse.';
+    gameFeedback.className = 'game-feedback';
+    gameAnswers.replaceChildren(...item.answers.map((answer, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'game-answer';
+      button.style.setProperty('--option-order', index);
+      button.textContent = answer;
+      button.addEventListener('click', () => {
+        if (!gameRunning || answerLocked) return;
+        answerLocked = true;
+        const isCorrect = index === item.correct;
+        if (isCorrect) score += 1;
+        gameScore.textContent = `SCORE  ${score} / ${questions.length}`;
+        [...gameAnswers.children].forEach((option, optionIndex) => {
+          option.disabled = true;
+          if (optionIndex === item.correct) option.classList.add('is-correct');
+          else if (optionIndex === index) option.classList.add('is-wrong');
+        });
+        gameFeedback.textContent = isCorrect ? 'Bonne réponse !' : `Pas tout à fait. La bonne réponse : ${item.answers[item.correct]}`;
+        gameFeedback.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
+        window.setTimeout(() => {
+          if (!gameRunning) return;
+          currentQuestion += 1;
+          if (currentQuestion >= questions.length) endGame();
+          else showQuestion();
+        }, 480);
+      });
+      return button;
+    }));
+  };
+
+  const startGame = () => {
+    window.clearInterval(timerId);
+    questions = createRound();
+    currentQuestion = 0;
+    score = 0;
+    timeLeft = roundDuration;
+    gameRunning = true;
+    gameStart.hidden = true;
+    gameAnswers.hidden = false;
+    gameScore.textContent = `SCORE  0 / ${questions.length}`;
+    updateTimer();
+    showQuestion();
+    timerId = window.setInterval(() => {
+      timeLeft -= 1;
+      updateTimer();
+      if (timeLeft <= 0) endGame(true);
+    }, 1000);
+  };
+
+  gameStart.addEventListener('click', startGame);
+}
+
+// Keep the service list behaving like a single open panel.
+document.querySelectorAll('.service-row').forEach((row) => {
+  row.addEventListener('toggle', () => {
+    if (!row.open) return;
+    document.querySelectorAll('.service-row').forEach((other) => {
+      if (other !== row) other.open = false;
+    });
+  });
+});
+
+// Mark the current section in the compact top navigation as the page scrolls.
+const pageSections = document.querySelectorAll('main > section[id]');
+const navigationLinks = document.querySelectorAll('.topbar nav a');
+if ('IntersectionObserver' in window && pageSections.length && navigationLinks.length) {
+  const navigationObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navigationLinks.forEach((link) => {
+        const selected = link.getAttribute('href') === '#' + entry.target.id;
+        link.classList.toggle('is-current', selected);
+        if (selected) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    });
+  }, { rootMargin: '-26% 0px -62% 0px', threshold: 0 });
+  pageSections.forEach((section) => navigationObserver.observe(section));
+}
+
+const revealItems = document.querySelectorAll('.service-row, .project-card, .about-layout, .section-heading, .technology-item, .contact-layout, .code-game-panel');
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -216,4 +413,3 @@ if ('IntersectionObserver' in window) {
 } else {
   revealItems.forEach((item) => item.classList.add('is-visible'));
 }
-
