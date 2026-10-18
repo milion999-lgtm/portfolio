@@ -191,7 +191,7 @@ function renderProjects(status, targetId) {
     const feature = status === 'completed' && index < 4;
     const number = String(index + 1).padStart(2, '0');
     const links = `${project.live ? `<a href="${project.live}" target="_blank" rel="noreferrer">SITE ↗</a>` : ''}${project.source ? `<a href="${project.source}" target="_blank" rel="noreferrer">CODE ↗</a>` : ''}`;
-    return `<article class="project-card ${feature ? 'project-card--feature' : 'project-card--compact'}">${feature ? previewMarkup(project) : `<span class="project-index">${number}</span>`}<div class="project-card-copy"><div class="project-card-top"><span>${number} / ${project.type}</span><span>${project.year}</span></div><h4>${project.title}</h4><p>${project.description}</p><div class="project-card-bottom"><span>${project.tools}</span>${links ? `<span class="project-links">${links}</span>` : ''}</div></div></article>`;
+    return `<article class="project-card ${feature ? 'project-card--feature' : 'project-card--compact'}">${feature ? previewMarkup(project) : `<span class="project-index">${number}</span>`}<div class="project-card-copy"><div class="project-card-top"><span>${project.type}</span><span>${project.year}</span></div><h4>${project.title}</h4><p>${project.description}</p><div class="project-card-bottom"><span>${project.tools}</span>${links ? `<span class="project-links">${links}</span>` : ''}</div></div></article>`;
   }).join('');
 }
 
