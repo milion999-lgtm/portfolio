@@ -17,3 +17,7 @@
 @media(max-width:800px){.profile-panel{height:380px!important;margin:0}.profile-photo-frame{width:min(100%,360px)}}
 @media(max-width:520px){.topbar nav{gap:11px}.topbar nav a{font-size:8px}.brand{gap:8px}.brand-mark{width:26px;height:26px;font-size:12px}.profile-panel{height:315px!important}.profile-photo-frame{width:min(100%,285px)}.profile-label{right:0;bottom:3px;padding:10px 12px;font-size:7px}.project-card-bottom{align-items:flex-start;flex-direction:column}.project-card-bottom>span:first-child{max-width:none}.project-links{margin-top:12px}}
 
+.hero h1{font-size:clamp(47px,5.8vw,76px)}.language-summary{margin-top:22px!important;color:#b4b4a9;font-size:11px!important;line-height:1.8!important}.language-summary strong{color:var(--lime)}
+@media(max-width:800px){.hero h1{font-size:clamp(54px,9vw,72px)}}
+@media(max-width:520px){.hero h1{font-size:clamp(45px,12vw,60px)}}
+
