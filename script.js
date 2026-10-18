@@ -10,7 +10,7 @@ if (introScreen && document.documentElement.classList.contains('has-intro')) {
   const closeIntro = () => {
     if (closing) return;
     closing = true;
-    try { sessionStorage.setItem('bader-coded-intro-seen-v1', '1'); } catch {}
+    try { sessionStorage.setItem('bader-cinematic-intro-seen-v2', '1'); } catch {}
     document.documentElement.classList.add('intro-finished');
     introScreen.classList.add('is-leaving');
     window.setTimeout(() => {
@@ -117,7 +117,6 @@ function mountParticlePortrait(canvas) {
 
     context.clearRect(0, 0, width, height);
     const elapsed = timestamp - bornAt;
-    const movement = reducedMotion ? 1 : isIntro ? 1 : 1;
     for (let shade = 1; shade < portraitDots.length; shade++) {
       const dots = portraitDots[shade];
       const red = Math.round(78 + shade * 8.05);
@@ -154,55 +153,67 @@ function mountParticlePortrait(canvas) {
 document.querySelectorAll('[data-particle-portrait]').forEach(mountParticlePortrait);
 
 
-// Add your real projects here. Use status: "completed" or status: "ongoing".
+// Portfolio work is presented in four featured cards, followed by the rest of the training projects.
 const projects = [
-  { title: "DEV 202 Contributions Tracker", type: "Dashboard", year: "OFPPT", description: "Tableau de bord pour suivre les contributions, historiques, classements, pénalités, retraits et bilans hebdomadaires.", tools: "HTML, CSS, JavaScript, LocalStorage", status: "completed", live: "https://milion999-lgtm.github.io/portfolio/projects/count/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/count" },
-  { title: "BioProduits", type: "Site e-commerce", year: "OFPPT", description: "Boutique de produits biologiques avec catalogue, pages de présentation, panier et navigation entre les produits.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/bioproduits/", source: "https://github.com/milion999-lgtm/bioproduits" },
-  { title: "MedRendez", type: "Concept de site santé", year: "OFPPT", description: "Page d’accueil conceptuelle pour découvrir des médecins, rechercher des services et présenter une prise de rendez-vous.", tools: "HTML, CSS, Bootstrap 5", status: "completed" },
-  { title: "Bella Cucina", type: "Projet en équipe · Restaurant", year: "OFPPT", description: "Site de présentation d’un restaurant avec menu, histoire, galerie et section de contact. Concept fictif de démonstration.", tools: "HTML, CSS, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/portfolio/projects/bella-cucina/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/bella-cucina" },
-  { title: "Book Catalogue", type: "Application web", year: "OFPPT", description: "Catalogue de livres avec Laravel, PHP, Blade et une base de données MySQL.", tools: "PHP, Laravel, MySQL, Blade", status: "completed" },
-  { title: "Car Rental Manager", type: "Application React", year: "OFPPT", description: "Interface React pour ajouter et consulter des véhicules dans une petite application de location.", tools: "React, Vite, Axios", status: "completed" },
-  { title: "Product Inventory Manager", type: "Application React", year: "OFPPT", description: "Gestion d’une liste de produits avec recherche, quantités en stock, ajout, suppression et mise à jour.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Team Score Manager", type: "Application React", year: "OFPPT", description: "Gestion d’une équipe de joueurs, modification des scores et réinitialisation du tableau.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Training Registration Form", type: "Formulaire React", year: "OFPPT", description: "Formulaire d’inscription à une formation construit avec des composants React.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Student Profile & Dice Games", type: "Exercices React", year: "OFPPT", description: "Exercices avec fiches de profil, compteurs et petits jeux de dés interactifs.", tools: "React, JavaScript, Vite", status: "completed" },
-  { title: "Travaux pratiques web", type: "Ensemble d’exercices", year: "OFPPT", description: "Exercices HTML, CSS et JavaScript sur les pages, formulaires, mises en page adaptatives et interactions DOM.", tools: "HTML, CSS, JavaScript, Bootstrap", status: "completed" },
-  { title: "Exercices Python & SQL", type: "Ensemble d’exercices", year: "OFPPT", description: "Exercices de programmation Python et de requêtes sur bases de données SQL.", tools: "Python, SQL", status: "completed" },
+  { title: "DEV 202 Contributions Tracker", type: "Dashboard", year: "OFPPT", description: "Tableau de bord pour suivre les contributions, l’historique, les classements, les pénalités, les retraits et les bilans hebdomadaires.", tools: "HTML · CSS · JavaScript · LocalStorage", status: "completed", preview: "dashboard", live: "https://milion999-lgtm.github.io/portfolio/projects/count/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/count" },
+  { title: "BioProduits", type: "Site e-commerce", year: "OFPPT", description: "Boutique de produits biologiques avec catalogue, pages de présentation, panier et navigation entre les produits.", tools: "HTML · CSS · JavaScript · Bootstrap 5", status: "completed", preview: "shop", live: "https://milion999-lgtm.github.io/bioproduits/", source: "https://github.com/milion999-lgtm/bioproduits" },
+  { title: "MedRendez", type: "Concept de site santé", year: "OFPPT", description: "Page d’accueil conceptuelle pour découvrir des médecins, rechercher des services et présenter une prise de rendez-vous.", tools: "HTML · CSS · Bootstrap 5", status: "completed", preview: "phone" },
+  { title: "Bella Cucina", type: "Projet en équipe · Restaurant", year: "OFPPT", description: "Site de présentation d’un restaurant avec menu, histoire, galerie et section de contact. Concept fictif de démonstration.", tools: "HTML · CSS · Bootstrap 5", status: "completed", preview: "food", live: "https://milion999-lgtm.github.io/portfolio/projects/bella-cucina/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/bella-cucina" },
+  { title: "Book Catalogue", type: "Application web", year: "OFPPT", description: "Catalogue de livres développé avec Laravel, PHP, Blade et une base de données MySQL.", tools: "PHP · Laravel · MySQL · Blade", status: "completed" },
+  { title: "Car Rental Manager", type: "Application React", year: "OFPPT", description: "Interface React pour ajouter et consulter des véhicules dans une application de location.", tools: "React · Vite · Axios", status: "completed" },
+  { title: "Product Inventory Manager", type: "Application React", year: "OFPPT", description: "Gestion de produits avec recherche, suivi des quantités, ajout, suppression et mise à jour.", tools: "React · JavaScript · Vite", status: "completed" },
+  { title: "Team Score Manager", type: "Application React", year: "OFPPT", description: "Gestion d’une équipe de joueurs, modification des scores et réinitialisation du tableau.", tools: "React · JavaScript · Vite", status: "completed" },
+  { title: "Training Registration Form", type: "Formulaire React", year: "OFPPT", description: "Formulaire d’inscription à une formation construit avec des composants React.", tools: "React · JavaScript · Vite", status: "completed" },
+  { title: "Student Profile & Dice Games", type: "Exercices React", year: "OFPPT", description: "Fiches de profil, compteurs et petits jeux de dés interactifs réalisés en React.", tools: "React · JavaScript · Vite", status: "completed" },
+  { title: "Travaux pratiques web", type: "Ensemble d’exercices", year: "OFPPT", description: "Exercices HTML, CSS et JavaScript autour des pages, formulaires, mises en page adaptatives et interactions DOM.", tools: "HTML · CSS · JavaScript · Bootstrap", status: "completed" },
+  { title: "Exercices Python & SQL", type: "Ensemble d’exercices", year: "OFPPT", description: "Exercices de programmation Python et de requêtes sur bases de données SQL.", tools: "Python · SQL", status: "completed" },
 ];
+
+function previewMarkup(project) {
+  const shop = project.preview === 'shop';
+  const food = project.preview === 'food';
+  const phone = project.preview === 'phone';
+  const name = project.title.replaceAll('"', '&quot;');
+  return `<div class="project-preview preview-${project.preview || 'dashboard'}" aria-hidden="true"><div class="preview-browser"><div class="preview-chrome"><i></i><i></i><i></i><span>${project.type}</span></div><div class="preview-layout"><div><span class="preview-label">BADER · PROJECT 0${projects.indexOf(project) + 1}</span><h5>${shop ? 'BIO<br>PRODUITS' : food ? 'BELLA<br>CUCINA' : phone ? 'MED<br>RENDEZ' : name}</h5><p>${shop ? 'Produits naturels · Boutique en ligne' : food ? 'Cuisine italienne · Restaurant' : phone ? 'Santé · Rendez-vous' : project.type}</p></div><div class="preview-side"><div class="preview-stat-row"><div class="preview-stat">${phone ? 'RENDEZ-VOUS' : 'ACTIVITÉ'}<b>${phone ? '09:30' : '24'}</b></div><div class="preview-stat">${phone ? 'SPÉCIALITÉS' : 'CE MOIS'}<b>${phone ? '08' : '+18%'}</b></div></div><div class="preview-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="preview-list"><i></i><i></i><i></i></div></div></div></div></div>`;
+}
 
 function renderProjects(status, targetId) {
   const target = document.getElementById(targetId);
+  const group = target.closest('.project-group');
   const matchingProjects = projects.filter((project) => project.status === status);
   if (!matchingProjects.length) {
-    target.innerHTML = `<p class="empty-projects">${status === 'completed' ? 'Les réalisations terminées' : 'Les projets en cours'} apparaîtront ici.</p>`;
+    target.innerHTML = '';
+    if (group) group.hidden = true;
     return;
   }
+  if (group) group.hidden = false;
   target.innerHTML = matchingProjects.map((project, index) => {
-    const card = `<article class="project-card"><div class="project-card-top"><span>${String(index + 1).padStart(2, '0')} / ${project.type}</span><span>${project.year}</span></div><h4>${project.title}</h4><p>${project.description}</p><div class="project-card-bottom"><span>${project.tools}</span>${(project.live || project.source) ? `<span class="project-links">${project.live ? `<a href="${project.live}" target="_blank" rel="noreferrer">LIVE DEMO ↗</a>` : ''}${project.source ? `<a href="${project.source}" target="_blank" rel="noreferrer">SOURCE ↗</a>` : ''}</span>` : ''}</div></article>`;
-    return card;
+    const feature = status === 'completed' && index < 4;
+    const number = String(index + 1).padStart(2, '0');
+    const links = `${project.live ? `<a href="${project.live}" target="_blank" rel="noreferrer">SITE ↗</a>` : ''}${project.source ? `<a href="${project.source}" target="_blank" rel="noreferrer">CODE ↗</a>` : ''}`;
+    return `<article class="project-card ${feature ? 'project-card--feature' : 'project-card--compact'}">${feature ? previewMarkup(project) : `<span class="project-index">${number}</span>`}<div class="project-card-copy"><div class="project-card-top"><span>${number} / ${project.type}</span><span>${project.year}</span></div><h4>${project.title}</h4><p>${project.description}</p><div class="project-card-bottom"><span>${project.tools}</span>${links ? `<span class="project-links">${links}</span>` : ''}</div></div></article>`;
   }).join('');
 }
 
 renderProjects('completed', 'completed-projects');
 renderProjects('ongoing', 'ongoing-projects');
 
-// A small reveal on scroll keeps the page lively without getting in the way.
-const revealItems = document.querySelectorAll('.project-card, .about-grid, .contact h2, .contact-link');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-      observer.unobserve(entry.target);
-    }
+const revealItems = document.querySelectorAll('.service-row, .project-card, .about-grid, .contact-title, .contact-link');
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealItems.forEach((item, index) => {
+    item.classList.add('reveal');
+    item.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 70}ms`);
+    observer.observe(item);
   });
-}, { threshold: 0.12 });
-
-revealItems.forEach((item, index) => {
-  item.classList.add('reveal');
-  if (item.classList.contains('project-card')) {
-    item.style.setProperty('--reveal-delay', ((index % 3) * 90) + 'ms');
-  }
-  observer.observe(item);
-});
-
+} else {
+  revealItems.forEach((item) => item.classList.add('is-visible'));
+}
 
