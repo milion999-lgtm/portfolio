@@ -140,3 +140,5 @@ html.intro-finished .scroll-hint{animation:page-enter .7s .65s both,scroll-pulse
   html.has-intro body{overflow:auto}
   html.has-intro .topbar,html.has-intro .hero-copy>*,html.has-intro .profile-panel,html.has-intro .scroll-hint{opacity:1;transform:none}
 }
+
+.intro-masthead>span:last-child{margin-right:140px}@media(max-width:520px){.intro-masthead>span:last-child{margin-right:0}}
