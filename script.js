@@ -9,7 +9,7 @@ if (introScreen && document.documentElement.classList.contains('has-intro')) {
   const closeIntro = () => {
     if (introClosing) return;
     introClosing = true;
-    try { sessionStorage.setItem('bader-intro-seen', '1'); } catch {}
+    try { sessionStorage.setItem('bader-cinematic-intro-seen-v2', '1'); } catch {}
     document.documentElement.classList.add('intro-finished');
     introScreen.classList.add('is-leaving');
     window.setTimeout(() => {
@@ -19,7 +19,7 @@ if (introScreen && document.documentElement.classList.contains('has-intro')) {
   };
   const animateIntro = (timestamp) => {
     if (introStartedAt === null) introStartedAt = timestamp;
-    const progress = Math.min((timestamp - introStartedAt) / 2800, 1);
+    const progress = Math.min((timestamp - introStartedAt) / 4800, 1);
     const percentage = String(Math.round(progress * 100)).padStart(2, '0') + '%';
     introPercent.textContent = percentage;
     introProgressBar.style.width = percentage;
