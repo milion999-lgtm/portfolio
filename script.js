@@ -3,9 +3,9 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // Add your real projects here. Use status: "completed" or status: "ongoing".
 const projects = [
   { title: "DEV 202 Contributions Tracker", type: "Dashboard", year: "OFPPT", description: "A class contribution tracker with payment history, weekly summaries, rankings, fines, withdrawals, and data import/export.", tools: "HTML, CSS, JavaScript, LocalStorage", status: "completed" },
-  { title: "BioProduits", type: "E-commerce website", year: "OFPPT", description: "A multi-page organic products storefront with product listings, product details, and a shopping cart interface.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed", link: "https://github.com/milion999-lgtm/bioproduits" },
+  { title: "BioProduits", type: "E-commerce website", year: "OFPPT", description: "A multi-page organic products storefront with product listings, product details, and a shopping cart interface.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/bioproduits/", source: "https://github.com/milion999-lgtm/bioproduits" },
   { title: "MedRendez", type: "Healthcare landing page", year: "OFPPT", description: "A healthcare booking concept that presents doctor discovery, appointment booking, and service information.", tools: "HTML, CSS, Bootstrap 5, Bootstrap Icons", status: "completed" },
-  { title: "Bella Cucina", type: "Team project · Restaurant website", year: "OFPPT", description: "A restaurant website featuring a menu, restaurant story, gallery, and contact section.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed" },
+  { title: "Bella Cucina", type: "Team project · Restaurant website", year: "OFPPT", description: "A restaurant website featuring a menu, restaurant story, gallery, and contact section.", tools: "HTML, CSS, JavaScript, Bootstrap 5", status: "completed", live: "https://milion999-lgtm.github.io/portfolio/projects/bella-cucina/", source: "https://github.com/milion999-lgtm/portfolio/tree/main/projects/bella-cucina" },
   { title: "Book Catalogue", type: "Web application", year: "OFPPT", description: "A Laravel application that reads book records from a MySQL database and displays them in a catalogue.", tools: "PHP, Laravel, MySQL, Blade", status: "completed" },
   { title: "Car Rental Manager", type: "React application", year: "OFPPT", description: "A small application for adding and displaying cars in a rental management interface.", tools: "React, Vite, Axios", status: "completed" },
   { title: "Product Inventory Manager", type: "React application", year: "OFPPT", description: "Manage a product list with search, stock counts, adding and removing products, and stock updates.", tools: "React, JavaScript, Vite", status: "completed" },
@@ -24,7 +24,7 @@ function renderProjects(status, targetId) {
     return;
   }
   target.innerHTML = matchingProjects.map((project, index) => {
-    const card = `<article class="project-card"><div class="project-card-top"><span>${String(index + 1).padStart(2, '0')} / ${project.type}</span><span>${project.year}</span></div><h4>${project.title}</h4><p>${project.description}</p><div class="project-card-bottom"><span>${project.tools}</span>${project.link ? `<a href="${project.link}" target="_blank" rel="noreferrer">VIEW PROJECT ↗</a>` : ''}</div></article>`;
+    const card = `<article class="project-card"><div class="project-card-top"><span>${String(index + 1).padStart(2, '0')} / ${project.type}</span><span>${project.year}</span></div><h4>${project.title}</h4><p>${project.description}</p><div class="project-card-bottom"><span>${project.tools}</span>${(project.live || project.source) ? `<span class="project-links">${project.live ? `<a href="${project.live}" target="_blank" rel="noreferrer">LIVE DEMO ↗</a>` : ''}${project.source ? `<a href="${project.source}" target="_blank" rel="noreferrer">SOURCE ↗</a>` : ''}</span>` : ''}</div></article>`;
     return card;
   }).join('');
 }
@@ -47,3 +47,4 @@ revealItems.forEach((item) => {
   item.classList.add('reveal');
   observer.observe(item);
 });
+
