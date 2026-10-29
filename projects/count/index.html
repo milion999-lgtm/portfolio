@@ -4,1254 +4,183 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#18233c" />
-    <title>Démo portfolio · Suivi des contributions</title>
+    <link rel="icon" type="image/png" href="assets/ofppt-logo.png" />
+    <title>DEV 202 · Suivi des cotisations</title>
     <style>
-      :root {
-        --forest: #102d29;
-        --forest2: #1c4941;
-        --green: #2d705c;
-        --lime: #d7ef9c;
-        --cream: #f5f6ef;
-        --paper: #fff;
-        --ink: #172d29;
-        --muted: #71817b;
-        --line: #e3e9e2;
-        --soft: #edf4e8;
-        --gold: #e8b95f;
-        --red: #9e463a;
-        --shadow: 0 12px 32px #102d2910;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        margin: 0;
-        background:
-          radial-gradient(ellipse at 8% 18%, #e6f0df 0, transparent 31%),
-          radial-gradient(ellipse at 90% 56%, #e8efe1 0, transparent 34%),
-          linear-gradient(160deg, #f8f8f2 0%, #f1f5ed 48%, #f8f6ef 100%);
-        background-attachment: fixed;
-        color: var(--ink);
-        font:
-          15px/1.5 Inter,
-          ui-sans-serif,
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          sans-serif;
-        min-height: 100vh;
-      }
-      .top {
-        background: linear-gradient(
-          118deg,
-          #0d2925 0%,
-          #174138 58%,
-          #285440 100%
-        );
-        color: white;
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-      }
-      .top:before {
-        content: "";
-        position: absolute;
-        width: 460px;
-        height: 460px;
-        right: 9%;
-        top: -330px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          #c7e99b40 0,
-          #a4d78d14 38%,
-          transparent 70%
-        );
-        filter: blur(2px);
-        animation: glow-drift 12s ease-in-out infinite alternate;
-        pointer-events: none;
-      }
-      .top:after {
-        content: "";
-        position: absolute;
-        width: 370px;
-        height: 370px;
-        border: 1px solid #ffffff14;
-        border-radius: 50%;
-        right: -90px;
-        top: -245px;
-        box-shadow:
-          0 0 0 42px #ffffff08,
-          0 0 0 84px #ffffff06;
-        pointer-events: none;
-        animation: ring-drift 20s ease-in-out infinite alternate;
-      }
-      .top-inner {
-        max-width: 1120px;
-        margin: auto;
-        padding: 30px 24px 0;
-        position: relative;
-        z-index: 1;
-        animation: arrive 0.75s cubic-bezier(0.2, 0.75, 0.25, 1) both;
-      }
-      .brandrow {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .mark {
-        width: 42px;
-        height: 42px;
-        border-radius: 13px;
-        background: var(--lime);
-        color: var(--forest);
-        display: grid;
-        place-items: center;
-        font-weight: 900;
-        letter-spacing: -0.08em;
-      }
-      .brand small {
-        display: block;
-        color: #adc8bb;
-        font-size: 11px;
-        letter-spacing: 0.16em;
-        font-weight: 800;
-      }
-      .brand b {
-        display: block;
-        font-size: 15px;
-        letter-spacing: 0.02em;
-      }
-      .saved {
-        font-size: 12px;
-        color: #c3d9ce;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 99px;
-        background: var(--lime);
-        box-shadow: 0 0 0 4px #d7ef9c20;
-      }
-      .hero {
-        padding: 35px 0 27px;
-      }
-      .eyebrow {
-        color: var(--lime);
-        font-size: 11px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        font-weight: 800;
-        margin: 0 0 8px;
-      }
-      .hero h1 {
-        font-size: clamp(28px, 5vw, 43px);
-        line-height: 1.1;
-        letter-spacing: -0.05em;
-        margin: 0;
-        max-width: 620px;
-      }
-      .hero p {
-        color: #c0d3cb;
-        margin: 11px 0 0;
-        max-width: 560px;
-      }
-      .nav {
-        display: flex;
-        gap: 8px;
-        overflow: auto;
-        border-bottom: 1px solid #ffffff26;
-      }
-      .nav a {
-        color: #a9c1b8;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 700;
-        padding: 13px 15px 14px;
-        white-space: nowrap;
-        border-bottom: 3px solid transparent;
-        margin-bottom: -1px;
-      }
-      .nav a:hover,
-      .nav a.active {
-        color: white;
-        border-bottom-color: var(--lime);
-      }
-      main {
-        max-width: 1120px;
-        margin: 26px auto 70px;
-        padding: 0 24px;
-      }
-      .view {
-        display: none;
-      }
-      .view.active {
-        display: block;
-        animation: appear 0.18s ease-out;
-      }
-      @keyframes appear {
-        from {
-          opacity: 0.65;
-          transform: translateY(4px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-      .pagehead {
-        display: flex;
-        justify-content: space-between;
-        align-items: end;
-        gap: 16px;
-        margin: 0 0 17px;
-      }
-      .pagehead h2 {
-        margin: 0;
-        font-size: 23px;
-        letter-spacing: -0.04em;
-      }
-      .pagehead p {
-        color: var(--muted);
-        margin: 3px 0 0;
-        font-size: 13px;
-      }
-      .actions {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .btn {
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        background: white;
-        color: var(--ink);
-        padding: 10px 13px;
-        font-family: inherit;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 1.2;
-        cursor: pointer;
-        transition: 0.15s ease;
-        white-space: nowrap;
-      }
-      .btn:hover {
-        border-color: #afc9ba;
-        transform: translateY(-1px);
-      }
-      .btn-main {
-        background: var(--forest2);
-        color: white;
-        border-color: var(--forest2);
-      }
-      .btn-main:hover {
-        background: var(--forest);
-      }
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 13px;
-        margin-bottom: 18px;
-      }
-      .stat {
-        border: 1px solid #e0e9df;
-        border-radius: 16px;
-        background: #ffffffdc;
-        padding: 17px 19px;
-        box-shadow: 0 14px 34px #163b3510;
-        backdrop-filter: blur(8px);
-        transition:
-          transform 0.22s ease,
-          box-shadow 0.22s ease;
-      }
-      .stat:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 18px 38px #163b3518;
-      }
-      .stat label {
-        display: block;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.11em;
-        color: var(--muted);
-        font-weight: 800;
-      }
-      .stat strong {
-        display: block;
-        font-size: 26px;
-        letter-spacing: -0.05em;
-        margin-top: 3px;
-      }
-      .stat.total {
-        background: var(--soft);
-        border-color: #d7e6d3;
-      }
-      .stat.total strong {
-        color: var(--green);
-      }
-      .tools {
-        display: flex;
-        gap: 10px;
-        margin: 0 0 13px;
-      }
-      .search {
-        flex: 1;
-        min-width: 180px;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        padding: 10px 13px;
-        font: inherit;
-        background: white;
-        outline: none;
-      }
-      .search:focus,
-      .amount:focus {
-        border-color: #81ad95;
-        box-shadow: 0 0 0 3px #81ad9528;
-      }
-      .tablebox {
-        overflow-x: auto;
-        background: white;
-        border: 1px solid var(--line);
-        border-radius: 15px;
-        box-shadow: var(--shadow);
-      }
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        min-width: 650px;
-      }
-      th {
-        padding: 12px 15px;
-        text-align: left;
-        color: var(--muted);
-        background: #fafbf8;
-        font-size: 10px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        font-weight: 800;
-      }
-      td {
-        padding: 12px 15px;
-        border-top: 1px solid #edf0eb;
-      }
-      tbody tr:hover {
-        background: #fcfdfb;
-      }
-      .name {
-        font-weight: 750;
-      }
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-      .number {
-        font-variant-numeric: tabular-nums;
-        color: var(--muted);
-        width: 55px;
-      }
-      .balance {
-        font-weight: 800;
-        white-space: nowrap;
-      }
-      .paycell {
-        min-width: 280px;
-      }
-      .payform {
-        display: flex;
-        gap: 7px;
-        align-items: center;
-      }
-      .amount {
-        width: 125px;
-        padding: 8px 9px;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        font: inherit;
-        text-align: right;
-        outline: none;
-      }
-      .currency {
-        font-size: 11px;
-        color: var(--muted);
-      }
-      .mini {
-        border: 0;
-        border-radius: 8px;
-        padding: 9px 12px;
-        background: var(--soft);
-        color: var(--forest2);
-        font-weight: 800;
-        font-size: 11px;
-        cursor: pointer;
-      }
-      .mini:hover {
-        background: var(--lime);
-      }
-      .rankrow {
-        display: grid;
-        grid-template-columns: 58px minmax(180px, 1fr) minmax(100px, 160px);
-        align-items: center;
-        gap: 13px;
-        padding: 14px 17px;
-        border-top: 1px solid #edf0eb;
-      }
-      .rankrow:first-child {
-        border-top: 0;
-      }
-      .rankno {
-        width: 36px;
-        height: 36px;
-        display: grid;
-        place-items: center;
-        border-radius: 12px;
-        background: #f0f3ed;
-        color: #52635b;
-        font-weight: 850;
-      }
-      .rankrow:nth-child(1) .rankno {
-        background: #fff1cc;
-        color: #795813;
-      }
-      .rankrow:nth-child(2) .rankno {
-        background: #e8edf0;
-        color: #50616d;
-      }
-      .rankrow:nth-child(3) .rankno {
-        background: #f4e8dc;
-        color: #805d42;
-      }
-      .rankname {
-        font-weight: 750;
-      }
-      .rankamount {
-        text-align: right;
-        font-weight: 850;
-        color: var(--green);
-        font-variant-numeric: tabular-nums;
-      }
-      .meter {
-        grid-column: 2/4;
-        height: 5px;
-        background: #eef1eb;
-        border-radius: 9px;
-        overflow: hidden;
-        margin-top: -5px;
-      }
-      .meter span {
-        display: block;
-        height: 100%;
-        background: linear-gradient(90deg, var(--green), #9ec78a);
-        border-radius: 9px;
-      }
-      .week-nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin: 0 0 16px;
-      }
-      .week-label {
-        font-weight: 800;
-        color: var(--forest2);
-        text-align: center;
-      }
-      .week-nav .btn:disabled {
-        opacity: 0.45;
-        cursor: default;
-        transform: none;
-      }
-      .week-state {
-        display: inline-flex;
-        align-items: center;
-        border-radius: 99px;
-        padding: 5px 9px;
-        font-size: 10px;
-        font-weight: 800;
-        white-space: nowrap;
-      }
-      .week-state.paid {
-        background: #e5f2e9;
-        color: #276347;
-      }
-      .week-state.missing {
-        background: #fff1df;
-        color: #926021;
-      }
-      .datecell {
-        white-space: nowrap;
-        font-variant-numeric: tabular-nums;
-      }
-      .weekday {
-        font-weight: 800;
-      }
-      .historyamount {
-        font-weight: 850;
-        color: var(--green);
-        text-align: right;
-        white-space: nowrap;
-      }
-      .empty {
-        text-align: center;
-        padding: 38px 18px;
-        color: var(--muted);
-      }
-      .foot {
-        margin: 13px 2px;
-        color: var(--muted);
-        font-size: 11px;
-      }
-      .toast {
-        position: fixed;
-        bottom: 22px;
-        left: 50%;
-        transform: translate(-50%, 15px);
-        opacity: 0;
-        background: var(--forest);
-        color: white;
-        padding: 11px 16px;
-        border-radius: 10px;
-        box-shadow: var(--shadow);
-        transition: 0.2s;
-        pointer-events: none;
-        font-size: 13px;
-        z-index: 5;
-      }
-      .toast.show {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-      @keyframes arrive {
-        from {
-          opacity: 0;
-          transform: translateY(-12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes glow-drift {
-        from {
-          transform: translate3d(0, 0, 0) scale(0.94);
-          opacity: 0.65;
-        }
-        to {
-          transform: translate3d(-38px, 30px, 0) scale(1.1);
-          opacity: 1;
-        }
-      }
-      @keyframes ring-drift {
-        from {
-          transform: translate3d(0, 0, 0) rotate(-5deg);
-        }
-        to {
-          transform: translate3d(-18px, 24px, 0) rotate(5deg);
-        }
-      }
-      @keyframes rise-in {
-        from {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .view.active .pagehead {
-        animation: rise-in 0.5s 0.04s both;
-      }
-      .view.active .stat {
-        animation: rise-in 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-      }
-      .view.active .stat:nth-child(2) {
-        animation-delay: 0.1s;
-      }
-      .view.active .stat:nth-child(3) {
-        animation-delay: 0.18s;
-      }
-      .view.active .tools,
-      .view.active .tablebox {
-        animation: rise-in 0.6s 0.16s both;
-      }
-      .view.active .foot {
-        animation: rise-in 0.55s 0.23s both;
-      }
-      @media (max-width: 700px) {
-        .top-inner {
-          padding: 20px 17px 0;
-        }
-        .hero {
-          padding: 28px 0 22px;
-        }
-        main {
-          padding: 0 14px;
-          margin-top: 19px;
-        }
-        .stats {
-          gap: 8px;
-        }
-        .stat {
-          padding: 13px;
-        }
-        .stat strong {
-          font-size: 21px;
-        }
-        .stat label {
-          font-size: 9px;
-        }
-        .pagehead {
-          align-items: start;
-          flex-direction: column;
-        }
-        .actions {
-          width: 100%;
-        }
-        .actions .btn {
-          flex: 1;
-        }
-        .saved {
-          font-size: 0;
-        }
-        .rankrow {
-          grid-template-columns: 45px minmax(110px, 1fr) minmax(85px, 125px);
-          gap: 9px;
-          padding: 12px;
-        }
-        .rankamount {
-          font-size: 13px;
-        }
-        .name {
-          min-width: 160px;
-        }
-        .brandrow {
-          align-items: flex-start;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *:before,
-        *:after {
-          scroll-behavior: auto !important;
-          animation: none !important;
-          transition: none !important;
-        }
-      }
-      :root {
-        --forest: #111a2c;
-        --forest2: #202d49;
-        --green: #237b5c;
-        --lime: #b9f3d3;
-        --cream: #f5f6fb;
-        --paper: #fff;
-        --ink: #182236;
-        --muted: #758198;
-        --line: #e6e9f1;
-        --soft: #edf0ff;
-        --gold: #ff9f87;
-        --violet: #7267f0;
-        --shadow: 0 16px 45px #19254412;
-      }
-      body {
-        background:
-          radial-gradient(ellipse at 5% 18%, #e8e8ff 0, transparent 30%),
-          radial-gradient(ellipse at 95% 58%, #e0f4eb 0, transparent 30%),
-          linear-gradient(145deg, #f6f7fc, #f0f4f8 55%, #f9f5f2);
-        background-attachment: fixed;
-        color: var(--ink);
-      }
-      .top {
-        background: linear-gradient(118deg, #111a2c, #202d49 54%, #35315f);
-      }
-      .top:before {
-        width: 520px;
-        height: 520px;
-        right: 3%;
-        top: -380px;
-        background: radial-gradient(
-          circle,
-          #a39aff63 0,
-          #8576ef24 40%,
-          transparent 70%
-        );
-        animation: float-glow 13s ease-in-out infinite alternate;
-      }
-      .top:after {
-        width: 340px;
-        height: 340px;
-        right: -90px;
-        top: -225px;
-        border-color: #ffffff20;
-        box-shadow:
-          0 0 0 38px #ffffff08,
-          0 0 0 76px #ffffff06;
-        animation: orbit 19s ease-in-out infinite alternate;
-      }
-      .top-inner {
-        max-width: 1160px;
-        padding-top: 26px;
-        animation: drop-in 0.8s cubic-bezier(0.2, 0.75, 0.2, 1) both;
-      }
-      .mark {
-        background: linear-gradient(145deg, var(--lime), #8fdfb5);
-        box-shadow: 0 8px 24px #8ce4bd30;
-      }
-      .brand small {
-        color: #c4cbea;
-      }
-      .saved {
-        color: #d3d9ed;
-      }
-      .hero {
-        padding: 42px 0 30px;
-        max-width: 760px;
-      }
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 10px;
-        border: 1px solid #ffffff2d;
-        border-radius: 99px;
-        background: #ffffff12;
-        color: #d6f7e4;
-        font-size: 10px;
-        font-weight: 850;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        backdrop-filter: blur(8px);
-      }
-      .eyebrow:before {
-        content: "";
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--gold);
-        box-shadow: 0 0 12px var(--gold);
-      }
-      .hero h1 {
-        max-width: 730px;
-        font-size: clamp(32px, 5.4vw, 55px);
-        line-height: 1.04;
-        letter-spacing: -0.055em;
-      }
-      .hero p {
-        color: #c6cfe2;
-      }
-      .nav a {
-        color: #b6c0d7;
-        font-size: 12px;
-      }
-      .nav a.active,
-      .nav a:hover {
-        border-bottom-color: var(--lime);
-      }
-      main {
-        max-width: 1160px;
-      }
-      .btn {
-        font-family: inherit;
-        font-size: 12px;
-        font-weight: 750;
-        border-radius: 11px;
-      }
-      .btn-main {
-        border-color: var(--violet);
-        background: linear-gradient(135deg, var(--violet), #584bc9);
-        color: white;
-      }
-      .btn-main:hover {
-        background: #584bc9;
-      }
-      .stat {
-        border-color: #e4e7f0;
-        background: #ffffffdf;
-        box-shadow: var(--shadow);
-        backdrop-filter: blur(9px);
-      }
-      .stat.total {
-        border-color: #d9d8ff;
-        background: linear-gradient(135deg, #eeedff, #fafffc);
-      }
-      .stat.total strong,
-      .rankamount,
-      .week-label,
-      .historyamount {
-        color: #5148bd;
-      }
-      .tablebox {
-        border-color: #e5e8f0;
-        background: #ffffffed;
-        box-shadow: var(--shadow);
-      }
-      th {
-        background: #f8f9fd;
-        color: #7b8498;
-      }
-      td {
-        border-color: #edf0f5;
-      }
-      tbody tr:hover {
-        background: #fafaff;
-      }
-      .mini {
-        background: #efefff;
-        color: #4f48af;
-      }
-      .mini:hover {
-        background: #dfddff;
-      }
-      .meter span {
-        background: linear-gradient(90deg, #7569ed, #9b8df7, #87d9b2);
-      }
-      .fine-create {
-        display: grid;
-        grid-template-columns: minmax(160px, 1.1fr) minmax(180px, 1.5fr) minmax(
-            145px,
-            0.85fr
-          ) minmax(125px, 0.6fr) auto;
-        align-items: end;
-        gap: 11px;
-        margin: 0 0 20px;
-        padding: 17px;
-        border: 1px solid #e5e6f4;
-        border-radius: 16px;
-        background: linear-gradient(120deg, #fff, #f7f6ff);
-        box-shadow: var(--shadow);
-      }
-      .control label {
-        display: block;
-        margin: 0 0 6px;
-        color: #68738b;
-        font-size: 10px;
-        font-weight: 850;
-        letter-spacing: 0.09em;
-        text-transform: uppercase;
-      }
-      .field {
-        width: 100%;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        padding: 11px 13px;
-        background: white;
-        color: var(--ink);
-        font: inherit;
-        outline: none;
-      }
-      .field:focus {
-        border-color: #8d82f4;
-        box-shadow: 0 0 0 3px #8d82f426;
-      }
-      .fixed-fee {
-        display: flex;
-        align-items: center;
-        min-height: 42px;
-        padding: 0 12px;
-        border: 1px dashed #b4afea;
-        border-radius: 10px;
-        background: #f1f0ff;
-        color: #4e46b6;
-        font-size: 15px;
-        font-weight: 950;
-      }
-      .fine-state {
-        display: inline-flex;
-        border-radius: 99px;
-        padding: 5px 9px;
-        font-size: 10px;
-        font-weight: 850;
-        white-space: nowrap;
-      }
-      .fine-state.due {
-        background: #fff0e6;
-        color: #9b4d28;
-      }
-      .fine-state.settled {
-        background: #e3f7ec;
-        color: #276b4d;
-      }
-      .fine-actions {
-        display: flex;
-        gap: 6px;
-        align-items: center;
-      }
-      .fine-pay {
-        border: 0;
-        border-radius: 8px;
-        background: linear-gradient(135deg, var(--violet), #584bc9);
-        color: white;
-        padding: 8px 10px;
-        font-size: 10px;
-        font-weight: 850;
-        cursor: pointer;
-      }
-      .fine-cancel {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: white;
-        color: #7d4050;
-        padding: 7px 9px;
-        font-size: 10px;
-        font-weight: 800;
-        cursor: pointer;
-      }
-      .fee-cell {
-        color: #5148bd;
-        font-weight: 900;
-        white-space: nowrap;
-      }
-      .source-note {
-        display: block;
-        color: var(--muted);
-        font-size: 10px;
-        font-weight: 500;
-      }
-      @keyframes drop-in {
-        from {
-          opacity: 0;
-          transform: translateY(-18px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes float-glow {
-        from {
-          transform: translate3d(0, 0, 0) scale(0.93);
-          opacity: 0.65;
-        }
-        to {
-          transform: translate3d(-35px, 28px, 0) scale(1.1);
-          opacity: 1;
-        }
-      }
-      @keyframes orbit {
-        from {
-          transform: translate3d(0, 0, 0) rotate(-6deg);
-        }
-        to {
-          transform: translate3d(-20px, 24px, 0) rotate(6deg);
-        }
-      }
-      @keyframes stagger {
-        from {
-          opacity: 0;
-          transform: translateY(14px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-      .view.active .pagehead {
-        animation: stagger 0.45s 0.04s both;
-      }
-      .view.active .stat {
-        animation: stagger 0.52s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-      }
-      .view.active .stat:nth-child(2) {
-        animation-delay: 0.1s;
-      }
-      .view.active .stat:nth-child(3) {
-        animation-delay: 0.18s;
-      }
-      .view.active .tools,
-      .view.active .tablebox,
-      .view.active .fine-create {
-        animation: stagger 0.55s 0.14s both;
-      }
-      .fine-create .btn {
-        min-height: 42px;
-      }
-      .toast {
-        background: #17213a;
-        box-shadow: 0 14px 35px #11182735;
-      }
-      @media (max-width: 760px) {
-        .top-inner {
-          padding: 19px 16px 0;
-        }
-        .hero {
-          padding: 32px 0 24px;
-        }
-        .hero h1 {
-          font-size: clamp(32px, 9vw, 46px);
-        }
-        main {
-          padding: 0 14px;
-          margin-top: 20px;
-        }
-        .stats {
-          gap: 8px;
-        }
-        .stat {
-          padding: 13px;
-        }
-        .stat strong {
-          font-size: 21px;
-        }
-        .stat label {
-          font-size: 9px;
-        }
-        .pagehead {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-        .actions {
-          width: 100%;
-        }
-        .actions .btn {
-          flex: 1;
-        }
-        .saved {
-          font-size: 0;
-        }
-        .rankrow {
-          grid-template-columns: 42px minmax(110px, 1fr) minmax(85px, 125px);
-          gap: 9px;
-          padding: 12px;
-        }
-        .rankamount {
-          font-size: 12px;
-        }
-        .name {
-          min-width: 150px;
-        }
-        .brandrow {
-          align-items: flex-start;
-        }
-        .fine-create {
-          grid-template-columns: 1fr 1fr;
-        }
-        .fine-create .control:nth-child(2) {
-          grid-column: 1/-1;
-        }
-        .fine-create .btn {
-          width: 100%;
-        }
-        .week-nav {
-          flex-wrap: wrap;
-        }
-        .week-label {
-          order: -1;
-          width: 100%;
-        }
-      }
-      @media (max-width: 430px) {
-        .stats {
-          grid-template-columns: 1fr 1fr;
-        }
-        .stat.total {
-          grid-column: 1/-1;
-        }
-        .fine-create {
-          grid-template-columns: 1fr;
-        }
-        .fine-create .control:nth-child(2) {
-          grid-column: auto;
-        }
-      }
-      .bulk-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 14px;
-        padding: 12px 3px 0;
-        color: var(--muted);
-        font-size: 11px;
-      }
-      .bulk-footer .btn {
-        min-height: 42px;
-      }
-      .balance-view,
-      .balance-edit {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .edit-button {
-        border: 1px solid #dedcff;
-        border-radius: 8px;
-        padding: 7px 10px;
-        background: linear-gradient(135deg, #f4f2ff, #fff);
-        color: #554bc1;
-        font: inherit;
-        font-size: 10px;
-        font-weight: 850;
-        cursor: pointer;
-        transition:
-          transform 0.16s,
-          box-shadow 0.16s,
-          border-color 0.16s;
-      }
-      .edit-button:hover {
-        transform: translateY(-2px);
-        border-color: #aaa1f5;
-        box-shadow: 0 7px 18px #7167ed22;
-      }
-      .balance-edit-input {
-        width: 112px !important;
-      }
-      .balance-edit .mini,
-      .balance-edit .fine-cancel {
-        padding: 8px 9px;
-      }
-      .fine-create {
-        grid-template-columns: minmax(200px, 1fr) minmax(180px, 0.8fr);
-      }
-      .control-wide {
-        grid-column: 1/-1;
-      }
-      .fine-select-tools {
-        display: flex;
-        gap: 7px;
-        margin: 0 0 8px;
-      }
-      .student-pick-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-        gap: 7px;
-        max-height: 205px;
-        overflow: auto;
-        padding: 10px;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        background: #fff;
-      }
-      .student-option {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 7px 9px;
-        border: 1px solid #edf0f5;
-        border-radius: 9px;
-        background: #fafbff;
-        color: var(--ink);
-        font-size: 11px;
-        font-weight: 700;
-        cursor: pointer;
-      }
-      .student-option:has(input:checked) {
-        border-color: #a8a1f2;
-        background: #f0efff;
-      }
-      .student-option input {
-        accent-color: var(--violet);
-      }
-      .fine-submit {
-        align-self: end;
-        min-height: 42px;
-      }
-      .fixed-fee {
-        white-space: nowrap;
-      }
-      @media (max-width: 760px) {
-        .fine-create {
-          grid-template-columns: 1fr 1fr;
-        }
-        .control-wide {
-          grid-column: 1/-1;
-        }
-        .fine-submit {
-          width: 100%;
-        }
-        .bulk-footer {
-          align-items: stretch;
-          flex-direction: column;
-        }
-        .bulk-footer .btn {
-          width: 100%;
-        }
-      }
-      @media (max-width: 430px) {
-        .fine-create {
-          grid-template-columns: 1fr;
-        }
-        .control-wide {
-          grid-column: auto;
-        }
-        .student-pick-list {
-          grid-template-columns: 1fr;
-        }
-      }
-      .student-profile {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        min-width: 0;
-      }
-      .student-avatar {
-        width: 42px;
-        height: 42px;
-        flex: 0 0 42px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #fff;
-        box-shadow: 0 3px 12px #202d4924;
-        background: #eef0ff;
-      }
-      .rankname .student-profile {
-        font-size: 14px;
-      }
-      .student-avatar-fallback {
-        display: grid;
-        place-items: center;
-        width: 42px;
-        height: 42px;
-        flex: 0 0 42px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #7267f0, #91dfbb);
-        color: white;
-        font-size: 12px;
-        font-weight: 900;
-      }
-    </style>
+      :root{color-scheme:light;--pine:#183a32;--deep:#102a25;--leaf:#456b59;--paper:#fffdf8;--canvas:#f4f2e9;--ink:#1f2d28;--muted:#738078;--line:#e6e7dd;--soft:#edf1e8;--amber:#bd572e;--amber-soft:#fff1e7;--green-soft:#e5eee5;--shadow:0 18px 48px rgba(31,45,40,.08);--lg:22px;--md:14px;--sm:9px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='38' viewBox='0 0 32 38'%3E%3Cpath d='M4 3v27l7-7 5 11 5-2-5-11 11 0z' fill='%23fffdf8' stroke='%23183a32' stroke-width='2' stroke-linejoin='round'/%3E%3Ccircle cx='25' cy='29' r='4' fill='%23bd572e' stroke='%23fffdf8' stroke-width='2'/%3E%3C/svg%3E") 4 3,auto}body{margin:0;min-height:100vh;color:var(--ink);background:radial-gradient(ellipse at 92% 2%,rgba(222,228,210,.65),transparent 26rem),var(--canvas);font:15px/1.55 "Aptos","Segoe UI",system-ui,sans-serif;font-feature-settings:"tnum" 1}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button,a,select,label,summary,[role="button"],input[type="button"],input[type="submit"],input[type="reset"],input[type="checkbox"],input[type="radio"]{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='38' viewBox='0 0 34 38'%3E%3Cpath d='M17 3v19M10 10l7-7 7 7M7 19l10 10 10-10' fill='none' stroke='%23fffdf8' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17 3v19M10 10l7-7 7 7M7 19l10 10 10-10' fill='none' stroke='%23183a32' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='28' cy='30' r='4' fill='%23bd572e' stroke='%23fffdf8' stroke-width='2'/%3E%3C/svg%3E") 17 4,pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(189,87,46,.4);outline-offset:3px}
+.top{position:relative;color:#f8f5ec;background:var(--deep);overflow:hidden}.top:before,.top:after{position:absolute;content:"";pointer-events:none}.top:before{width:34rem;height:34rem;right:-9rem;top:-25rem;border:1px solid #e5ecda20;border-radius:50%;box-shadow:0 0 0 3rem #e5ecda09,0 0 0 6rem #e5ecda07}.top:after{inset:0;opacity:.16;background-image:radial-gradient(#f7f5eb .55px,transparent .55px);background-size:7px 7px;mask-image:linear-gradient(90deg,transparent 35%,#000)}.top-inner{position:relative;z-index:1;max-width:1240px;margin:auto;padding:24px 32px 0}.brandrow{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:13px}.mark{display:block;width:70px;height:70px;flex:0 0 70px;object-fit:contain;padding:1px;border:1px solid #eff2de4d;border-radius:50%;background:#fff;box-shadow:0 2px 12px #0002}.brand small{display:block;margin-bottom:2px;color:#b6c3b4;font-size:10px;font-weight:700;letter-spacing:.17em}.brand b{display:block;color:#fffdf8;font-size:14px;font-weight:650}.saved{display:flex;align-items:center;gap:9px;color:#c3cec0;font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#a7c78b;box-shadow:0 0 0 4px #a7c78b20}.hero{max-width:690px;padding:50px 0 37px}.eyebrow{margin:0 0 12px;color:#bac7b4;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.hero h1{max-width:660px;margin:0;color:#fffdf6;font:500 clamp(30px,4.3vw,50px)/1.07 Georgia,"Times New Roman",serif;letter-spacing:-.035em;text-wrap:balance}.hero p{max-width:570px;margin:15px 0 0;color:#c2cec2;font-size:15px;line-height:1.7}.nav{display:flex;gap:5px;overflow-x:auto;margin:0 -4px;padding:0 4px;scrollbar-width:thin}.nav a{flex:0 0 auto;min-height:45px;padding:12px 15px 13px;border-bottom:2px solid transparent;color:#c2cec2;text-decoration:none;font-size:13px;font-weight:600;transition:.18s}.nav a:hover{color:white;background:#ffffff0b}.nav a.active{border-color:#d8dfc2;color:#fffdf6}
+main{width:min(100% - 48px,1176px);margin:auto;padding:38px 0 76px}.view{display:none;animation:view-in .32s ease both}.view.active{display:block}@keyframes view-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}.pagehead h2{margin:0;color:var(--deep);font:500 clamp(27px,3vw,36px)/1.12 Georgia,"Times New Roman",serif;letter-spacing:-.025em;text-wrap:balance}.pagehead p{max-width:650px;margin:9px 0 0;color:var(--muted);font-size:14px}.actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}.btn,.fine-pay,.fine-cancel,.edit-button,.mini{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;border:1px solid #d9ded4;border-radius:var(--sm);color:var(--pine);background:var(--paper);cursor:pointer;font-size:12px;font-weight:650;text-decoration:none;transition:transform .16s,background .16s,border-color .16s,box-shadow .16s}.btn:hover,.fine-cancel:hover,.edit-button:hover,.mini:hover{border-color:#aab8a8;background:#f5f7f1}.btn:active,.fine-pay:active,.fine-cancel:active,.edit-button:active,.mini:active{transform:translateY(1px)}.btn-main,.fine-pay{border-color:var(--pine);color:#fffdf8;background:var(--pine)}.btn-main:hover,.fine-pay:hover{border-color:var(--deep);background:var(--deep);box-shadow:0 7px 18px #102a2524}
+.stats{display:grid;grid-template-columns:1fr 1fr 1.45fr;gap:12px;margin:0 0 22px}.stat{min-width:0;padding:19px 21px;border:1px solid var(--line);border-radius:var(--md);background:#fffdf8c7}.stat.total{border-color:var(--pine);color:#f8f5ec;background:var(--pine)}.stat label{display:block;margin-bottom:10px;color:var(--muted);font-size:11px;font-weight:650}.stat strong{display:block;overflow-wrap:anywhere;color:var(--deep);font-size:clamp(22px,3vw,30px);font-weight:650;line-height:1.08;letter-spacing:-.035em;font-variant-numeric:tabular-nums}.stat.total label{color:#c6d0c4}.stat.total strong{color:#fffdf6}
+.fine-notice{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:15px;margin:0 0 22px;padding:16px 18px;border:1px solid #f0d4c1;border-left:4px solid var(--amber);border-radius:var(--md);background:var(--amber-soft);box-shadow:0 8px 24px #703e270e}.fine-notice[hidden]{display:none}.fine-notice.is-clear{border-color:#cbd9c8;border-left-color:#63805e;background:#edf3e9;box-shadow:none}.fine-notice.is-clear .fine-notice-icon{color:#fff;background:#63805e}.fine-notice.is-clear .fine-notice-copy strong,.fine-notice.is-clear .fine-notice-link{color:#315843}.fine-notice.is-clear .fine-notice-copy p,.fine-notice.is-clear .fine-notice-dismiss{color:#58705a}.fine-notice-icon{display:grid;width:34px;height:34px;place-items:center;border-radius:50%;color:#fffaf4;background:var(--amber);font:700 17px Georgia,serif}.fine-notice-copy strong{display:block;color:#743a21;font-size:14px}.fine-notice-copy p{margin:2px 0 0;color:#855a43;font-size:12px}.fine-notice-actions{display:flex;align-items:center;gap:13px}.fine-notice-link{color:#743a21;font-size:12px;font-weight:750;text-decoration-thickness:1px;text-underline-offset:3px;white-space:nowrap}.fine-notice-dismiss{min-height:36px;padding:7px 10px;border:0;border-radius:8px;color:#855a43;background:transparent;cursor:pointer;font-size:12px;font-weight:650}.fine-notice-dismiss:hover{color:#542817;background:#bd572e14}
+.tools{display:flex;gap:12px;margin:0 0 13px}.search{width:min(100%,380px);min-height:44px;padding:10px 14px 10px 42px;border:1px solid #dfe2d9;border-radius:11px;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23738078' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") no-repeat 14px center;font-size:13px}.search:focus,.amount:focus,.field:focus{border-color:#8da18e;box-shadow:0 0 0 3px #456b591c;outline:none}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:var(--md);background:var(--paper);box-shadow:0 9px 28px #1f2d2809}table{width:100%;border-collapse:collapse;text-align:left}th{padding:12px 16px;border-bottom:1px solid var(--line);color:#69756e;background:#f7f7f1;font-size:10px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}td{padding:12px 16px;border-bottom:1px solid #edf0e9;color:#38463f;font-size:13px;vertical-align:middle}tbody tr:last-child td{border-bottom:0}tbody tr:hover td{background:#fbfcf8}.number{width:52px;color:#929a91;font-size:11px}.name{min-width:210px;color:var(--deep);font-weight:650}.balance,.historyamount,.rankamount,.fee-cell{color:var(--deep);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}.paycell{width:220px}.amount,.field{width:100%;min-height:42px;padding:9px 12px;border:1px solid #dfe3d9;border-radius:9px;color:var(--ink);background:#fff;font-size:13px}.amount{max-width:165px;font-variant-numeric:tabular-nums}.amount::placeholder{color:#a9b0a8}.bulk-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:14px;padding:16px 18px;border-radius:var(--md);background:#e9ede3}.bulk-footer span,.foot{color:var(--muted);font-size:12px}.foot{max-width:760px;margin:17px 2px 0;line-height:1.7}.empty{padding:32px 20px;color:#7e8980;font-size:13px;text-align:center}
+.student-profile{display:inline-flex;align-items:center;gap:10px;min-width:0}.student-avatar,.student-avatar-fallback{width:34px;height:34px;flex:0 0 34px;border-radius:10px;object-fit:cover;background:#e8ece2}.student-avatar{border:1px solid #e2e6dc}.student-avatar-fallback{display:grid;place-items:center;color:var(--pine);font-size:10px;font-weight:750}.rankrow{display:grid;grid-template-columns:42px minmax(200px,1.4fr) minmax(100px,.5fr) minmax(140px,1fr);align-items:center;gap:17px;min-width:570px;padding:13px 18px;border-bottom:1px solid #edf0e9}.rankrow:last-child{border-bottom:0}.rankno{display:grid;width:30px;height:30px;place-items:center;border-radius:9px;color:#65746a;background:#f0f2ea;font-size:11px;font-weight:750}.rankrow:nth-child(1) .rankno{color:white;background:var(--pine)}.rankrow:nth-child(2) .rankno,.rankrow:nth-child(3) .rankno{color:#70452c;background:#f1e5d3}.rankname{min-width:0;color:var(--deep);font-size:13px;font-weight:650}.rankamount{text-align:right}.meter{height:5px;overflow:hidden;border-radius:9px;background:#edf0e9}.meter span{display:block;height:100%;border-radius:inherit;background:#789174;transition:width .45s}
+.week-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 15px}.week-label{color:var(--pine);font-size:13px;font-weight:700;text-align:center}.week-nav .btn:disabled{opacity:.45;cursor:default}.week-state,.fine-state{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:7px;font-size:11px;font-weight:700;white-space:nowrap}.week-state.paid,.fine-state.settled{color:#315843;background:var(--green-soft)}.week-state.missing,.fine-state.due{color:#8e4a2d;background:#f8eae0}.datecell{min-width:115px;color:#69756e;font-size:12px}.weekday{color:var(--deep);font-weight:650}.source-note{display:block;margin-top:3px;color:#8a938a;font-size:10px;font-weight:500}.fine-create{display:grid;grid-template-columns:minmax(190px,1fr) minmax(170px,.65fr);gap:17px 20px;margin:0 0 22px;padding:22px;border:1px solid var(--line);border-radius:var(--md);background:var(--paper)}.control{min-width:0}.control-wide{grid-column:1/-1}.control label{display:block;margin:0 0 7px;color:#3f4c44;font-size:12px;font-weight:700}.fine-select-tools{display:flex;gap:8px;margin:7px 0 10px}.fine-select-tools .fine-cancel{min-height:34px;padding:7px 10px}.student-pick-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;max-height:205px;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:10px;background:#fafbf7}.student-option{display:flex;align-items:center;gap:8px;min-width:0;padding:8px 9px;border:1px solid transparent;border-radius:8px;color:#49574e;cursor:pointer;font-size:11px}.student-option:hover{background:#f0f3ec}.student-option:has(input:checked){border-color:#c5d4c1;color:var(--deep);background:#eaf0e6}.student-option input{accent-color:var(--pine)}.fine-submit{align-self:end;min-height:42px}.fine-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.fine-pay,.fine-cancel{min-height:34px;padding:7px 10px;font-size:11px}.fine-cancel{color:#80513d}.edit-button,.mini{min-height:32px;padding:6px 9px;font-size:11px}.balance-view,.balance-edit{display:flex;align-items:center;gap:9px}.balance-edit-input{max-width:120px}.toast{position:fixed;z-index:10;right:24px;bottom:24px;max-width:min(420px,calc(100vw - 32px));padding:13px 17px;border:1px solid #466257;border-radius:11px;color:#fffdf6;background:var(--deep);box-shadow:var(--shadow);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;font-size:13px}.toast.show{opacity:1;transform:translateY(0)}.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.top-inner{padding:18px 20px 0}.hero{padding:38px 0 28px}main{width:min(100% - 32px,1176px);padding-top:28px}.pagehead{align-items:flex-start;flex-direction:column;gap:14px}.actions{justify-content:flex-start}.stats{grid-template-columns:1fr 1fr}.stat.total{grid-column:1/-1}.fine-notice{grid-template-columns:auto minmax(0,1fr);gap:12px}.fine-notice-actions{grid-column:2;justify-content:flex-start}.student-pick-list{grid-template-columns:repeat(2,minmax(0,1fr))}.rankrow{grid-template-columns:34px minmax(170px,1fr) minmax(80px,.5fr);gap:10px}.meter{display:none}}
+@media(max-width:520px){.top-inner{padding-right:16px;padding-left:16px}.brand b{max-width:205px;font-size:12px}.saved{max-width:122px;font-size:10px}.hero{padding:32px 0 25px}.hero h1{font-size:34px}.hero p{font-size:13px}.nav{margin-right:-16px;margin-left:-16px;padding-right:16px;padding-left:16px}.nav a{padding-right:12px;padding-left:12px;font-size:12px}main{width:min(100% - 24px,1176px);padding-top:24px}.pagehead h2{font-size:29px}.pagehead p{font-size:13px}.stats{gap:8px;margin-bottom:16px}.stat{padding:14px}.stat label{min-height:28px;margin-bottom:7px;font-size:10px}.stat strong{font-size:22px}.fine-notice{padding:13px}.fine-notice-actions{flex-wrap:wrap;gap:6px 12px}.fine-notice-copy p{line-height:1.4}.tablebox{border-radius:11px}table{min-width:650px}.rankrow{min-width:0;grid-template-columns:30px minmax(0,1fr) auto;padding:12px}.rankname .student-avatar,.rankname .student-avatar-fallback{width:30px;height:30px;flex-basis:30px}.rankname{font-size:11px}.rankamount{font-size:12px}.week-nav{flex-wrap:wrap}.week-label{order:-1;width:100%}.week-nav .btn{flex:1;padding:8px;font-size:11px}.fine-create{grid-template-columns:1fr;padding:16px;gap:13px}.control-wide{grid-column:auto}.student-pick-list{grid-template-columns:1fr 1fr;max-height:230px}.student-option{font-size:10px}.fine-submit{width:100%}.bulk-footer{align-items:flex-start;flex-direction:column}.bulk-footer .btn{width:100%}.toast{right:12px;bottom:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+          /* Depth and motion for the DEV 202 hero */
+      .hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);align-items:center;gap:28px;max-width:none;padding:44px 0 36px;perspective:1100px}
+      .hero-copy{position:relative;z-index:1}
+      .hero-scene{position:relative;height:290px;min-width:270px;perspective:1000px;transform-style:preserve-3d}
+      .hero-scene:before{position:absolute;inset:15% 8%;content:"";border-radius:50%;background:radial-gradient(ellipse,#b3c39b55,transparent 68%);filter:blur(16px);animation:scene-glow 7s ease-in-out infinite alternate}
+      .scene-orbit{position:absolute;left:50%;top:50%;width:255px;height:175px;border:1px solid #e7eddc45;border-radius:50%;transform:translate(-50%,-50%) rotate(-24deg) rotateX(58deg);animation:orbit-turn 18s linear infinite;box-shadow:0 0 18px #d9e5c30b,inset 0 0 16px #d9e5c309}
+      .scene-orbit:before{position:absolute;top:12%;left:50%;width:9px;height:9px;content:"";border:1px solid #f8f5ec;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 12%,#d5e1c5 30%,#86a27d 100%);box-shadow:0 0 13px #dbe9cda8,0 0 28px #dbe9cd55}
+      .scene-orbit-two{width:295px;height:205px;transform:translate(-50%,-50%) rotate(34deg) rotateX(58deg);animation-duration:24s;animation-direction:reverse}
+      .scene-card{position:absolute;top:50%;left:50%;width:238px;height:184px;padding:18px;border:1px solid #ffffffa8;border-radius:15px;color:#284137;background:linear-gradient(145deg,#fffef9,#e6eadf);box-shadow:0 28px 55px #071b1738,inset 0 1px #fff;transform-style:preserve-3d}
+      .scene-card-back{z-index:0;transform:translate(-43%,-51%) rotateY(-22deg) rotateX(8deg) rotateZ(8deg) translateZ(-34px);background:linear-gradient(145deg,#d8e1ce,#becdb9);box-shadow:0 18px 38px #071b1726;animation:back-card-float 8s ease-in-out infinite}
+      .scene-kicker{display:block;color:#456b59;font-size:9px;font-weight:800;letter-spacing:.16em}
+      .scene-back-line{display:block;width:66%;height:7px;margin-top:24px;border-radius:9px;background:#40655135}
+      .scene-back-line.short{width:43%;margin-top:10px}
+      .scene-back-stamp{position:absolute;right:18px;bottom:17px;display:grid;width:38px;height:38px;place-items:center;border:1px solid #31584355;border-radius:50%;color:#315843;font-size:9px;font-weight:800;transform:translateZ(14px)}
+      .scene-card-main{z-index:1;padding:18px 19px;transform:translate(-55%,-49%) rotateY(-17deg) rotateX(7deg) translateZ(26px);animation:ledger-hover 6s ease-in-out infinite;transition:transform .4s cubic-bezier(.2,.75,.25,1),box-shadow .4s;overflow:hidden}
+      .hero-scene:hover .scene-card-main{transform:translate(-55%,-52%) rotateY(-10deg) rotateX(3deg) translateZ(44px);box-shadow:0 38px 64px #071b1740,inset 0 1px #fff}
+      .hero-scene:hover .scene-orbit{border-color:#e7eddc75;box-shadow:0 0 24px #d9e5c31c,inset 0 0 18px #d9e5c315}
+      .scene-card-main:before{position:absolute;inset:-60% -100%;content:"";pointer-events:none;background:linear-gradient(115deg,transparent 42%,#ffffff8a 49%,#ffffff12 54%,transparent 62%);transform:translateX(-55%) rotate(8deg);animation:card-sheen 8s ease-in-out infinite}
+      .scene-card-head{display:flex;justify-content:space-between;color:#42634f;font-size:9px;font-weight:800;letter-spacing:.1em}
+      .scene-card-rule{height:1px;margin:13px 0;background:#d9dfd4}
+      .scene-card-title{margin:0 0 13px;color:#203a2d;font:500 20px/1.1 Georgia,serif;letter-spacing:-.03em}
+      .scene-ledger-row{display:grid;grid-template-columns:82px 1fr 22px;align-items:center;gap:8px;margin:10px 0;color:#738078;font-size:9px}
+      .scene-ledger-row i{position:relative;height:4px;overflow:hidden;border-radius:4px;background:#dce4d6}
+      .scene-ledger-row i:after{position:absolute;inset:0 auto 0 0;width:38%;content:"";border-radius:inherit;background:linear-gradient(90deg,#789174,#b7c9a7);animation:ledger-progress 4.8s ease-in-out infinite}
+      .scene-ledger-row:nth-child(5) i:after{width:56%;animation-delay:-2.1s}
+      .scene-ledger-row b{width:8px;height:8px;border-radius:50%;background:#6f9274}
+      .scene-ledger-row:last-of-type b{background:#c27a51}
+      .scene-card-foot{position:absolute;right:19px;bottom:16px;left:19px;display:flex;align-items:center;justify-content:space-between;padding-top:9px;border-top:1px solid #d9dfd4;color:#718076;font-size:8px;font-weight:750;letter-spacing:.13em}
+      .scene-card-foot strong{color:#315843;font-size:17px;letter-spacing:0}
+      .scene-chip{position:absolute;z-index:2;right:0;bottom:25px;padding:10px 13px;border:1px solid #e4e8dd;border-radius:8px;color:#365342;background:#fffdf4;box-shadow:0 12px 28px #071b1725;font-size:10px;font-weight:700;transform:translateZ(56px);animation:chip-hover 5.5s ease-in-out infinite;animation-delay:-1.4s}
+      .scene-chip-dot{display:inline-block;width:7px;height:7px;margin-right:7px;border-radius:50%;background:#bd7651;box-shadow:0 0 0 4px #bd76511c;animation:chip-pulse 2.8s ease-out infinite}
+      @keyframes ledger-hover{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -9px;rotate:-.6deg}}
+      @keyframes back-card-float{0%,100%{translate:0 0 0;rotate:0deg}50%{translate:0 7px -3px;rotate:1.2deg}}
+      @keyframes chip-hover{0%,100%{translate:0 0}50%{translate:0 -7px}}
+      @keyframes orbit-turn{from{rotate:0deg}to{rotate:360deg}}
+      @keyframes scene-glow{from{opacity:.62;scale:.94}to{opacity:1;scale:1.06}}
+      @keyframes card-sheen{0%,34%{transform:translateX(-65%) rotate(8deg);opacity:0}48%{opacity:.72}68%,100%{transform:translateX(65%) rotate(8deg);opacity:0}}
+      @keyframes ledger-progress{0%,100%{transform:translateX(-110%)}58%{transform:translateX(190%)}}
+      @keyframes chip-pulse{0%,100%{box-shadow:0 0 0 3px #bd765111}50%{box-shadow:0 0 0 6px #bd765126}}
+      .stat{transform-style:preserve-3d;transition:transform .28s cubic-bezier(.2,.75,.25,1),box-shadow .28s}
+      .stat:hover{transform:perspective(700px) rotateX(2deg) translateY(-3px);box-shadow:0 16px 28px #1f2d2816}
+      tbody tr{animation:row-rise .42s both}
+      tbody tr:nth-child(2){animation-delay:.025s}tbody tr:nth-child(3){animation-delay:.05s}tbody tr:nth-child(4){animation-delay:.075s}tbody tr:nth-child(5){animation-delay:.1s}tbody tr:nth-child(6){animation-delay:.125s}
+      @keyframes row-rise{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+      @media(max-width:760px){.hero{grid-template-columns:minmax(0,1fr) minmax(220px,.72fr);gap:10px;padding:34px 0 28px}.hero-scene{height:250px;min-width:220px}.scene-card{scale:.88}.scene-chip{right:-4px;bottom:12px}}
+      @media(max-width:520px){.hero{grid-template-columns:1fr;gap:0}.hero-scene{height:205px;min-width:0;max-width:370px;width:100%;margin:-2px auto 0}.scene-card{scale:.8}.scene-chip{right:3px;bottom:3px}.mark{width:54px;height:54px;flex-basis:54px}.brand{gap:9px}.saved{max-width:92px}}
+      @media(prefers-reduced-motion:reduce){.scene-orbit,.scene-card-main,.scene-card-back,.scene-chip,.scene-chip-dot,.hero-scene:before,.scene-ledger-row i:after,tbody tr{animation:none!important}.scene-card-main{transition:none!important}}
+      /* A moving ISTA RN wordmark with the OFPPT emblem in the hero */
+      .hero{position:relative;isolation:isolate;overflow:hidden}
+      .hero:after{position:absolute;z-index:0;top:50%;right:6%;translate:0 -50%;width:min(30vw,270px);aspect-ratio:1;content:"";border-radius:50%;background:url("assets/ofppt-logo.png") center/contain no-repeat;opacity:.055;pointer-events:none;animation:ista-emblem-drift 18s ease-in-out infinite alternate}
+      .hero-copy,.hero-scene{position:relative;z-index:1}
+      @keyframes ista-emblem-drift{from{transform:translate3d(0,5px,0) rotate(-5deg) scale(.96)}to{transform:translate3d(-16px,-8px,0) rotate(5deg) scale(1.04)}}
+      @media(max-width:520px){.hero:after{top:50%;right:5%;width:min(60vw,220px)}}
+      @media(prefers-reduced-motion:reduce){.hero:after{animation:none!important}}
+      .hero-ticker{position:absolute;z-index:0;right:0;bottom:-.3em;left:0;overflow:hidden;pointer-events:none}
+      .hero-ticker-track{display:flex;width:max-content;animation:ista-marquee 34s linear infinite;will-change:transform}
+      .hero-ticker-track span{flex:none;padding-right:.4em;color:#f3f4e910;font:700 clamp(42px,8.5vw,104px)/1 "Aptos","Segoe UI",sans-serif;letter-spacing:-.055em;white-space:nowrap}
+      @keyframes ista-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+      @media(max-width:520px){.hero-ticker{bottom:-.24em}.hero-ticker-track span{font-size:48px}}
+      @media(prefers-reduced-motion:reduce){.hero-ticker-track{animation:none!important}}
+      .fine-notice-restore{margin:-10px 0 18px;border-color:#d9ded4;color:#456b59;background:#fffdf8}.fine-notice-restore:hover{border-color:#aab8a8;background:#f5f7f1}.fine-notice-restore[hidden]{display:none}
+      .top:before{animation:header-drift 24s ease-in-out infinite alternate}
+      /* Keep the OFPPT emblem in the clear header instead of under the hero animation. */
+      .mark{width:84px;height:84px;flex-basis:84px;border:2px solid #a9bea5;box-shadow:0 0 0 4px #ffffff12,0 3px 16px #0003}
+      .hero:after{display:none;content:none}
+      @media(max-width:520px){.mark{width:62px;height:62px;flex-basis:62px}}
+      .fine-lists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px;margin-top:22px}
+      .fine-list-panel{min-width:0;padding:18px;border:1px solid var(--line);border-radius:var(--md);background:var(--paper)}
+      .fine-list-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+      .fine-list-heading h3{margin:0;color:var(--deep);font-size:16px;font-weight:700}
+      .fine-list-heading p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+      .fine-count-pill{display:grid;min-width:28px;height:28px;place-items:center;padding:0 8px;border-radius:99px;color:#315843;background:var(--green-soft);font-size:12px;font-weight:750}
+      .fine-count-pill.due{color:#8e4a2d;background:#f8eae0}
+      .week-state.penalty{color:#795629;background:#f5eddc;font-size:10px}
+      .fine-record{margin-top:10px;padding:14px;border:1px solid #e6eae1;border-radius:12px;background:#fffdf8}
+      .fine-record-top,.fine-record-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+      .fine-record-name{min-width:0;color:var(--deep);font-weight:700}
+      .fine-record-name .student-avatar,.fine-record-name .student-avatar-fallback{width:32px;height:32px;flex-basis:32px}
+      .fine-record-details{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin:13px 0;color:var(--muted);font-size:11px}
+      .fine-record-details div{min-width:0}
+      .fine-record-details span{display:block;margin-bottom:4px;color:#7c887e;font-size:10px}
+      .fine-record-details strong{display:block;overflow-wrap:anywhere;color:#36483c;font-weight:650}
+      .fine-record-footer{padding-top:10px;border-top:1px solid #edf0e9}
+      .fine-record-footer .fine-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px}
+      @media(max-width:760px){.fine-lists{grid-template-columns:1fr}}
+      @media(max-width:520px){.fine-list-panel{padding:14px}.fine-record{padding:12px}.fine-record-details{gap:9px}.fine-record-footer{align-items:flex-start;flex-direction:column}.fine-record-footer .fine-actions{justify-content:flex-start}}
+      @keyframes header-drift{from{transform:translate3d(0,0,0) rotate(0)}to{transform:translate3d(-22px,13px,0) rotate(5deg)}}
+      @media(prefers-reduced-motion:reduce){.top:before{animation:none!important}}
+      .dot{animation:save-pulse 2.4s ease-in-out infinite}.saved.save-error .dot{background:#bd572e;box-shadow:0 0 0 4px #bd572e20;animation:none}.saved.save-off .dot{background:#d3b071;box-shadow:0 0 0 4px #d3b07120;animation:none}@keyframes save-pulse{0%,100%{box-shadow:0 0 0 3px #a7c78b18}50%{box-shadow:0 0 0 6px #a7c78b32}}
+      .save-toggle{min-height:34px;padding:6px 10px;border:1px solid #dce5d84a;border-radius:8px;color:#e8eee4;background:#ffffff0b;cursor:pointer;font-size:10px;font-weight:700;white-space:nowrap;transition:background .18s,border-color .18s,transform .18s}.save-toggle:hover{border-color:#dce5d88c;background:#ffffff16}.save-toggle:active{transform:translateY(1px)}.save-toggle:focus-visible{outline:3px solid #d8dfc2;outline-offset:3px}.save-toggle[aria-pressed="false"]{border-color:#d3b07170;color:#f2ddb3;background:#d3b07115}
+      .save-status-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+      .contribution-date-cell{min-width:175px}.contribution-date-cell .field{min-width:160px;min-height:38px;padding:7px 8px;font-size:11px}
+      .balance-view,.balance-edit{min-width:205px;white-space:nowrap}.balance-view .balance{flex:0 0 auto;min-width:max-content}.balance-edit-input{width:105px;min-width:105px;max-width:105px;flex:0 0 105px}.balance-cell{min-width:215px}
+      @media(max-width:520px){.saved{max-width:none;flex-wrap:wrap;justify-content:flex-end;gap:7px}}
+      @media(prefers-reduced-motion:reduce){.dot{animation:none!important}}
+      .exit-confirm{width:min(440px,calc(100% - 32px));padding:0;border:1px solid #dfe5d9;border-radius:18px;color:var(--ink);background:var(--paper);box-shadow:0 24px 80px #071b1680}
+      .exit-confirm::backdrop{background:#071b16a6;backdrop-filter:blur(4px)}
+      .exit-confirm-inner{padding:26px}
+      .exit-confirm-mark{display:grid;width:42px;height:42px;place-items:center;margin-bottom:16px;border-radius:13px;color:#8e4428;background:var(--amber-soft);font-size:20px;font-weight:800}
+      .exit-confirm h2{margin:0;color:var(--deep);font:500 25px/1.15 Georgia,"Times New Roman",serif}
+      .exit-confirm p{margin:10px 0 22px;color:var(--muted);font-size:14px}
+      .exit-confirm-actions{display:flex;justify-content:flex-end;gap:9px}
+      @media(max-width:520px){.exit-confirm-inner{padding:21px}.exit-confirm-actions{flex-direction:column-reverse}.exit-confirm-actions .btn{width:100%}}
+      .import-preview-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 12px;max-height:180px;overflow:auto;margin:0 0 18px;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fafbf7;color:var(--muted);font-size:12px}
+      #importPreviewDialog{width:min(560px,calc(100% - 32px))}
+      #importPreviewDialog .exit-confirm-actions{flex-wrap:wrap}
+      /* Brand-matched cursor set: quiet arrow, hand for actions, and clear text caret. */
+      html{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='21' viewBox='0 0 24 30'%3E%3Cpath d='M3 2v21l5.5-5.5 4 9 3.6-1.6-4-8.8H20z' fill='%23456b59' stroke='%23fffdf8' stroke-width='3.4' stroke-linejoin='round'/%3E%3Cpath d='M3 2v21l5.5-5.5 4 9 3.6-1.6-4-8.8H20z' fill='none' stroke='%23102a25' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E") 2 1,auto}
+      button:not(:disabled),a[href],select,label,summary,[role="button"],input[type="button"],input[type="submit"],input[type="reset"],input[type="checkbox"],input[type="radio"]{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='23' viewBox='0 0 28 32'%3E%3Cpath d='M10 27c-1.4 0-2.5-.7-3.3-1.8L3 19.7c-.8-1.2-.5-2.8.6-3.5 1-.7 2.3-.4 3 .6l2 2.5V6a1.8 1.8 0 0 1 3.6 0v8.5a1.7 1.7 0 0 1 2.8.8 1.7 1.7 0 0 1 2.8.7 1.7 1.7 0 0 1 2.7.8v4.4c0 4.2-3.3 7.5-7.5 7.5z' fill='%23456b59' stroke='%23fffdf8' stroke-width='3.5' stroke-linejoin='round'/%3E%3Cpath d='M10 27c-1.4 0-2.5-.7-3.3-1.8L3 19.7c-.8-1.2-.5-2.8.6-3.5 1-.7 2.3-.4 3 .6l2 2.5V6a1.8 1.8 0 0 1 3.6 0v8.5a1.7 1.7 0 0 1 2.8.8 1.7 1.7 0 0 1 2.8.7 1.7 1.7 0 0 1 2.7.8v4.4c0 4.2-3.3 7.5-7.5 7.5z' fill='none' stroke='%23102a25' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E") 7 4,pointer}
+      input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),textarea,[contenteditable="true"]{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='21' viewBox='0 0 22 30'%3E%3Cpath d='M11 3v24M6 3h10M6 27h10' fill='none' stroke='%23fffdf8' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M11 3v24M6 3h10M6 27h10' fill='none' stroke='%23456b59' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") 6 10,text}
+      button:disabled,[aria-disabled="true"]{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 26 26'%3E%3Ccircle cx='13' cy='13' r='10' fill='%23dce9d5' stroke='%23456b59' stroke-width='2.4'/%3E%3Cpath d='m7 19 12-12' stroke='%23183a32' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") 9 9,not-allowed!important}
+
+    #fineAutoUnpaidRows,#fineManualUnpaidRows,#finePaidRows{height:300px;max-height:42vh;min-height:220px;overflow-y:auto;overflow-x:hidden;padding:0 8px 0 0;overscroll-behavior:contain;scrollbar-gutter:stable}
+    #historyTableBox{max-height:68vh;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+#historyTableBox thead th{position:sticky;top:0;z-index:2}
+</style>
   </head>
   <body>
     <header class="top">
       <div class="top-inner">
         <div class="brandrow">
           <div class="brand">
-            <div class="mark">D2</div>
+            <img class="mark" src="assets/ofppt-logo.png" alt="Logo OFPPT" />
             <div>
-              <small>DÉMO PORTFOLIO</small><b>Suivi des contributions</b>
+            <small>OFPPT · ISTA RN</small><b>DEV 202 · Suivi des cotisations</b>
             </div>
           </div>
           <div class="saved">
-            <i class="dot"></i
-            ><span id="saveStatus">Enregistrement automatique</span>
+            <span class="save-status-sr" id="saveStatus" aria-live="polite">Enregistrement automatique dans ce navigateur</span>
+            <button class="save-toggle" id="autoSaveToggle" type="button" aria-pressed="true">Enregistrement auto : Actif</button>
           </div>
         </div>
         <div class="hero">
-          <p class="eyebrow">Démo portfolio · Participants anonymisés</p>
-          <h1>Suivi des contributions</h1>
-          <p>
-            Explore le suivi hebdomadaire, les contributions, les pénalités et les historiques. Les noms sont anonymisés ; les données saisies restent dans ce navigateur.
-          </p>
-        </div>
-        <nav class="nav" aria-label="Navigation principale">
+        <div class="hero-ticker" aria-hidden="true"><div class="hero-ticker-track"><span>ISTA RN · DEV 202 · ISTA RN · DEV 202 · </span><span>ISTA RN · DEV 202 · ISTA RN · DEV 202 · </span></div></div>
+          <div class="hero-copy">
+            <p class="eyebrow">Démo publique · Identités anonymisées</p>
+            <h1>Bienvenue dans ton espace DEV 202.</h1>
+            <p>
+              Gère les contributions, le suivi hebdomadaire et les pénalités. Suis
+              le total de la classe et retrouve facilement l'historique. Les identités sont anonymisées ; les données restent dans ce navigateur.
+            </p>
+          </div>
+          <div class="hero-scene" aria-hidden="true">
+            <div class="scene-orbit scene-orbit-one"></div>
+            <div class="scene-orbit scene-orbit-two"></div>
+            <div class="scene-card scene-card-back">
+              <span class="scene-kicker">ISTA RN · 202</span>
+              <span class="scene-back-line"></span>
+              <span class="scene-back-line short"></span>
+              <span class="scene-back-stamp">DEV</span>
+            </div>
+            <div class="scene-card scene-card-main">
+              <div class="scene-card-head"><span>DEV 202</span><span>ISTA RN</span></div>
+              <div class="scene-card-rule"></div>
+              <p class="scene-card-title">Suivi de classe</p>
+              <div class="scene-ledger-row"><span>Versements</span><i></i><b></b></div>
+              <div class="scene-ledger-row"><span>Hebdomadaire</span><i></i><b></b></div>
+              <div class="scene-card-foot"><span>STAGIAIRES</span><strong>18</strong></div>
+            </div>
+            <div class="scene-chip"><span class="scene-chip-dot"></span>Suivi clair, chaque semaine</div>
+          </div>
+        </div>        <nav class="nav" aria-label="Navigation principale">
           <a href="#accueil" data-view="accueil">Contributions</a>
           <a href="#classement" data-view="classement">Classement</a>
           <a href="#historique" data-view="historique">Historique</a>
@@ -1267,20 +196,20 @@
       <section id="view-accueil" class="view">
         <div class="pagehead">
           <div>
-            <h2>Participants de démonstration</h2>
+            <h2>Contributions des étudiant(e)s</h2>
             <p>
-              Chaque versement est ajouté au total de la personne et daté
-              automatiquement.
+              Saisis la somme reçue une seule fois, choisis la semaine de départ
+              et le nombre de semaines. Le suivi répartira cette somme également
+              entre les semaines choisies, sans la recompter dans le total.
             </p>
           </div>
           <div class="actions">
-            <button class="btn" id="csvBtn">Exporter CSV</button
-            ><button class="btn" id="backupBtn">Sauvegarde</button
+            <button class="btn btn-main" id="pdfBtn">Télécharger le PDF</button><button class="btn" id="backupBtn">Sauvegarde</button
             ><button class="btn" id="importBtn">Importer</button
             ><input
               id="importFile"
               type="file"
-              accept="application/json,.json"
+              accept="application/json,.json,application/pdf,.pdf,text/csv,.csv,text/plain,.txt,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,.doc"
               hidden
             />
           </div>
@@ -1290,13 +219,25 @@
             <label>Étudiant(e)s</label><strong id="countStudents">18</strong>
           </div>
           <div class="stat">
-            <label>Versements</label><strong id="countPayments">0</strong>
+            <label>Opérations</label><strong id="countPayments">0</strong>
           </div>
           <div class="stat total">
             <label>Disponible dans la caisse</label
             ><strong id="totalAll">0,00 DH</strong>
           </div>
         </div>
+        <aside id="pendingFineNotice" class="fine-notice" role="status" aria-live="polite" hidden>
+          <span class="fine-notice-icon" aria-hidden="true">!</span>
+          <div class="fine-notice-copy">
+            <strong id="pendingFineTitle">Pénalités à régler</strong>
+            <p id="pendingFineDetail"></p>
+          </div>
+          <div class="fine-notice-actions">
+            <a class="fine-notice-link" href="#penalites">Voir les pénalités</a>
+            <button class="fine-notice-dismiss" id="dismissFineNotice" type="button" aria-label="Masquer la notification">Masquer ×</button>
+          </div>
+        </aside>
+        <button class="btn fine-notice-restore" id="restoreFineNotice" type="button" hidden>Afficher la notification</button>
         <div class="tools">
           <input
             id="search"
@@ -1314,7 +255,9 @@
                   <th>#</th>
                   <th>Nom complet</th>
                   <th>Total versé</th>
-                  <th>Nouveau versement</th>
+                  <th>Somme reçue à répartir</th>
+                  <th>Première semaine</th>
+                  <th>Répartir sur (semaines)</th>
                 </tr>
               </thead>
               <tbody id="studentRows"></tbody>
@@ -1325,10 +268,9 @@
           </div>
           <div class="bulk-footer">
             <span
-              >Remplis un ou plusieurs montants, puis enregistre tout en une
-              fois.</span
+              >Saisis le total reçu, choisis la première semaine et le nombre de semaines, puis enregistre.</span
             ><button class="btn btn-main" type="submit">
-              Enregistrer tous les versements
+              Enregistrer les versements
             </button>
           </div>
         </form>
@@ -1352,7 +294,7 @@
             <label>Étudiant(e)s</label><strong id="rankCount">18</strong>
           </div>
           <div class="stat">
-            <label>Versements</label><strong id="rankPayments">0</strong>
+            <label>Opérations</label><strong id="rankPayments">0</strong>
           </div>
           <div class="stat total">
             <label>Total de la classe</label
@@ -1385,7 +327,7 @@
             ><strong id="historyTotal">0,00 DH</strong>
           </div>
         </div>
-        <div class="tablebox">
+        <div class="tablebox" id="historyTableBox">
           <table>
             <thead>
               <tr>
@@ -1407,23 +349,23 @@
           <div>
             <h2>Suivi hebdomadaire</h2>
             <p>
-              Montant reçu par étudiant(e) et personnes sans versement durant la
-              semaine choisie.
+              Suis les versements et les pénalités réglées pour chaque semaine.
             </p>
           </div>
         </div>
         <div class="week-nav">
           <button class="btn" id="previousWeek">← Semaine précédente</button>
           <div class="week-label" id="weekLabel"></div>
+          <button class="btn" id="nextWeek">Semaine suivante →</button>
           <button class="btn" id="currentWeek">Cette semaine</button>
         </div>
         <div class="stats">
           <div class="stat total">
-            <label>Total reçu cette semaine</label
+            <label>Total couvert cette semaine</label
             ><strong id="weekTotal">0,00 DH</strong>
           </div>
           <div class="stat">
-            <label>Étudiant(e)s ayant versé</label
+            <label>Étudiant(e)s réglé(e)s</label
             ><strong id="weekPaidCount">0 / 18</strong>
           </div>
           <div class="stat">
@@ -1437,7 +379,7 @@
               <tr>
                 <th>#</th>
                 <th>Nom complet</th>
-                <th>Montant reçu cette semaine</th>
+                <th>Montant couvert cette semaine</th>
                 <th>État</th>
               </tr>
             </thead>
@@ -1445,16 +387,17 @@
           </table>
         </div>
         <p class="foot">
-          Le calcul utilise la date de chaque versement enregistré. Les anciens
-          totaux sans date ne peuvent pas être attribués à une semaine.
+          Les pénalités payées sont indiquées « Versé comme pénalité » pour les
+          semaines concernées. Les anciens totaux sans date ne peuvent pas être attribués à une semaine.
         </p>
       </section>
       <section id="view-penalites" class="view">
         <div class="pagehead">
           <div>
-            <h2>Pénalités des exercices</h2>
+            <h2>Pénalités</h2>
             <p>
-              Inscris les exercices non faits. Chaque pénalité est fixée à 5 DH.
+              Après chaque semaine complète sans versement, une pénalité de 2 DH
+              s’ajoute automatiquement. Les semaines manquées consécutives sont regroupées.
             </p>
           </div>
         </div>
@@ -1517,28 +460,44 @@
             Enregistrer toutes les pénalités
           </button>
         </form>
-        <div class="tablebox">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Stagiaire</th>
-                <th>Exercice</th>
-                <th>Montant</th>
-                <th>État</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="fineRows"></tbody>
-          </table>
-          <div id="fineEmpty" class="empty" hidden>
-            Aucune pénalité enregistrée.
-          </div>
-        </div>
+        <div class="fine-lists" id="fineLists">
+          <section class="fine-list-panel" aria-labelledby="fineAutoUnpaidHeading">
+            <div class="fine-list-heading">
+              <div>
+                <h3 id="fineAutoUnpaidHeading">Semaines sans versement</h3>
+                <p>Pénalités dues pour les semaines restées sans versement.</p>
+              </div>
+              <span class="fine-count-pill due" id="fineAutoUnpaidCount">0</span>
+            </div>
+            <div class="fine-record-list" id="fineAutoUnpaidRows"></div>
+            <div id="fineAutoUnpaidEmpty" class="empty" hidden>Aucune pénalité automatique à régler.</div>
+          </section>
+          <section class="fine-list-panel" aria-labelledby="fineManualUnpaidHeading">
+            <div class="fine-list-heading">
+              <div>
+                <h3 id="fineManualUnpaidHeading">Exercices non réalisés</h3>
+                <p>Pénalités enregistrées pour un exercice non fait.</p>
+              </div>
+              <span class="fine-count-pill due" id="fineManualUnpaidCount">0</span>
+            </div>
+            <div class="fine-record-list" id="fineManualUnpaidRows"></div>
+            <div id="fineManualUnpaidEmpty" class="empty" hidden>Aucune pénalité manuelle à régler.</div>
+          </section>
+          <section class="fine-list-panel" aria-labelledby="finePaidHeading">
+            <div class="fine-list-heading">
+              <div>
+                <h3 id="finePaidHeading">Pénalités réglées</h3>
+                <p>Avec la date de création et la date de paiement.</p>
+              </div>
+              <span class="fine-count-pill" id="finePaidCount">0</span>
+            </div>
+            <div class="fine-record-list" id="finePaidRows"></div>
+            <div id="finePaidEmpty" class="empty" hidden>Aucune pénalité réglée.</div>
+          </section>        </div>
         <p class="foot">
-          Une pénalité impayée reste dans « Montant dû ». Le montant est
-          personnalisable. Elle s’ajoute aux recettes et à l’historique
-          seulement après confirmation de son paiement.
+          Les pénalités automatiques augmentent de 2 DH par semaine complète
+          manquée. Elles restent dans « Montant dû » et s’ajoutent à la caisse
+          seulement après confirmation de leur paiement.
         </p>
       </section>
       <section id="view-retraits" class="view">
@@ -1616,20 +575,62 @@
       </section>
     </main>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog class="exit-confirm" id="unsavedExitDialog" aria-labelledby="unsavedExitTitle" aria-describedby="unsavedExitText">
+      <div class="exit-confirm-inner">
+        <div class="exit-confirm-mark" aria-hidden="true">!</div>
+        <h2 id="unsavedExitTitle">Modifications non enregistrées</h2>
+        <p id="unsavedExitText">Il reste des changements qui ne sont pas sauvegardés. Tu veux vraiment quitter cette page ?</p>
+        <div class="exit-confirm-actions">
+          <button class="btn" id="stayOnPage" type="button">Rester sur la page</button>
+          <button class="btn btn-main" id="leaveWithoutSaving" type="button">Quitter sans enregistrer</button>
+        </div>
+      </div>
+    </dialog>
+    <dialog class="exit-confirm" id="importPreviewDialog" aria-labelledby="importPreviewTitle" aria-describedby="importPreviewText">
+      <div class="exit-confirm-inner">
+        <div class="exit-confirm-mark" aria-hidden="true">↥</div>
+        <h2 id="importPreviewTitle">Importer les données</h2>
+        <p id="importPreviewText"></p>
+        <div id="importPreviewRows" class="import-preview-rows"></div>
+        <div class="exit-confirm-actions">
+          <button class="btn" id="cancelImport" type="button">Annuler</button>
+          <button class="btn btn-main" id="keepImport" type="button">Fusionner sans effacer</button>
+          <button class="btn" id="replaceImport" type="button">Remplacer</button>
+        </div>
+      </div>
+    </dialog>
     <script>
+      (async function initializeDev202() {
       "use strict";
       const students = [
-        "Participant 01", "Participant 02", "Participant 03", "Participant 04",
-        "Participant 05", "Participant 06", "Participant 07", "Participant 08",
-        "Participant 09", "Participant 10", "Participant 11", "Participant 12",
-        "Participant 13", "Participant 14", "Participant 15", "Participant 16",
-        "Participant 17", "Participant 18",
+        "Participant 01",
+        "Participant 02",
+        "Participant 03",
+        "Participant 04",
+        "Participant 05",
+        "Participant 06",
+        "Participant 07",
+        "Participant 08",
+        "Participant 09",
+        "Participant 10",
+        "Participant 11",
+        "Participant 12",
+        "Participant 13",
+        "Participant 14",
+        "Participant 15",
+        "Participant 16",
+        "Participant 17",
+        "Participant 18",
       ];
       const KEY = "portfolio-count-demo-v1";
-      const RESET_KEY = "portfolio-count-demo-reset-v1";
-      try { if (localStorage.getItem(RESET_KEY) !== "done") localStorage.setItem(RESET_KEY, "done"); } catch {}
+      const BACKUP_KEY = "portfolio-count-demo-safety-copy-v1";
+      const DRAFT_KEY = "portfolio-count-demo-draft-v1";
+      const DRAFT_DATES_KEY = "portfolio-count-demo-dates-draft-v1";
+      const DRAFT_WEEKS_KEY = "portfolio-count-demo-weeks-draft-v1";
+      const AUTO_SAVE_KEY = "portfolio-count-demo-auto-save-v1";
+      const AUTO_PENALTY_START_KEY = "portfolio-count-demo-auto-penalty-start-v1";
       const studentPhotos = {};
-      const LEGACY_KEY = "portfolio-count-demo-legacy-v1";
+      const LEGACY_KEY = "dev202-contributions-v1";
       const numberFormat = new Intl.NumberFormat("fr-FR", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
@@ -1645,34 +646,190 @@
         minute: "2-digit",
       });
       const FINE_AMOUNT = 5;
-      let state = loadState();
-      let pendingContributions = {};
-      let editingBalance = null;
+      const WEEKLY_MISSED_PENALTY = 2;
+      const USE_LOCAL_SERVICE = location.protocol === "file:" || ["localhost", "127.0.0.1"].includes(location.hostname);
+      const SERVICE_BASE = location.protocol === "file:" ? "http://127.0.0.1:18765" : location.origin;
+      const SERVICE_API = `${SERVICE_BASE}/api/state`;
+      let persistentServiceConnected = false;
+      function savedDataWeight(value) {
+        if (!value || typeof value !== "object") return 0;
+        return Object.values(value.balances || {}).reduce((sum, amount) => sum + Math.max(0, Number(amount) || 0), 0)
+          + (value.payments?.length || 0) + (value.fines?.length || 0)
+          + (value.withdrawals?.length || 0) + (value.weeklyAllocations?.length || 0)
+          + Object.values(value.weeklyRules || {}).filter((rule) => rule && (rule.enabled || rule.amount || rule.startDate)).length;
+      }
+      function stateFingerprint(value) {
+        const comparable = { ...value };
+        delete comparable._modifiedAt;
+        const serialized = JSON.stringify(comparable);
+        let hashA = 2166136261;
+        let hashB = 0x9e3779b9;
+        for (let index = 0; index < serialized.length; index++) {
+          const code = serialized.charCodeAt(index);
+          hashA = Math.imul(hashA ^ code, 16777619);
+          hashB = Math.imul(hashB ^ code, 2246822519);
+          hashB ^= hashB >>> 13;
+        }
+        return (hashA >>> 0).toString(16).padStart(8, "0") + (hashB >>> 0).toString(16).padStart(8, "0");
+      }
+      function hasPendingContributionDraft() {
+        return [DRAFT_KEY, DRAFT_DATES_KEY, DRAFT_WEEKS_KEY].some((storageKey) => {
+          try {
+            const values = Object.values(JSON.parse(localStorage.getItem(storageKey) || "{}"));
+            return values.some((value) => String(value).trim() !== "");
+          } catch { return false; }
+        });
+      }
+      function serviceUrlWithLocalPreferences() {
+        const keys = [DRAFT_KEY, DRAFT_DATES_KEY, DRAFT_WEEKS_KEY, AUTO_SAVE_KEY];
+        const transfer = Object.fromEntries(keys.map((key) => [key, localStorage.getItem(key)]).filter(([, value]) => value !== null));
+        const hash = Object.keys(transfer).length
+          ? `#dev202-transfer=${encodeURIComponent(JSON.stringify(transfer))}`
+          : "#accueil";
+        return `${SERVICE_BASE}/${hash}`;
+      }
+      function restoreTransferredPreferences() {
+        const prefix = "#dev202-transfer=";
+        if (!location.hash.startsWith(prefix)) return;
+        try {
+          const transfer = JSON.parse(decodeURIComponent(location.hash.slice(prefix.length)));
+          for (const key of [DRAFT_KEY, DRAFT_DATES_KEY, DRAFT_WEEKS_KEY, AUTO_SAVE_KEY]) {
+            if (typeof transfer?.[key] === "string") localStorage.setItem(key, transfer[key]);
+          }
+        } catch {}
+        history.replaceState(null, "", `${location.pathname}${location.search}#accueil`);
+      }
+      function redirectFilePageIfSynchronized(localState, status) {
+        if (!status?.initialized) return false;
+        const hasLocalLedgerData = savedDataWeight(localState) > 0;
+        if (!hasLocalLedgerData || stateFingerprint(localState) === status.fingerprint) {
+          location.replace(serviceUrlWithLocalPreferences());
+          return true;
+        }
+        showToast("كاينة نسخة محلية أو مبالغ مازال ما تسجلاتش. نزّل Sauvegarde JSON، ومن بعد افتح الموقع عبر الخدمة وادمج النسخة.");
+        return false;
+      }
+      async function sendStateToService(value, replace = false) {
+        const send = (next, allowReplace = false) => fetch(`${SERVICE_API}${allowReplace ? "?replace=1" : ""}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(next),
+          keepalive: true,
+        });
+        let response = await send(value, replace);
+        if (response.status === 409 && !replace) {
+          const conflict = await response.json();
+          if (conflict.state && typeof conflict.state === "object") {
+            const remote = normalize(conflict.state);
+            const local = normalize(value);
+            const preferRemote = Number(remote._modifiedAt) > Number(local._modifiedAt)
+              || (Number(remote._modifiedAt) === Number(local._modifiedAt) && savedDataWeight(remote) > savedDataWeight(local));
+            const reconciled = mergeImportedState(local, conflict.state, {
+              preferIncomingBalances: preferRemote,
+              preferIncomingRules: preferRemote,
+            });
+            reconciled._modifiedAt = Math.max(Date.now(), Number(remote._modifiedAt) || 0, Number(local._modifiedAt) || 0) + 1;
+            response = await send(reconciled);
+            if (!response.ok) throw new Error(`Service local: ${response.status}`);
+            return { ...(await response.json()), reconciledState: reconciled };
+          }
+        }
+        if (!response.ok) throw new Error(`Service local: ${response.status}`);
+        return response.json();
+      }
+      async function synchronizeInitialState(localState) {
+        if (!USE_LOCAL_SERVICE) return localState;
+        try {
+          const openedFromFile = location.protocol === "file:";
+          if (openedFromFile) {
+            const statusResponse = await fetch(`${SERVICE_BASE}/api/status`, { cache: "no-store" });
+            if (statusResponse.ok) {
+              const status = await statusResponse.json();
+              if (status.initialized) {
+                redirectFilePageIfSynchronized(localState, status);
+                return localState;
+              }
+            }
+          }
+          const response = await fetch(SERVICE_API, { cache: "no-store" });
+          if (!response.ok) throw new Error(`Service local: ${response.status}`);
+          const payload = await response.json();
+          persistentServiceConnected = true;
+            if (!payload.state || typeof payload.state !== "object") {
+            await sendStateToService(localState);
+            if (openedFromFile) location.replace(serviceUrlWithLocalPreferences());
+            return localState;
+          }
+          const serverState = normalize(payload.state);
+          const localWeight = savedDataWeight(localState);
+          const serverWeight = savedDataWeight(serverState);
+          const localModifiedAt = Number(localState._modifiedAt) || 0;
+          const serverModifiedAt = Number(serverState._modifiedAt) || 0;
+          const preferServer = serverModifiedAt > localModifiedAt || (serverModifiedAt === localModifiedAt && serverWeight > localWeight);
+          let selected = mergeImportedState(localState, payload.state, {
+            preferIncomingBalances: preferServer,
+            preferIncomingRules: preferServer,
+          });
+          if (JSON.stringify(selected) !== JSON.stringify(serverState)) {
+            selected._modifiedAt = Math.max(Date.now(), localModifiedAt, serverModifiedAt) + 1;
+            const result = await sendStateToService(selected);
+            if (result?.reconciledState) selected = normalize(result.reconciledState);
+          }
+          localStorage.setItem(KEY, JSON.stringify(selected));
+          localStorage.setItem(BACKUP_KEY, JSON.stringify(selected));
+          if (payload.autoPenaltyStartWeek && /^\d{4}-\d{2}-\d{2}$/.test(payload.autoPenaltyStartWeek))
+            localStorage.setItem(AUTO_PENALTY_START_KEY, payload.autoPenaltyStartWeek);
+          return selected;
+        } catch {
+          persistentServiceConnected = false;
+          if (location.protocol === "file:") {
+            try {
+              const statusResponse = await fetch(`${SERVICE_BASE}/api/status`, { cache: "no-store" });
+              if (statusResponse.ok) redirectFilePageIfSynchronized(localState, await statusResponse.json());
+            } catch {}
+          }
+          return localState;
+        }
+      }
+      let autoSaveEnabled = loadAutoSavePreference();
+      let unsavedStateChanges = false;
+      let draftSaveFailed = false;
       let toastTimer;
+      restoreTransferredPreferences();
+      autoSaveEnabled = loadAutoSavePreference();
+      let state = loadState();
+      state = await synchronizeInitialState(state);
+      let pendingContributions = loadContributionDraft();
+      let pendingContributionDates = loadContributionDateDraft();
+      let pendingContributionWeeks = loadContributionWeekDraft();
+      let autoSaveButtonTimer;
+      let editingBalance = null;
+      let saveStatusTimer;
       let weekOffset = 0;
+      let fineNoticeDismissed = false;
 
       function blankState() {
         return {
           version: 3,
           balances: Object.fromEntries(students.map((n) => [n, 0])),
           payments: [],
+          weeklyAllocations: [],
           fines: [],
           withdrawals: [],
+          weeklyRules: Object.fromEntries(students.map((name) => [name, { amount: "", startDate: "", weeks: 2, enabled: false }])),
         };
       }
-      function isValidDate(value) {
-        if (typeof value !== "string" || !Number.isFinite(Date.parse(value)))
-          return false;
-        return !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
-          new Date(value).toISOString().slice(0, 10) === value;
-      }
       function loadState() {
-        try {
-          const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-          if (saved && saved.balances && Array.isArray(saved.payments))
-            return normalize(saved);
-        } catch {}
+        for (const storageKey of [KEY, BACKUP_KEY]) {
+          try {
+            const saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+            if (saved && saved.balances && Array.isArray(saved.payments)) return normalize(saved);
+          } catch {}
+        }
         return blankState();
+      }
+      function legacyRecordId(kind, values) {
+        return `${kind}:legacy:${values.map((value) => encodeURIComponent(String(value ?? ""))).join("|")}`;
       }
       function normalize(data) {
         const fresh = blankState();
@@ -1689,7 +846,7 @@
               Number.isFinite(Number(p.amount)) &&
               (Number(p.amount) > 0 ||
                 (Number(p.amount) < 0 && p.source === "Correction du total")) &&
-              isValidDate(p.date),
+              typeof p.date === "string",
           )
           .map((p) => ({
             name: p.name,
@@ -1697,7 +854,16 @@
             date: p.date,
             ...(p.source ? { source: String(p.source) } : {}),
             ...(p.fineId ? { fineId: String(p.fineId) } : {}),
+            ...(p.allocationId ? { allocationId: String(p.allocationId) } : {}),
           }));
+        fresh.weeklyAllocations = Array.isArray(data.weeklyAllocations)
+          ? data.weeklyAllocations.filter((a) => a && students.includes(a.name) && Number.isFinite(Number(a.amount)) && Number(a.amount) > 0 && /^\d{4}-\d{2}-\d{2}$/.test(a.startDate || "") && mondayForDate(a.startDate) && Number.isInteger(Number(a.weeks)) && Number(a.weeks) >= 1 && Number(a.weeks) <= 104).map((a) => {
+              const startDate = mondayForDate(a.startDate);
+              const weeks = Number(a.weeks);
+              const amount = Math.round(Number(a.amount) * 100) / 100;
+              return { id: String(a.id || legacyRecordId("allocation", [a.name, amount, startDate, weeks])), name: a.name, amount, startDate, weeks, installments: buildWeeklyInstallments(amount, startDate, weeks) };
+            })
+          : [];
         fresh.fines = Array.isArray(data.fines)
           ? data.fines
               .filter(
@@ -1705,19 +871,28 @@
                   f &&
                   students.includes(f.name) &&
                   typeof f.exercise === "string" &&
-                  isValidDate(f.date),
+                  typeof f.date === "string",
               )
               .map((f) => ({
-                id: String(f.id || `${Date.now()}-${Math.random()}`),
+                id: String(f.id || legacyRecordId("fine", [f.name, f.exercise, f.date, f.amount, Boolean(f.autoWeekly), f.startWeekDate])),
                 name: f.name,
                 exercise: f.exercise.slice(0, 100),
                 date: f.date,
+                createdAt: String(f.createdAt || f.date),
                 amount:
                   Number.isFinite(Number(f.amount)) && Number(f.amount) > 0
                     ? Number(f.amount)
                     : FINE_AMOUNT,
                 paid: Boolean(f.paid),
                 ...(f.paidAt ? { paidAt: String(f.paidAt) } : {}),
+                ...(f.autoWeekly ? {
+                  autoWeekly: true,
+                  startWeekDate: String(f.startWeekDate || f.date),
+                  lastWeekDate: String(f.lastWeekDate || f.date),
+                  weekDates: Array.isArray(f.weekDates) ? f.weekDates.filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date)) : [String(f.date)],
+                  missedWeeks: Math.max(1, Math.trunc(Number(f.missedWeeks) || 1)),
+              ...(f.updatedAt ? { updatedAt: String(f.updatedAt) } : {}),
+                } : {}),
               }))
           : [];
         fresh.withdrawals = Array.isArray(data.withdrawals)
@@ -1728,32 +903,152 @@
                   Number.isFinite(Number(w.amount)) &&
                   Number(w.amount) > 0 &&
                   typeof w.reason === "string" &&
-                  isValidDate(w.date),
+                  typeof w.date === "string",
               )
               .map((w) => ({
-                id: String(w.id || `${Date.now()}-${Math.random()}`),
+                id: String(w.id || legacyRecordId("withdrawal", [w.amount, w.reason, w.date])),
                 amount: Number(w.amount),
                 reason: w.reason.slice(0, 160),
                 date: w.date,
               }))
           : [];
+        const storedRules = data.weeklyRules && typeof data.weeklyRules === "object" ? data.weeklyRules : {};
+        fresh.weeklyRules = Object.fromEntries(students.map((name) => {
+          const rule = storedRules[name] || {};
+          const amount = Number(rule.amount);
+          const startDate = typeof rule.startDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(rule.startDate) ? rule.startDate : "";
+          const weeks = Math.min(104, Math.max(1, Math.trunc(Number(rule.weeks) || 2)));
+          return [name, { amount: Number.isFinite(amount) && amount > 0 ? String(amount) : "", startDate, weeks, enabled: Boolean(rule.enabled) && Number.isFinite(amount) && amount > 0 && Boolean(startDate) }];
+        }));
+        fresh._modifiedAt = Number.isSafeInteger(data._modifiedAt) && data._modifiedAt > 0 ? data._modifiedAt : 0;
         return fresh;
       }
-      function persist() {
+      function loadContributionDraft() {
         try {
-          localStorage.setItem(KEY, JSON.stringify(state));
-          document.getElementById("saveStatus").textContent =
-            "Enregistré automatiquement";
-          setTimeout(
-            () =>
-              (document.getElementById("saveStatus").textContent =
-                "Enregistrement automatique"),
-            1600,
+          const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}");
+          return Object.fromEntries(
+            students
+              .filter((name) => {
+                const value = saved?.[name];
+                return typeof value === "string" && value.length <= 32 && value !== "" && Number.isFinite(Number(value)) && Number(value) >= 0;
+              })
+              .map((name) => [name, saved[name]]),
           );
         } catch {
-          document.getElementById("saveStatus").textContent =
-            "Stockage indisponible · fais une sauvegarde";
+          return {};
         }
+      }
+      function loadContributionDateDraft() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(DRAFT_DATES_KEY) || "{}");
+          return Object.fromEntries(students.filter((name) => /^\d{4}-\d{2}-\d{2}$/.test(saved?.[name] || "")).map((name) => [name, saved[name]]));
+        } catch { return {}; }
+      }
+      function loadContributionWeekDraft() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(DRAFT_WEEKS_KEY) || "{}");
+          return Object.fromEntries(students.filter((name) => Number.isInteger(Number(saved?.[name])) && Number(saved[name]) >= 1 && Number(saved[name]) <= 104).map((name) => [name, String(saved[name])]));
+        } catch { return {}; }
+      }
+      function loadAutoSavePreference() {
+        try {
+          return localStorage.getItem(AUTO_SAVE_KEY) !== "false";
+        } catch {
+          return true;
+        }
+      }
+      function setSaveStatus(message, temporary = false, failed = false) {
+        const status = document.getElementById("saveStatus");
+        const indicator = status?.parentElement;
+        if (!status || !indicator) return;
+        status.textContent = message;
+        indicator.classList.toggle("save-error", failed);
+        clearTimeout(saveStatusTimer);
+        if (temporary) {
+          saveStatusTimer = setTimeout(() => {
+            status.textContent = autoSaveEnabled
+              ? (USE_LOCAL_SERVICE ? "Enregistrement automatique actif" : "Enregistrement automatique dans ce navigateur")
+              : "Enregistrement automatique désactivé";
+            indicator.classList.remove("save-error");
+          }, 1800);
+        }
+      }
+      function showAutoSaveButtonSuccess(message = "Enregistrement fait ✓") {
+        if (!autoSaveEnabled) return;
+        autoSaveToggle.textContent = message;
+        clearTimeout(autoSaveButtonTimer);
+        autoSaveButtonTimer = setTimeout(renderAutoSaveToggle, 1800);
+      }
+      function persistContributionDraft(announce = true, force = false) {
+        if (!autoSaveEnabled && !force) {
+          draftSaveFailed = true;
+          if (announce) setSaveStatus("Modifications en attente de sauvegarde");
+          return false;
+        }
+        try {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(pendingContributions));
+          localStorage.setItem(DRAFT_DATES_KEY, JSON.stringify(pendingContributionDates));
+          localStorage.setItem(DRAFT_WEEKS_KEY, JSON.stringify(pendingContributionWeeks));
+          draftSaveFailed = false;
+          if (announce) setSaveStatus("Brouillon enregistré automatiquement", true);
+          if (announce) showAutoSaveButtonSuccess("Brouillon enregistré ✓");
+          return true;
+        } catch {
+          draftSaveFailed = true;
+          if (announce) setSaveStatus("Sauvegarde automatique indisponible", false, true);
+          return false;
+        }
+      }
+      function persist(force = false, replaceRemote = false) {
+        if (!autoSaveEnabled && !force) {
+          unsavedStateChanges = true;
+          setSaveStatus("Modifications en attente de sauvegarde");
+          return false;
+        }
+        try {
+          state._modifiedAt = Math.max(Date.now(), (Number(state._modifiedAt) || 0) + 1);
+          const sentModifiedAt = state._modifiedAt;
+          localStorage.setItem(KEY, JSON.stringify(state));
+          localStorage.setItem(BACKUP_KEY, JSON.stringify(state));
+          unsavedStateChanges = false;
+          setSaveStatus(persistentServiceConnected ? "Enregistré automatiquement · service local actif" : USE_LOCAL_SERVICE ? "Enregistré automatiquement" : "Enregistré dans ce navigateur", true);
+          showAutoSaveButtonSuccess();
+          if (USE_LOCAL_SERVICE) sendStateToService(state, replaceRemote).then((result) => {
+            persistentServiceConnected = true;
+            if (location.protocol === "file:") {
+              location.replace(serviceUrlWithLocalPreferences());
+              return;
+            }
+            if (result?.reconciledState && Number(state._modifiedAt) === sentModifiedAt) {
+              state = normalize(result.reconciledState);
+              state._modifiedAt = Math.max(Number(state._modifiedAt) || 0, Number(result.modifiedAt) || 0);
+              localStorage.setItem(KEY, JSON.stringify(state));
+              localStorage.setItem(BACKUP_KEY, JSON.stringify(state));
+              render();
+            }
+            if (Number(state._modifiedAt) === sentModifiedAt && Number(result?.modifiedAt) > sentModifiedAt) {
+              state._modifiedAt = Number(result.modifiedAt);
+              localStorage.setItem(KEY, JSON.stringify(state));
+              localStorage.setItem(BACKUP_KEY, JSON.stringify(state));
+            }
+          }).catch(() => {
+            persistentServiceConnected = false;
+            setSaveStatus("Service local indisponible · copie du navigateur gardée", false, true);
+          });
+          return true;
+        } catch {
+          unsavedStateChanges = true;
+          setSaveStatus("Stockage indisponible · fais une sauvegarde", false, true);
+          return false;
+        }
+      }
+      function hasUnsavedChanges() {
+        const contributionDraft = Object.values(pendingContributions).some((value) => String(value).trim() !== "") && (!autoSaveEnabled || draftSaveFailed);
+        const fineDraft = document.getElementById("fineExercise").value.trim() || document.getElementById("fineAmount").value.trim() || document.querySelector(".fine-student:checked");
+        const withdrawalDraft = document.getElementById("withdrawAmount").value.trim() || document.getElementById("withdrawReason").value.trim();
+        const balanceDraft = [...document.querySelectorAll(".balance-edit-input")].some((input) => input.value !== input.defaultValue);
+        const installmentDraft = (Object.keys(pendingContributionDates).length > 0 || Object.keys(pendingContributionWeeks).length > 0) && (!autoSaveEnabled || draftSaveFailed);
+        return unsavedStateChanges || contributionDraft || installmentDraft || fineDraft || withdrawalDraft || balanceDraft;
       }
       function contributionTotal() {
         return Object.values(state.balances).reduce(
@@ -1824,11 +1119,16 @@
           .map(({ name, index }) => {
             const safeName = escapeHtml(name);
             const amount = Number(state.balances[name] || 0);
+            const contributionValue = pendingContributions[name] ?? "";
+            const currentWeekDate = localDateValue(weekBounds(0).start);
+            const nextWeekDate = localDateValue(weekBounds(1).start);
+            const savedWeek = pendingContributionDates[name] ? mondayForDate(pendingContributionDates[name]) : "";
+            const selectedWeek = savedWeek === nextWeekDate ? nextWeekDate : currentWeekDate;
             const balance =
               editingBalance === name
                 ? `<div class="balance-edit"><input class="amount balance-edit-input" aria-label="Nouveau total pour ${safeName}" type="number" min="0" step="0.01" value="${amount}"><button class="mini" type="button" data-balance-action="save" data-name="${safeName}">Enregistrer</button><button class="fine-cancel" type="button" data-balance-action="cancel">Annuler</button></div>`
                 : `<div class="balance-view"><strong class="balance">${dh(amount)}</strong><button class="edit-button" type="button" data-balance-action="edit" data-name="${safeName}">Modifier</button></div>`;
-            return `<tr><td class="number">${String(index + 1).padStart(2, "0")}</td><td class="name">${studentIdentity(name)}</td><td>${balance}</td><td class="paycell"><label class="sr-only" for="contrib-${index}">Nouveau versement pour ${safeName} en DH</label><input class="amount contribution-input" id="contrib-${index}" data-name="${safeName}" type="number" min="0" step="0.01" placeholder="0,00" value="${escapeHtml(pendingContributions[name] || "")}" inputmode="decimal"></td></tr>`;
+            return `<tr data-student-name="${safeName}"><td class="number">${String(index + 1).padStart(2, "0")}</td><td class="name">${studentIdentity(name)}</td><td class="balance-cell">${balance}</td><td class="paycell"><label class="sr-only" for="contrib-${index}">Somme reçue pour ${safeName} en DH</label><input class="amount contribution-input" id="contrib-${index}" data-name="${safeName}" type="number" min="0" step="0.01" placeholder="0,00" value="${escapeHtml(contributionValue)}" inputmode="decimal"></td><td class="contribution-date-cell"><select class="field contribution-date" aria-label="Première semaine pour ${safeName}"><option value="${currentWeekDate}" ${selectedWeek === currentWeekDate ? "selected" : ""}>Cette semaine</option><option value="${nextWeekDate}" ${selectedWeek === nextWeekDate ? "selected" : ""}>Semaine prochaine</option></select></td><td class="contribution-date-cell"><input class="field contribution-weeks" type="number" min="1" max="104" step="1" value="${escapeHtml(pendingContributionWeeks[name] || "1")}" aria-label="Nombre de semaines couvertes pour ${safeName}"></td></tr>`;
           })
           .join("");
         document.getElementById("studentEmpty").hidden = rows.length > 0;
@@ -1854,7 +1154,10 @@
         document.getElementById("historyRows").innerHTML = list
           .map((p) => {
             const date = new Date(p.date);
-            return `<tr><td class="datecell"><span class="weekday">${escapeHtml(dateFormat.format(date))}</span></td><td class="datecell">${escapeHtml(timeFormat.format(date))}</td><td class="name">${escapeHtml(p.name)}${p.source ? `<span class="source-note">${escapeHtml(p.source)}</span>` : ""}</td><td class="historyamount">${dh(p.amount)}</td></tr>`;
+            const validDate = Number.isFinite(date.getTime());
+            const dayText = validDate ? dateFormat.format(date) : "Date inconnue";
+            const timeText = validDate ? timeFormat.format(date) : "—";
+            return `<tr><td class="datecell"><span class="weekday">${escapeHtml(dayText)}</span></td><td class="datecell">${escapeHtml(timeText)}</td><td class="name">${escapeHtml(p.name)}${p.source ? `<span class="source-note">${escapeHtml(p.source)}</span>` : ""}</td><td class="historyamount">${dh(p.amount)}</td></tr>`;
           })
           .join("");
         document.getElementById("historyEmpty").hidden = list.length > 0;
@@ -1878,13 +1181,186 @@
         );
         return { start, end, last };
       }
+      function mondayForDate(dateText) {
+        const date = new Date(`${dateText}T12:00:00`);
+        if (Number.isNaN(date.getTime()) || localDateValue(date) !== dateText) return null;
+        date.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+        return localDateValue(date);
+      }
+      function buildWeeklyInstallments(totalAmount, startDate, weeks) {
+        const totalCents = Math.round(Number(totalAmount) * 100);
+        const baseCents = Math.floor(totalCents / weeks);
+        const extraCents = totalCents % weeks;
+        const start = new Date(`${startDate}T12:00:00`);
+        return Array.from({ length: weeks }, (_, index) => {
+          const date = new Date(start);
+          date.setDate(date.getDate() + index * 7);
+          return { date: localDateValue(date), amount: (baseCents + (index < extraCents ? 1 : 0)) / 100 };
+        });
+      }
+      function getAutomaticPenaltyStartWeek() {
+        try {
+          const saved = localStorage.getItem(AUTO_PENALTY_START_KEY);
+          if (saved && /^\d{4}-\d{2}-\d{2}$/.test(saved) && mondayForDate(saved)) return mondayForDate(saved);
+          const firstWeek = localDateValue(weekBounds(0).start);
+          localStorage.setItem(AUTO_PENALTY_START_KEY, firstWeek);
+          return firstWeek;
+        } catch {
+          return localDateValue(weekBounds(0).start);
+        }
+      }
+      function reconcileHistoricalWeek(weekDate, totals) {
+        if (weekDate !== "2026-10-12") return totals;
+        const end = new Date(`${weekDate}T00:00:00`);
+        end.setDate(end.getDate() + 7);
+        const isFineReceipt = (payment) => Boolean(
+          payment.fineId ||
+          payment.source === "Paiement de pénalité" ||
+          payment.source?.startsWith("Pénalité ·")
+        );
+        for (const name of students) {
+          const laterPayments = state.payments
+            .filter((payment) => payment.name === name && !isFineReceipt(payment) && new Date(payment.date) >= end)
+            .reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
+          const fineReceipts = state.payments
+            .filter((payment) => payment.name === name && isFineReceipt(payment))
+            .reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0);
+          totals[name] = Math.round((Number(state.balances[name] || 0) - laterPayments - fineReceipts) * 100) / 100;
+        }
+        return totals;
+      }
+      function weeklyTotalsForMonday(weekDate) {
+        const totals = Object.fromEntries(students.map((name) => [name, 0]));
+        const start = new Date(`${weekDate}T00:00:00`);
+        const end = new Date(start);
+        end.setDate(end.getDate() + 7);
+        const importedPaymentKeys = new Set();
+        for (const payment of state.payments) {
+          if (payment.source === "Historique importé") {
+            const timestamp = Date.parse(payment.date);
+            const key = JSON.stringify([payment.name, Number(payment.amount), Number.isFinite(timestamp) ? timestamp : payment.date]);
+            if (importedPaymentKeys.has(key)) continue;
+            importedPaymentKeys.add(key);
+          }
+          if (payment.fineId || payment.allocationId || payment.source === "Correction du total" || payment.source?.startsWith("Pénalité ·")) continue;
+          const date = new Date(payment.date);
+          if (date >= start && date < end && Object.hasOwn(totals, payment.name)) totals[payment.name] += Number(payment.amount) || 0;
+        }
+        for (const allocation of state.weeklyAllocations || []) {
+          const installment = allocation.installments.find((item) => item.date === weekDate);
+          if (installment && Object.hasOwn(totals, allocation.name)) totals[allocation.name] += installment.amount;
+        }
+        reconcileHistoricalWeek(weekDate, totals);
+        for (const fine of state.fines || []) {
+          if (!fine.autoWeekly || !fine.paid || !fine.weekDates?.includes(weekDate) || !Object.hasOwn(totals, fine.name)) continue;
+          const coveredWeeks = Math.max(1, fine.weekDates.length || fine.missedWeeks || 1);
+          totals[fine.name] += Math.round((Number(fine.amount) / coveredWeeks) * 100) / 100;
+        }
+        return totals;
+      }
+      function describeAutomaticPenalty(fine) {
+        const format = (date) => new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(`${date}T12:00:00`));
+        return `Versement hebdomadaire impayé · du ${format(fine.startWeekDate)} au ${format(fine.lastWeekDate)} (${fine.missedWeeks} semaine${fine.missedWeeks > 1 ? "s" : ""})`;
+      }
+      function applyAutomaticWeeklyPenalties() {
+        const currentMonday = localDateValue(weekBounds(0).start);
+        const finalCompletedWeek = new Date(`${currentMonday}T12:00:00`);
+        finalCompletedWeek.setDate(finalCompletedWeek.getDate() - 7);
+        const startDate = getAutomaticPenaltyStartWeek();
+        const cursor = new Date(`${startDate}T12:00:00`);
+        let changed = false;
+        while (localDateValue(cursor) <= localDateValue(finalCompletedWeek)) {
+          const weekDate = localDateValue(cursor);
+          const totals = weeklyTotalsForMonday(weekDate);
+          const previousWeek = new Date(cursor);
+          previousWeek.setDate(previousWeek.getDate() - 7);
+          const previousDate = localDateValue(previousWeek);
+          for (const name of students) {
+            if (totals[name] > 0) continue;
+            const alreadyCounted = state.fines.some((fine) => fine.autoWeekly && fine.name === name && fine.weekDates?.includes(weekDate));
+            if (alreadyCounted) continue;
+            const ongoing = state.fines.find((fine) => fine.autoWeekly && fine.name === name && !fine.paid && fine.lastWeekDate === previousDate);
+            if (ongoing) {
+              ongoing.amount = Math.round((ongoing.amount + WEEKLY_MISSED_PENALTY) * 100) / 100;
+              ongoing.lastWeekDate = weekDate;
+              ongoing.weekDates.push(weekDate);
+              ongoing.missedWeeks++;
+              ongoing.updatedAt = new Date().toISOString();
+              ongoing.exercise = describeAutomaticPenalty(ongoing);
+            } else {
+              const fine = {
+                id: globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`,
+                name,
+                exercise: "",
+                date: weekDate,
+                amount: WEEKLY_MISSED_PENALTY,
+                paid: false,
+                autoWeekly: true,
+                startWeekDate: weekDate,
+                lastWeekDate: weekDate,
+                weekDates: [weekDate],
+                missedWeeks: 1,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              };
+              fine.exercise = describeAutomaticPenalty(fine);
+              state.fines.push(fine);
+            }
+            changed = true;
+          }
+          cursor.setDate(cursor.getDate() + 7);
+        }
+        // Keep the displayed assessment date current on every daily check;
+        // the amount itself only changes once a full unpaid week is complete.
+        const today = localDateValue();
+        for (const fine of state.fines) {
+          if (!fine.autoWeekly || fine.paid) continue;
+          const assessmentDay = fine.updatedAt ? localDateValue(new Date(fine.updatedAt)) : "";
+          if (assessmentDay !== today) {
+            fine.updatedAt = new Date().toISOString();
+            changed = true;
+          }
+        }
+        if (changed) persist(true);
+        return changed;
+      }
       function renderWeekly() {
         const { start, end, last } = weekBounds(weekOffset);
         const totals = Object.fromEntries(students.map((name) => [name, 0]));
+        const importedPaymentKeys = new Set();
         for (const payment of state.payments) {
+          // Old imported rows have no stable IDs; count each exact imported entry once in weekly totals.
+          if (payment.source === "Historique importé") {
+            const timestamp = Date.parse(payment.date);
+            const key = JSON.stringify([payment.name, Number(payment.amount), Number.isFinite(timestamp) ? timestamp : payment.date]);
+            if (importedPaymentKeys.has(key)) continue;
+            importedPaymentKeys.add(key);
+          }
+          // Fine payments and corrections stay in the history and balance, but are not weekly contributions.
+          if (
+            payment.fineId ||
+            payment.allocationId ||
+            payment.source === "Correction du total" ||
+            payment.source?.startsWith("Pénalité ·")
+          )
+            continue;
           const d = new Date(payment.date);
           if (d >= start && d < end && Object.hasOwn(totals, payment.name))
             totals[payment.name] += Number(payment.amount) || 0;
+        }
+        const weekDate = localDateValue(start);
+        for (const allocation of state.weeklyAllocations || []) {
+          const installment = allocation.installments.find((item) => item.date === weekDate);
+          if (installment && Object.hasOwn(totals, allocation.name)) totals[allocation.name] += installment.amount;
+        }
+        reconcileHistoricalWeek(weekDate, totals);
+        const regularPaid = new Set(students.filter((name) => totals[name] > 0));
+        const penaltyPaid = new Set();
+        for (const fine of state.fines || []) {
+          if (!fine.autoWeekly || !fine.paid || !fine.weekDates?.includes(weekDate) || !Object.hasOwn(totals, fine.name)) continue;
+          const coveredWeeks = Math.max(1, fine.weekDates.length || fine.missedWeeks || 1);
+          totals[fine.name] += Math.round((Number(fine.amount) / coveredWeeks) * 100) / 100;
+          penaltyPaid.add(fine.name);
         }
         const paid = students.filter((name) => totals[name] > 0);
         const sum = students.reduce((acc, name) => acc + totals[name], 0);
@@ -1904,16 +1380,18 @@
           `${paid.length} / ${students.length}`;
         document.getElementById("weekMissingCount").textContent =
           students.length - paid.length;
-        document.getElementById("currentWeek").disabled = weekOffset === 0;
+      document.getElementById("currentWeek").disabled = weekOffset === 0;
         document.getElementById("weekRows").innerHTML = students
           .map((name, index) => {
             const hasPaid = totals[name] > 0;
+            const paidByPenalty = penaltyPaid.has(name) && !regularPaid.has(name);
             const status = hasPaid
-              ? "Versé"
+              ? paidByPenalty ? "Versé comme pénalité" : "Versé"
               : weekOffset === 0
                 ? "Pas encore"
                 : "Aucun versement";
-            return `<tr><td class="number">${String(index + 1).padStart(2, "0")}</td><td class="name">${studentIdentity(name)}</td><td class="balance">${dh(totals[name])}</td><td><span class="week-state ${hasPaid ? "paid" : "missing"}">${status}</span></td></tr>`;
+            const statusClass = !hasPaid ? "missing" : paidByPenalty ? "paid penalty" : "paid";
+            return `<tr><td class="number">${String(index + 1).padStart(2, "0")}</td><td class="name">${studentIdentity(name)}</td><td class="balance">${dh(totals[name])}</td><td><span class="week-state ${statusClass}">${status}</span></td></tr>`;
           })
           .join("");
       }
@@ -1931,21 +1409,62 @@
       }
       function renderFines() {
         const list = [...state.fines].sort(
-          (a, b) => new Date(b.date) - new Date(a.date),
+          (a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date),
         );
         const due = list.filter((f) => !f.paid);
+        const paid = list.filter((f) => f.paid);
         document.getElementById("fineCount").textContent = list.length;
         document.getElementById("fineDueCount").textContent = due.length;
         document.getElementById("fineDebt").textContent = dh(
           due.reduce((sum, f) => sum + f.amount, 0),
         );
-        document.getElementById("fineRows").innerHTML = list
-          .map(
-            (f) =>
-              `<tr><td class="datecell">${escapeHtml(new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(`${f.date}T12:00:00`)))}</td><td class="name">${studentIdentity(f.name)}</td><td>${escapeHtml(f.exercise)}</td><td class="fee-cell">${dh(f.amount)}</td><td><span class="fine-state ${f.paid ? "settled" : "due"}">${f.paid ? "Payée" : "À régler"}</span></td><td><div class="fine-actions">${f.paid ? '<span class="source-note">Encaissée</span>' : `<button class="fine-pay" type="button" data-action="pay" data-id="${escapeHtml(f.id)}">Confirmer ${dh(f.amount)}</button><button class="fine-cancel" type="button" data-action="cancel" data-id="${escapeHtml(f.id)}">Annuler</button>`}</div></td></tr>`,
-          )
-          .join("");
-        document.getElementById("fineEmpty").hidden = list.length > 0;
+        document.getElementById("finePaidCount").textContent = paid.length;
+        const autoDue = due.filter((fine) => fine.autoWeekly);
+        const manualDue = due.filter((fine) => !fine.autoWeekly);
+        document.getElementById("fineAutoUnpaidCount").textContent = autoDue.length;
+        document.getElementById("fineManualUnpaidCount").textContent = manualDue.length;
+        const notice = document.getElementById("pendingFineNotice");
+        const dueAmount = due.reduce((sum, fine) => sum + fine.amount, 0);
+        document.getElementById("pendingFineTitle").textContent =
+          due.length
+            ? `${due.length} pénalité${due.length > 1 ? "s" : ""} à régler`
+            : "Aucune pénalité à régler";
+        document.getElementById("pendingFineDetail").textContent =
+          due.length
+            ? `Montant restant : ${dh(dueAmount)}. Consulte la liste pour voir les détails.`
+            : "Tout est à jour. Aucune pénalité impayée pour le moment.";
+        document.querySelector(".fine-notice-icon").textContent =
+          due.length ? "!" : "✓";
+        notice.classList.toggle("is-clear", due.length === 0);
+        notice.hidden = fineNoticeDismissed;
+        document.getElementById("restoreFineNotice").hidden = !fineNoticeDismissed;
+        const formatDate = (value, withTime = false) => {
+          const text = String(value || "");
+          const date = new Date(/^\d{4}-\d{2}-\d{2}$/.test(text) ? `${text}T12:00:00` : text);
+          if (Number.isNaN(date.getTime())) return "Date inconnue";
+          return new Intl.DateTimeFormat("fr-FR", {
+            day: "2-digit", month: "short", year: "numeric",
+            ...(withTime ? { hour: "2-digit", minute: "2-digit" } : {}),
+          }).format(date);
+        };
+        const fineCard = (fine, isPaid) => {
+          const periodEnd = fine.paid ? (fine.paidAt || fine.updatedAt || fine.lastWeekDate || fine.date) : localDateValue();
+          const period = fine.autoWeekly
+            ? `Du ${formatDate(fine.startWeekDate || fine.date)} au ${formatDate(periodEnd)} · ${Math.max(1, Number(fine.missedWeeks) || fine.weekDates?.length || 1)} semaine(s)`
+            : fine.exercise;
+          const created = formatDate(fine.createdAt || fine.date);
+          const paymentDate = fine.paidAt ? formatDate(fine.paidAt) : "Date non renseignée";
+          const action = isPaid
+            ? `<span class="fine-state settled">Payée</span>`
+            : `<span class="fine-state due">À régler</span><div class="fine-actions"><button class="fine-pay" type="button" data-action="pay" data-id="${escapeHtml(fine.id)}">Confirmer ${dh(fine.amount)}</button>${fine.autoWeekly ? "" : `<button class="fine-cancel" type="button" data-action="cancel" data-id="${escapeHtml(fine.id)}">Annuler</button>`}</div>`;
+          return `<article class="fine-record"><div class="fine-record-top"><div class="fine-record-name">${studentIdentity(fine.name)}</div><strong class="fee-cell">${dh(fine.amount)}</strong></div><div class="fine-record-details"><div><span>Pénalité créée le</span><strong>${escapeHtml(created)}</strong></div><div><span>${fine.autoWeekly ? "Motif" : "Exercice non fait"}</span><strong>${escapeHtml(fine.autoWeekly ? "Versement hebdomadaire non reçu" : (fine.exercise || "Motif non renseigné"))}</strong></div>${fine.autoWeekly ? `<div><span>Semaines concernées</span><strong>${escapeHtml(period)}</strong></div>` : ""}${isPaid ? `<div><span>Payée le</span><strong>${escapeHtml(paymentDate)}</strong></div>` : ""}</div><div class="fine-record-footer">${action}</div></article>`;
+        };
+        document.getElementById("finePaidRows").innerHTML = paid.map((fine) => fineCard(fine, true)).join("");
+        document.getElementById("fineAutoUnpaidRows").innerHTML = autoDue.map((fine) => fineCard(fine, false)).join("");
+        document.getElementById("fineManualUnpaidRows").innerHTML = manualDue.map((fine) => fineCard(fine, false)).join("");
+        document.getElementById("finePaidEmpty").hidden = paid.length > 0;
+        document.getElementById("fineAutoUnpaidEmpty").hidden = autoDue.length > 0;
+        document.getElementById("fineManualUnpaidEmpty").hidden = manualDue.length > 0;
       }
       document
         .getElementById("fineForm")
@@ -1956,10 +1475,7 @@
           ].map((input) => input.value);
           const exercise = document.getElementById("fineExercise").value.trim();
           const date = document.getElementById("fineDate").value;
-          const amount =
-            Math.round(
-              Number(document.getElementById("fineAmount").value) * 100,
-            ) / 100;
+          const amount = Number(document.getElementById("fineAmount").value);
           if (
             !selected.length ||
             !exercise ||
@@ -1989,14 +1505,15 @@
             const id =
               globalThis.crypto?.randomUUID?.() ||
               `${Date.now()}-${Math.random()}`;
-            state.fines.push({ id, name, exercise, date, amount, paid: false });
+            state.fines.push({ id, name, exercise, date, amount, paid: false, createdAt: new Date().toISOString() });
+            fineNoticeDismissed = false;
             added++;
           }
           if (!added) {
             showToast("Ces pénalités existent déjà pour cette date.");
             return;
           }
-          persist();
+          persist(true);
           render();
           document.getElementById("fineExercise").value = "";
           document
@@ -2019,7 +1536,10 @@
         document.getElementById("withdrawRows").innerHTML = list
           .map((w) => {
             const date = new Date(w.date);
-            return `<tr><td class="datecell">${escapeHtml(dateFormat.format(date))}</td><td class="datecell">${escapeHtml(timeFormat.format(date))}</td><td>${escapeHtml(w.reason)}</td><td class="fee-cell">− ${dh(w.amount)}</td><td><button class="fine-cancel" type="button" data-withdraw-delete="${escapeHtml(w.id)}">Supprimer</button></td></tr>`;
+            const validDate = Number.isFinite(date.getTime());
+            const dayText = validDate ? dateFormat.format(date) : "Date inconnue";
+            const timeText = validDate ? timeFormat.format(date) : "—";
+            return `<tr><td class="datecell">${escapeHtml(dayText)}</td><td class="datecell">${escapeHtml(timeText)}</td><td>${escapeHtml(w.reason)}</td><td class="fee-cell">− ${dh(w.amount)}</td><td><button class="fine-cancel" type="button" data-withdraw-delete="${escapeHtml(w.id)}">Supprimer</button></td></tr>`;
           })
           .join("");
         document.getElementById("withdrawEmpty").hidden = list.length > 0;
@@ -2034,12 +1554,7 @@
             ) / 100;
           const reason = document.getElementById("withdrawReason").value.trim();
           const date = document.getElementById("withdrawDate").value;
-          if (
-            !Number.isFinite(amount) ||
-            amount <= 0 ||
-            !reason ||
-            !isValidDate(date)
-          ) {
+          if (!Number.isFinite(amount) || amount <= 0 || !reason || !date) {
             showToast("Complète les informations du retrait.");
             return;
           }
@@ -2059,7 +1574,7 @@
               `${date}T${new Date().toTimeString().slice(0, 8)}`,
             ).toISOString(),
           });
-          persist();
+          persist(true);
           render();
           document.getElementById("withdrawAmount").value = "";
           document.getElementById("withdrawReason").value = "";
@@ -2074,7 +1589,7 @@
           state.withdrawals = state.withdrawals.filter(
             (w) => w.id !== button.dataset.withdrawDelete,
           );
-          persist();
+          persist(true);
           render();
           showToast("Retrait supprimé et caisse recalculée");
         });
@@ -2092,14 +1607,14 @@
             .querySelectorAll(".fine-student")
             .forEach((input) => (input.checked = false)),
         );
-      document.getElementById("fineRows").addEventListener("click", (event) => {
+      document.getElementById("fineLists").addEventListener("click", (event) => {
         const button = event.target.closest("button[data-action]");
         if (!button) return;
         const fine = state.fines.find((f) => f.id === button.dataset.id);
         if (!fine) return;
         if (button.dataset.action === "cancel" && !fine.paid) {
           state.fines = state.fines.filter((f) => f.id !== fine.id);
-          persist();
+          persist(true);
           render();
           showToast("Pénalité annulée");
           return;
@@ -2116,13 +1631,27 @@
             source: `Pénalité · ${fine.exercise}`,
             fineId: fine.id,
           });
-          persist();
+          persist(true);
           render();
           showToast(`${dh(fine.amount)} encaissés pour ${fine.name}`);
         }
       });
+      document.getElementById("dismissFineNotice").addEventListener("click", () => {
+        fineNoticeDismissed = true;
+        document.getElementById("pendingFineNotice").hidden = true;
+        document.getElementById("restoreFineNotice").hidden = false;
+      });
+      document.getElementById("restoreFineNotice").addEventListener("click", () => {
+        fineNoticeDismissed = false;
+        renderFines();
+        document.getElementById("dismissFineNotice").focus();
+      });
       document.getElementById("previousWeek").addEventListener("click", () => {
         weekOffset--;
+        renderWeekly();
+      });
+      document.getElementById("nextWeek").addEventListener("click", () => {
+        weekOffset++;
         renderWeekly();
       });
       document.getElementById("currentWeek").addEventListener("click", () => {
@@ -2139,6 +1668,7 @@
         renderWithdrawals();
       }
       function showToast(message) {
+        if (unsavedStateChanges && !autoSaveEnabled) message += " · non sauvegardé";
         const el = document.getElementById("toast");
         el.textContent = message;
         el.classList.add("show");
@@ -2149,8 +1679,28 @@
         .getElementById("studentRows")
         .addEventListener("input", (event) => {
           const input = event.target.closest(".contribution-input");
-          if (input) pendingContributions[input.dataset.name] = input.value;
+          if (!input) {
+            const weeksInput = event.target.closest(".contribution-weeks");
+            if (weeksInput) {
+              pendingContributionWeeks[weeksInput.closest("tr").dataset.studentName] = weeksInput.value;
+              persistContributionDraft();
+              return;
+            }
+            if (event.target.matches(".balance-edit-input")) setSaveStatus("Correction en attente de validation");
+            return;
+          }
+          if (input.value === "") delete pendingContributions[input.dataset.name];
+          else pendingContributions[input.dataset.name] = input.value;
+          persistContributionDraft();
         });
+      document.getElementById("studentRows").addEventListener("change", (event) => {
+        const field = event.target.closest(".contribution-date,.contribution-weeks");
+        if (!field) return;
+        const name = field.closest("tr")?.dataset.studentName;
+        if (name && field.matches(".contribution-date") && field.value) pendingContributionDates[name] = field.value;
+        if (name && field.matches(".contribution-weeks")) pendingContributionWeeks[name] = field.value;
+        persistContributionDraft();
+      });
       document
         .getElementById("studentRows")
         .addEventListener("click", (event) => {
@@ -2171,7 +1721,7 @@
           if (action === "save") {
             const row = button.closest("tr");
             const input = row.querySelector(".balance-edit-input");
-            const next = Math.round(Number(input.value) * 100) / 100;
+            const next = Number(input.value);
             if (input.value === "" || !Number.isFinite(next) || next < 0) {
               showToast("Saisis un total valide supérieur ou égal à zéro.");
               input.focus();
@@ -2179,19 +1729,6 @@
             }
             const name = button.dataset.name;
             const previous = Number(state.balances[name] || 0);
-            const otherBalances = contributionTotal() - previous;
-            const minimum = Math.max(
-              0,
-              state.withdrawals.reduce((sum, w) => sum + w.amount, 0) -
-                otherBalances,
-            );
-            if (next < minimum) {
-              showToast(
-                `Le total ne peut pas être inférieur aux retraits déjà enregistrés (${dh(minimum)}).`,
-              );
-              input.focus();
-              return;
-            }
             const delta = Math.round((next - previous) * 100) / 100;
             state.balances[name] = next;
             if (delta !== 0)
@@ -2202,7 +1739,7 @@
                 source: "Correction du total",
               });
             editingBalance = null;
-            persist();
+            persist(true);
             render();
             showToast(
               delta === 0
@@ -2215,25 +1752,46 @@
         .getElementById("contributionForm")
         .addEventListener("submit", (event) => {
           event.preventDefault();
-          const entries = Object.entries(pendingContributions)
-            .map(([name, value]) => ({
-              name,
-              amount: Math.round(Number(value) * 100) / 100,
-            }))
-            .filter(({ amount }) => Number.isFinite(amount) && amount > 0);
+          const entries = Object.entries(pendingContributions).filter(
+            ([, value]) => value !== "" && Number(value) > 0,
+          );
           if (!entries.length) {
-            showToast("Saisis au moins un montant supérieur à zéro.");
+            showToast("Saisis au moins une somme reçue à répartir.");
             return;
           }
-          const date = new Date().toISOString();
-          for (const { name, amount } of entries) {
-            state.balances[name] = Number(state.balances[name] || 0) + amount;
-            state.payments.push({ name, amount, date });
+          const prepared = [];
+          for (const [name, value] of entries) {
+            const input = [...document.querySelectorAll(".contribution-input")].find((item) => item.dataset.name === name);
+            const row = input?.closest("tr");
+            if (!row) {
+              showToast("Retire le filtre de recherche avant d’enregistrer tous les montants.");
+              return;
+            }
+            const amount = Math.round(Number(value) * 100) / 100;
+            const startDate = mondayForDate(row.querySelector(".contribution-date").value);
+            const weeks = Math.trunc(Number(row.querySelector(".contribution-weeks").value));
+            if (!(amount > 0) || !startDate || !Number.isInteger(weeks) || weeks < 1 || weeks > 104) {
+              showToast(`Vérifie la somme et le nombre de semaines pour ${name}.`);
+              return;
+            }
+            prepared.push({ name, amount, startDate, weeks });
+          }
+          let savedCount = 0;
+          for (const item of prepared) {
+            const id = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+            const installments = buildWeeklyInstallments(item.amount, item.startDate, item.weeks);
+            state.balances[item.name] = Math.round((Number(state.balances[item.name] || 0) + item.amount) * 100) / 100;
+            state.weeklyAllocations.push({ id, name: item.name, amount: item.amount, startDate: item.startDate, weeks: item.weeks, installments });
+            state.payments.push({ name: item.name, amount: item.amount, date: new Date().toISOString(), source: `Réparti sur ${item.weeks} semaine${item.weeks > 1 ? "s" : ""}`, allocationId: id });
+            savedCount++;
           }
           pendingContributions = {};
-          persist();
+          pendingContributionDates = {};
+          pendingContributionWeeks = {};
+          persistContributionDraft(false, true);
+          persist(true);
           render();
-          showToast(`${entries.length} versement(s) enregistré(s)`);
+          showToast(`${savedCount} somme(s) reçue(s) répartie(s) sur les semaines choisies`);
         });
       document
         .getElementById("search")
@@ -2269,31 +1827,246 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
       window.addEventListener("hashchange", route);
-      document.getElementById("csvBtn").addEventListener("click", () => {
-        const rows = [
-          ["Date", "Jour", "Heure", "Nom complet", "Montant (DH)"],
-          ...state.payments.map((p) => {
-            const d = new Date(p.date);
-            return [
-              d.toLocaleDateString("fr-FR"),
-              new Intl.DateTimeFormat("fr-FR", { weekday: "long" }).format(d),
-              timeFormat.format(d),
-              p.name,
-              String(p.amount).replace(".", ","),
-            ];
-          }),
-        ];
-        const csv =
-          "\uFEFF" +
-          rows
-            .map((r) =>
-              r.map((x) => `"${String(x).replaceAll('"', '""')}"`).join(";"),
-            )
-            .join("\r\n");
-        download(
-          new Blob([csv], { type: "text/csv;charset=utf-8" }),
-          "historique_DEV202.csv",
-        );
+      const autoSaveToggle = document.getElementById("autoSaveToggle");
+      function renderAutoSaveToggle() {
+        autoSaveToggle.setAttribute("aria-pressed", String(autoSaveEnabled));
+        autoSaveToggle.textContent = `Enregistrement auto : ${autoSaveEnabled ? "Actif" : "Inactif"}`;
+        autoSaveToggle.title = autoSaveEnabled ? "Désactiver l’enregistrement automatique" : "Activer l’enregistrement automatique";
+        autoSaveToggle.parentElement.classList.toggle("save-off", !autoSaveEnabled);
+      }
+      autoSaveToggle.addEventListener("click", () => {
+        autoSaveEnabled = !autoSaveEnabled;
+        renderAutoSaveToggle();
+        try {
+          localStorage.setItem(AUTO_SAVE_KEY, String(autoSaveEnabled));
+        } catch {
+          setSaveStatus("Le réglage ne peut pas être mémorisé", false, true);
+        }
+        if (autoSaveEnabled) {
+          const stateSaved = persist();
+          const draftSaved = persistContributionDraft(false);
+          if (!stateSaved || !draftSaved) setSaveStatus("Certaines modifications restent à sauvegarder", false, true);
+        } else {
+          setSaveStatus(unsavedStateChanges ? "Modifications en attente de sauvegarde" : "Enregistrement automatique désactivé");
+        }
+      });
+      renderAutoSaveToggle();
+      let confirmedExit = false;
+      window.addEventListener("beforeunload", (event) => {
+        if (confirmedExit) return;
+        if (autoSaveEnabled || !hasUnsavedChanges()) return;
+        event.preventDefault();
+        event.returnValue = " ";
+      });
+      const unsavedExitDialog = document.getElementById("unsavedExitDialog");
+      const stayOnPageButton = document.getElementById("stayOnPage");
+      const leaveWithoutSavingButton = document.getElementById("leaveWithoutSaving");
+      let pendingExitUrl = null;
+      let pendingExitAction = null;
+      const exitTitle = document.getElementById("unsavedExitTitle");
+      const exitText = document.getElementById("unsavedExitText");
+      function openExitConfirmation(action, url = null) {
+        pendingExitUrl = url;
+        pendingExitAction = action;
+        const isReload = action === "reload";
+        exitTitle.textContent = isReload ? "Recharger cette page ?" : "Quitter cette page ?";
+        exitText.textContent = hasUnsavedChanges()
+          ? "Il reste des changements qui ne sont pas enregistrés. Tu veux vraiment continuer sans les sauvegarder ?"
+          : "Tu veux vraiment quitter cette page ?";
+        leaveWithoutSavingButton.textContent = isReload ? "Recharger la page" : "Quitter la page";
+        unsavedExitDialog.showModal();
+      }
+      window.addEventListener("keydown", (event) => {
+        const isReloadShortcut = event.key === "F5" || ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "r");
+        if (!isReloadShortcut || autoSaveEnabled || !hasUnsavedChanges() || unsavedExitDialog.open || event.altKey || event.shiftKey) return;
+        event.preventDefault();
+        openExitConfirmation("reload");
+      });
+      document.querySelectorAll("a[href]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target === "_blank") return;
+          const destination = new URL(link.href, location.href);
+          const staysInThisPage = destination.origin === location.origin && destination.pathname === location.pathname && destination.search === location.search;
+          if (staysInThisPage || autoSaveEnabled || !hasUnsavedChanges()) return;
+          event.preventDefault();
+          openExitConfirmation("navigate", destination.href);
+        });
+      });
+      stayOnPageButton.addEventListener("click", () => {
+        pendingExitUrl = null;
+        pendingExitAction = null;
+        unsavedExitDialog.close();
+      });
+      leaveWithoutSavingButton.addEventListener("click", () => {
+        const destination = pendingExitUrl;
+        const action = pendingExitAction;
+        pendingExitUrl = null;
+        pendingExitAction = null;
+        confirmedExit = true;
+        unsavedExitDialog.close();
+        if (action === "reload") location.reload();
+        else if (destination) location.assign(destination);
+      });
+      unsavedExitDialog.addEventListener("click", (event) => {
+        if (event.target === unsavedExitDialog) {
+          pendingExitUrl = null;
+          pendingExitAction = null;
+          unsavedExitDialog.close();
+        }
+      });
+      unsavedExitDialog.addEventListener("cancel", () => {
+        pendingExitUrl = null;
+        pendingExitAction = null;
+      });
+      let pdfDependenciesPromise;
+      function loadLocalScript(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = new URL(src, location.href).href;
+          script.onload = resolve;
+          script.onerror = () => reject(new Error(`Impossible de charger ${src}`));
+          document.head.append(script);
+        });
+      }
+      async function ensurePdfDependencies() {
+        if (window.jspdf) return;
+        if (!pdfDependenciesPromise) {
+          pdfDependenciesPromise = (async () => {
+            if (!window.jspdf) await loadLocalScript("assets/vendor/jspdf.umd.min.js");
+
+          })();
+        }
+        try {
+          await pdfDependenciesPromise;
+        } catch (error) {
+          pdfDependenciesPromise = null;
+          throw error;
+        }
+      }
+      document.getElementById("pdfBtn").addEventListener("click", async () => {
+        try {
+          await ensurePdfDependencies();
+        } catch (error) {
+          console.error("PDF dependencies failed to load", error);
+          showToast("Les ressources PDF n’ont pas pu être chargées.");
+          return;
+        }
+        const { jsPDF } = window.jspdf || {};
+        if (!jsPDF) {
+          showToast("Le module PDF n’a pas pu être chargé.");
+          return;
+        }
+        const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+        const pageW = 210;
+        const pageH = 297;
+        const classTotal = contributionTotal();
+        const exportedAt = new Intl.DateTimeFormat("fr-FR", {
+          day: "2-digit", month: "long", year: "numeric",
+        }).format(new Date());
+        try {
+          pdf.setProperties({ title: "Relevé des contributions · DEV 202", subject: "Cotisations de la classe DEV 202" });
+          pdf.setFillColor(248, 247, 239);
+          pdf.rect(0, 0, pageW, pageH, "F");
+          pdf.setFillColor(16, 42, 37);
+          pdf.roundedRect(9, 9, 192, 43, 5, 5, "F");
+          const logo = window.pdfImageData?.logo;
+          if (logo) {
+            try { pdf.addImage(logo, "PNG", 15, 15, 29, 29, "ofppt-logo", "FAST"); } catch {}
+          }
+          pdf.setTextColor(236, 241, 228);
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(8);
+          pdf.text("ISTA RN  ·  OFPPT", 51, 21);
+          pdf.setTextColor(255, 253, 246);
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(20);
+          pdf.text("Relevé des contributions", 51, 31);
+          pdf.setTextColor(195, 208, 194);
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(9);
+          pdf.text(`Classe DEV 202  ·  ${exportedAt}`, 51, 40);
+
+          pdf.setFillColor(232, 238, 226);
+          pdf.roundedRect(9, 57, 93, 21, 3, 3, "F");
+          pdf.setTextColor(89, 108, 94);
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(7);
+          pdf.text("TOTAL APPORTÉ PAR LA CLASSE", 14, 65);
+          pdf.setTextColor(24, 58, 50);
+          pdf.setFontSize(13);
+          pdf.text(dh(classTotal), 14, 73);
+          pdf.setFillColor(24, 58, 50);
+          pdf.roundedRect(108, 57, 93, 21, 3, 3, "F");
+          pdf.setTextColor(207, 218, 203);
+          pdf.setFontSize(7);
+          pdf.text("DISPONIBLE APRÈS RETRAITS", 113, 65);
+          pdf.setTextColor(255, 253, 246);
+          pdf.setFontSize(13);
+          pdf.text(dh(total()), 113, 73);
+
+          const cols = 3;
+          const gapX = 4;
+          const cardW = (192 - gapX * (cols - 1)) / cols;
+          const cardH = 29;
+          const gapY = 3;
+          const startX = 9;
+          const startY = 85;
+          const portraits = window.pdfImageData?.students || {};
+          students.forEach((name, index) => {
+            const row = Math.floor(index / cols);
+            const col = index % cols;
+            const x = startX + col * (cardW + gapX);
+            const y = startY + row * (cardH + gapY);
+            pdf.setFillColor(255, 253, 248);
+            pdf.setDrawColor(226, 231, 220);
+            pdf.roundedRect(x, y, cardW, cardH, 2.5, 2.5, "FD");
+            const portrait = portraits[name];
+            if (portrait) {
+              try { pdf.addImage(portrait, "PNG", x + 2, y + 2, 20, 24, `portrait-${index}`, "FAST"); }
+              catch { pdf.setFillColor(232, 238, 226); pdf.roundedRect(x + 2, y + 2, 20, 24, 2, 2, "F"); }
+            } else {
+              pdf.setFillColor(232, 238, 226);
+              pdf.roundedRect(x + 2, y + 2, 20, 24, 2, 2, "F");
+              pdf.setTextColor(24, 58, 50);
+              pdf.setFont("helvetica", "bold");
+              pdf.setFontSize(8);
+              pdf.text(name.split(/\s+/).map((part) => part[0]).slice(0, 2).join("").toUpperCase(), x + 12, y + 15, { align: "center" });
+            }
+            const textX = x + 25;
+            const textW = cardW - 27;
+            pdf.setTextColor(31, 45, 40);
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(7.2);
+            const nameLines = pdf.splitTextToSize(name, textW).slice(0, 2);
+            pdf.text(nameLines, textX, y + 10);
+            pdf.setTextColor(24, 58, 50);
+            pdf.setFont("helvetica", "bold");
+            pdf.setFontSize(8);
+            pdf.text(dh(Number(state.balances[name] || 0)), textX, y + 23);
+            pdf.setTextColor(137, 148, 137);
+            pdf.setFont("helvetica", "normal");
+            pdf.setFontSize(6);
+            pdf.text(`STAGIAIRE ${String(index + 1).padStart(2, "0")}`, textX, y + 27);
+          });
+          pdf.setDrawColor(210, 218, 207);
+          pdf.line(9, 278, 201, 278);
+          pdf.setTextColor(105, 119, 107);
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(8);
+          pdf.text("Total de la classe", 12, 286);
+          pdf.setTextColor(24, 58, 50);
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(11);
+          pdf.text(dh(classTotal), 198, 286, { align: "right" });
+          pdf.setTextColor(137, 148, 137);
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(6.5);
+          pdf.text("Document généré depuis DEV 202 · Suivi des cotisations", 105, 293, { align: "center" });
+          pdf.save("releve_contributions_DEV202.pdf");
+        } catch (error) {
+          console.error("PDF export failed", error);
+          showToast("Le PDF n’a pas pu être créé. Réessaie.");
+        }
       });
       document
         .getElementById("backupBtn")
@@ -2310,33 +2083,279 @@
         .addEventListener("click", () =>
           document.getElementById("importFile").click(),
         );
+      const importPreviewDialog = document.getElementById("importPreviewDialog");
+      let pendingImport = null;
+      function normalizeImportText(value) {
+        return String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+      }
+      function importAmount(value, allowPlain = false) {
+        const text = String(value).replace(/[\u00a0\u202f\u2000-\u200b]/g, " ");
+        const money = text.match(/-?\d[\s\S]*?(?:DHS?|MAD)\b/i);
+        let candidate = money?.[0];
+        if (!candidate && allowPlain) {
+          const tail = text.split(/[;\t|]/).filter(Boolean).at(-1) || text;
+          const numeric = tail.match(/-?\d[\d\s.,]*/g)?.filter((part) => /\d/.test(part));
+          candidate = numeric?.at(-1);
+        }
+        if (!candidate) return null;
+        candidate = candidate.replace(/\s*(?:DHS?|MAD)\b/i, "").replace(/[^\d,.-]/g, "");
+        if (candidate.includes(",") && candidate.includes(".")) {
+          if (candidate.lastIndexOf(",") > candidate.lastIndexOf(".")) candidate = candidate.replace(/\./g, "").replace(",", ".");
+          else candidate = candidate.replace(/,/g, "");
+        } else if (candidate.includes(",")) {
+          const decimals = candidate.split(",").at(-1).length;
+          candidate = decimals <= 2 ? candidate.replace(",", ".") : candidate.replace(/,/g, "");
+        }
+        const amount = Number(candidate);
+        return Number.isFinite(amount) && amount >= 0 ? Math.round(amount * 100) / 100 : null;
+      }
+      function escapePdfLiteral(value) {
+        return value.replace(/\\([0-7]{1,3})/g, (_, octal) => String.fromCharCode(parseInt(octal, 8)))
+          .replace(/\\([nrtbf()\\])/g, (_, code) => ({ n: "\n", r: "\r", t: "\t", b: "\b", f: "\f", "(": "(", ")": ")", "\\": "\\" })[code])
+          .replace(/\\\r?\n/g, "");
+      }
+      function pdfTextTokens(source) {
+        const tokens = [];
+        const operators = /\[((?:\\.|[^\]])*)\]\s*TJ|\(((?:\\.|[^\\)])*)\)\s*(?:Tj|['"])/gs;
+        for (const match of source.matchAll(operators)) {
+          if (match[1] !== undefined) {
+            const literals = /\(((?:\\.|[^\\)])*)\)/gs;
+            for (const item of match[1].matchAll(literals)) tokens.push(escapePdfLiteral(item[1]));
+          } else tokens.push(escapePdfLiteral(match[2]));
+        }
+        return tokens;
+      }
+      async function collectPdfText(file) {
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const raw = new TextDecoder("latin1").decode(bytes);
+        const sources = [raw];
+        if (typeof DecompressionStream === "function") {
+          const streamPattern = /stream\r?\n/g;
+          let marker;
+          while ((marker = streamPattern.exec(raw))) {
+            const end = raw.indexOf("endstream", marker.index + marker[0].length);
+            if (end < 0) break;
+            const header = raw.slice(Math.max(0, marker.index - 700), marker.index);
+            if (!/FlateDecode/.test(header)) continue;
+            const start = marker.index + marker[0].length;
+            let stop = end;
+            while (stop > start && (bytes[stop - 1] === 10 || bytes[stop - 1] === 13)) stop--;
+            try {
+              const compressed = bytes.subarray(start, stop);
+              const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("deflate"));
+              sources.push(new TextDecoder("latin1").decode(await new Response(stream).arrayBuffer()));
+            } catch {}
+          }
+        }
+        return { sources, tokens: sources.flatMap(pdfTextTokens) };
+      }
+      function balancesFromTokens(tokens, allowPlain = false) {
+        const result = {};
+        for (const name of students) {
+          const wanted = normalizeImportText(name);
+          for (let start = 0; start < tokens.length && !Object.hasOwn(result, name); start++) {
+            let combined = "";
+            for (let span = 1; span <= 4 && start + span <= tokens.length; span++) {
+              combined += tokens[start + span - 1];
+              if (normalizeImportText(combined) !== wanted) continue;
+              for (let next = start + span; next < Math.min(tokens.length, start + span + 8); next++) {
+                if (/STAGIAIRE/i.test(tokens[next])) break;
+                const amount = importAmount(tokens[next], allowPlain);
+                if (amount !== null) { result[name] = amount; break; }
+              }
+              break;
+            }
+          }
+        }
+        return result;
+      }
+      function balancesFromText(text) {
+        const result = {};
+        const lines = String(text).replace(/\r/g, "\n").split(/[\n\t]+/).map((line) => line.trim()).filter(Boolean);
+        for (const name of students) {
+          const escaped = name.split(" ").map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("[\\s,;|]+?");
+          const pattern = new RegExp(escaped, "i");
+          for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+            const line = lines[lineIndex];
+            const match = pattern.exec(line);
+            if (!match) continue;
+            let amount = importAmount(line.slice(match.index + match[0].length), true);
+            if (amount === null) {
+              for (let next = lineIndex + 1; next < Math.min(lines.length, lineIndex + 5); next++) {
+                if (students.some((other) => other !== name && normalizeImportText(lines[next]).includes(normalizeImportText(other)))) break;
+                amount = importAmount(lines[next], true);
+                if (amount !== null) break;
+              }
+            }
+            if (amount !== null) { result[name] = amount; break; }
+          }
+        }
+        return result;
+      }
+      async function docxText(file) {
+        if (typeof DecompressionStream !== "function") throw new Error("Ce navigateur ne peut pas lire ce document Word.");
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+        let end = -1;
+        for (let i = Math.max(0, bytes.length - 65557); i <= bytes.length - 22; i++) {
+          if (view.getUint32(i, true) === 0x06054b50) end = i;
+        }
+        if (end < 0) throw new Error("Le document Word est incomplet ou illisible.");
+        const entries = view.getUint16(end + 10, true);
+        let cursor = view.getUint32(end + 16, true);
+        for (let i = 0; i < entries; i++) {
+          if (view.getUint32(cursor, true) !== 0x02014b50) break;
+          const method = view.getUint16(cursor + 10, true);
+          const compressedSize = view.getUint32(cursor + 20, true);
+          const nameLength = view.getUint16(cursor + 28, true);
+          const extraLength = view.getUint16(cursor + 30, true);
+          const commentLength = view.getUint16(cursor + 32, true);
+          const localOffset = view.getUint32(cursor + 42, true);
+          const filename = new TextDecoder().decode(bytes.subarray(cursor + 46, cursor + 46 + nameLength));
+          if (filename === "word/document.xml") {
+            const localNameLength = view.getUint16(localOffset + 26, true);
+            const localExtraLength = view.getUint16(localOffset + 28, true);
+            const start = localOffset + 30 + localNameLength + localExtraLength;
+            const packed = bytes.subarray(start, start + compressedSize);
+            const xmlBytes = method === 0 ? packed : await new Response(new Blob([packed]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer();
+            const xml = new TextDecoder().decode(xmlBytes);
+            const documentXml = new DOMParser().parseFromString(xml, "application/xml");
+            if (documentXml.querySelector("parsererror")) throw new Error("Le document Word est illisible.");
+            return [...documentXml.getElementsByTagNameNS("*", "p")].map((paragraph) => paragraph.textContent.trim()).filter(Boolean).join("\n");
+          }
+          cursor += 46 + nameLength + extraLength + commentLength;
+        }
+        throw new Error("ما لقيتش نص البيانات داخل ملف Word.");
+      }
+      function mergeImportedState(current, incoming, options = {}) {
+        const merged = normalize(current);
+        const imported = normalize(incoming);
+        const incomingBalances = incoming?.balances && typeof incoming.balances === "object" ? incoming.balances : {};
+        const incomingRules = incoming?.weeklyRules && typeof incoming.weeklyRules === "object" ? incoming.weeklyRules : {};
+        const balanceNames = new Set(options.balanceNames || Object.keys(incomingBalances));
+        const ruleNames = new Set(options.ruleNames || Object.keys(incomingRules));
+        if (options.preferIncomingBalances !== false) {
+          for (const name of students) if (balanceNames.has(name) && Object.hasOwn(incomingBalances, name)) merged.balances[name] = imported.balances[name];
+        }
+        const mergeList = (oldRows, newRows, keyOf, mergeSame = (_, fresh) => fresh) => {
+          const map = new Map(oldRows.map((row) => [keyOf(row), row]));
+          for (const fresh of newRows) {
+            const key = keyOf(fresh);
+            map.set(key, map.has(key) ? mergeSame(map.get(key), fresh) : fresh);
+          }
+          return [...map.values()];
+        };
+        const paymentMergeKey = (row) => {
+          const timestamp = Date.parse(row.date);
+          return JSON.stringify([row.name, Number(row.amount), Number.isFinite(timestamp) ? timestamp : row.date, row.source || "", row.fineId || "", row.allocationId || ""]);
+        };
+        merged.payments = mergeList(merged.payments, imported.payments, paymentMergeKey);
+        merged.weeklyAllocations = mergeList(merged.weeklyAllocations, imported.weeklyAllocations, (row) => row.id);
+        merged.withdrawals = mergeList(merged.withdrawals, imported.withdrawals, (row) => row.id);
+        merged.fines = mergeList(merged.fines, imported.fines, (row) => row.autoWeekly ? `${row.name}|autoWeekly|${row.startWeekDate}` : row.id, (old, fresh) => {
+          if (!old.autoWeekly || !fresh.autoWeekly) return { ...old, ...fresh, paid: old.paid || fresh.paid, paidAt: old.paidAt || fresh.paidAt };
+          const weekDates = [...new Set([...(old.weekDates || []), ...(fresh.weekDates || [])])].sort();
+          const combined = { ...old, ...fresh, id: old.id, amount: Math.max(old.amount, fresh.amount, weekDates.length * WEEKLY_MISSED_PENALTY), paid: old.paid || fresh.paid, paidAt: old.paidAt || fresh.paidAt, createdAt: old.createdAt || fresh.createdAt || old.date, weekDates, missedWeeks: weekDates.length || Math.max(old.missedWeeks || 1, fresh.missedWeeks || 1), startWeekDate: weekDates[0] || old.startWeekDate, lastWeekDate: weekDates.at(-1) || old.lastWeekDate };
+          combined.exercise = describeAutomaticPenalty(combined);
+          return combined;
+        });
+        if (options.preferIncomingRules !== false) {
+          for (const name of students) if (ruleNames.has(name) && Object.hasOwn(incomingRules, name)) merged.weeklyRules[name] = imported.weeklyRules[name];
+        }
+        merged._modifiedAt = Math.max(Number(merged._modifiedAt) || 0, Number(imported._modifiedAt) || 0);
+        return normalize(merged);
+      }
+      function openImportPreview(payload) {
+        pendingImport = payload;
+        const names = Object.keys(payload.balances);
+        const preview = document.getElementById("importPreviewText");
+        const replace = document.getElementById("replaceImport");
+        if (payload.full) {
+          preview.textContent = `${payload.filename}: sauvegarde complète avec ${names.length} stagiaires, ${payload.data.payments?.length || 0} versements et ${payload.data.fines?.length || 0} pénalités. « Fusionner » garde les anciennes données et ajoute celles du fichier.`;
+          replace.textContent = "Remplacer toute la base";
+        } else {
+          preview.textContent = `${payload.filename}: ${names.length} solde(s) reconnus. Le document ne contient pas tout l’historique. « Fusionner » conserve les anciens paiements et met à jour les soldes trouvés; « Remplacer » efface l’historique actuel.`;
+          replace.textContent = "Remplacer toute la base";
+        }
+        document.getElementById("importPreviewRows").innerHTML = names.map((name) => `<div>${escapeHtml(name)}</div><strong>${dh(payload.balances[name])}</strong>`).join("");
+        importPreviewDialog.showModal();
+      }
+      function applyPendingImport(mode) {
+        if (!pendingImport) return;
+        try {
+          localStorage.setItem("dev202-import-safety-copy-v1", JSON.stringify({ savedAt: new Date().toISOString(), state }));
+        } catch {
+          showToast("تعذرت نسخة الأمان. صدّر Sauvegarde JSON قبل الاستيراد.");
+          return;
+        }
+        if (mode === "replace") {
+          if (pendingImport.full) state = normalize(pendingImport.data);
+          else {
+            state = blankState();
+            for (const [name, amount] of Object.entries(pendingImport.balances)) state.balances[name] = amount;
+          }
+        } else if (pendingImport.full) state = mergeImportedState(state, pendingImport.data, {
+          balanceNames: pendingImport.balanceNames,
+          ruleNames: pendingImport.ruleNames,
+        });
+        else {
+          for (const [name, amount] of Object.entries(pendingImport.balances)) {
+            const previous = Number(state.balances[name] || 0);
+            const delta = Math.round((amount - previous) * 100) / 100;
+            state.balances[name] = amount;
+            if (delta) state.payments.push({ name, amount: delta, date: new Date().toISOString(), source: "Correction du total" });
+          }
+        }
+        const source = pendingImport.filename;
+        pendingImport = null;
+        importPreviewDialog.close();
+        // The user explicitly approved this import; keep a server-side pre-import snapshot.
+        persist(true, mode === "replace");
+        render();
+        showToast(mode === "replace" ? `Données remplacées depuis ${source}` : `Données importées sans effacer l’historique`);
+      }
+      document.getElementById("cancelImport").addEventListener("click", () => { pendingImport = null; importPreviewDialog.close(); });
+      document.getElementById("keepImport").addEventListener("click", () => applyPendingImport("merge"));
+      document.getElementById("replaceImport").addEventListener("click", () => applyPendingImport("replace"));
       document
         .getElementById("importFile")
         .addEventListener("change", async (event) => {
           const file = event.target.files[0];
           if (!file) return;
           try {
-            const data = JSON.parse(await file.text());
-            if (
-              !data ||
-              typeof data !== "object" ||
-              (!data.balances && !data.amounts)
-            )
-              throw new Error("format");
-            if (data.balances) state = normalize(data);
-            else {
-              const fresh = blankState();
-              for (const name of students) {
-                const n = Number(data.amounts[name]);
-                if (Number.isFinite(n) && n >= 0) fresh.balances[name] = n;
+            if (file.size > 25 * 1024 * 1024) throw new Error("Le fichier dépasse la limite de 25 Mo.");
+            const extension = file.name.split(".").at(-1).toLowerCase();
+            let data = null;
+            let balances = {};
+            let full = false;
+            let balanceNames = [];
+            let ruleNames = [];
+            if (extension === "json") {
+              data = JSON.parse(await file.text());
+              if (data?.balances && typeof data.balances === "object" && !Array.isArray(data.balances) && Array.isArray(data.payments)) {
+                balanceNames = Object.keys(data.balances);
+                ruleNames = Object.keys(data.weeklyRules || {});
+                data = normalize(data);
+                balances = data.balances;
+                full = true;
               }
-              state = fresh;
-            }
-            persist();
-            render();
-            showToast("Sauvegarde importée");
-          } catch {
-            alert("Ce fichier ne semble pas être une sauvegarde valide.");
+              else if (data?.amounts && typeof data.amounts === "object" && !Array.isArray(data.amounts)) balances = Object.fromEntries(students.filter((name) => Number.isFinite(Number(data.amounts[name])) && Number(data.amounts[name]) >= 0).map((name) => [name, Number(data.amounts[name])]));
+              else throw new Error("Le JSON ne contient pas une sauvegarde reconnue.");
+            } else if (extension === "pdf") {
+              const pdf = await collectPdfText(file);
+              balances = balancesFromTokens(pdf.tokens);
+              if (!Object.keys(balances).length) balances = balancesFromText(pdf.tokens.join("\n"));
+              if (!Object.keys(balances).length) throw new Error("PDF sans texte de soldes lisible. Les PDF scannés en image ou d’un format inconnu ne peuvent pas être importés automatiquement.");
+            } else if (["txt", "csv", "docx"].includes(extension)) {
+              const text = extension === "docx" ? await docxText(file) : await file.text();
+              balances = balancesFromText(text);
+              if (!Object.keys(balances).length) throw new Error("Aucun nom de stagiaire accompagné d’un montant n’a été reconnu dans le fichier.");
+            } else if (extension === "doc") {
+              throw new Error("Le format Word .doc ancien n’est pas lisible directement. Enregistre-le en .docx, PDF texte, CSV ou TXT.");
+            } else throw new Error("Formats pris en charge: JSON, PDF texte, DOCX, CSV et TXT.");
+            openImportPreview({ filename: file.name, data, balances, full, balanceNames, ruleNames });
+          } catch (error) {
+            showToast(error.message || "Ce fichier ne peut pas être importé.");
           }
           event.target.value = "";
         });
@@ -2349,9 +2368,46 @@
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
       initializeFineForm();
+      if (applyAutomaticWeeklyPenalties()) renderFines();
       render();
       route();
+      let lastRenderedWeek = localDateValue(weekBounds(0).start);
+      function refreshWeeklyPeriod() {
+        const currentWeek = localDateValue(weekBounds(0).start);
+        const weekChanged = currentWeek !== lastRenderedWeek;
+        const finesChanged = applyAutomaticWeeklyPenalties();
+        if (weekChanged) {
+          lastRenderedWeek = currentWeek;
+          weekOffset = 0;
+          renderWeekly();
+          renderStudents();
+        }
+        if (finesChanged) renderFines();
+      }
+      function scheduleDailyRefresh() {
+        const now = new Date();
+        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 2);
+        setTimeout(() => {
+          refreshWeeklyPeriod();
+          scheduleDailyRefresh();
+        }, Math.max(1000, midnight.getTime() - now.getTime()));
+      }
+      function scheduleWeeklyRefresh() {
+        const now = new Date();
+        const daysUntilMonday = (8 - now.getDay()) % 7 || 7;
+        const nextMonday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilMonday);
+        nextMonday.setHours(0, 0, 1, 0);
+        setTimeout(() => {
+          refreshWeeklyPeriod();
+          scheduleWeeklyRefresh();
+        }, Math.max(1000, nextMonday.getTime() - now.getTime()));
+      }
+      scheduleWeeklyRefresh();
+      scheduleDailyRefresh();
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") refreshWeeklyPeriod();
+      });
+      })();
     </script>
   </body>
 </html>
-
