@@ -353,6 +353,17 @@
       .name {
         font-weight: 750;
       }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
       .number {
         font-variant-numeric: tabular-nums;
         color: var(--muted);
@@ -1649,6 +1660,12 @@
           withdrawals: [],
         };
       }
+      function isValidDate(value) {
+        if (typeof value !== "string" || !Number.isFinite(Date.parse(value)))
+          return false;
+        return !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
+          new Date(value).toISOString().slice(0, 10) === value;
+      }
       function loadState() {
         try {
           const saved = JSON.parse(localStorage.getItem(KEY) || "null");
@@ -1672,7 +1689,7 @@
               Number.isFinite(Number(p.amount)) &&
               (Number(p.amount) > 0 ||
                 (Number(p.amount) < 0 && p.source === "Correction du total")) &&
-              typeof p.date === "string",
+              isValidDate(p.date),
           )
           .map((p) => ({
             name: p.name,
@@ -1688,7 +1705,7 @@
                   f &&
                   students.includes(f.name) &&
                   typeof f.exercise === "string" &&
-                  typeof f.date === "string",
+                  isValidDate(f.date),
               )
               .map((f) => ({
                 id: String(f.id || `${Date.now()}-${Math.random()}`),
@@ -1711,7 +1728,7 @@
                   Number.isFinite(Number(w.amount)) &&
                   Number(w.amount) > 0 &&
                   typeof w.reason === "string" &&
-                  typeof w.date === "string",
+                  isValidDate(w.date),
               )
               .map((w) => ({
                 id: String(w.id || `${Date.now()}-${Math.random()}`),
@@ -1939,7 +1956,10 @@
           ].map((input) => input.value);
           const exercise = document.getElementById("fineExercise").value.trim();
           const date = document.getElementById("fineDate").value;
-          const amount = Number(document.getElementById("fineAmount").value);
+          const amount =
+            Math.round(
+              Number(document.getElementById("fineAmount").value) * 100,
+            ) / 100;
           if (
             !selected.length ||
             !exercise ||
@@ -2014,7 +2034,12 @@
             ) / 100;
           const reason = document.getElementById("withdrawReason").value.trim();
           const date = document.getElementById("withdrawDate").value;
-          if (!Number.isFinite(amount) || amount <= 0 || !reason || !date) {
+          if (
+            !Number.isFinite(amount) ||
+            amount <= 0 ||
+            !reason ||
+            !isValidDate(date)
+          ) {
             showToast("Complète les informations du retrait.");
             return;
           }
@@ -2096,18 +2121,6 @@
           showToast(`${dh(fine.amount)} encaissés pour ${fine.name}`);
         }
       });
-      document
-        .getElementById("withdrawRows")
-        .addEventListener("click", (event) => {
-          const button = event.target.closest("[data-withdraw-delete]");
-          if (!button) return;
-          state.withdrawals = state.withdrawals.filter(
-            (w) => w.id !== button.dataset.withdrawDelete,
-          );
-          persist();
-          render();
-          showToast("Retrait supprimé et caisse recalculée");
-        });
       document.getElementById("previousWeek").addEventListener("click", () => {
         weekOffset--;
         renderWeekly();
@@ -2158,7 +2171,7 @@
           if (action === "save") {
             const row = button.closest("tr");
             const input = row.querySelector(".balance-edit-input");
-            const next = Number(input.value);
+            const next = Math.round(Number(input.value) * 100) / 100;
             if (input.value === "" || !Number.isFinite(next) || next < 0) {
               showToast("Saisis un total valide supérieur ou égal à zéro.");
               input.focus();
@@ -2166,6 +2179,19 @@
             }
             const name = button.dataset.name;
             const previous = Number(state.balances[name] || 0);
+            const otherBalances = contributionTotal() - previous;
+            const minimum = Math.max(
+              0,
+              state.withdrawals.reduce((sum, w) => sum + w.amount, 0) -
+                otherBalances,
+            );
+            if (next < minimum) {
+              showToast(
+                `Le total ne peut pas être inférieur aux retraits déjà enregistrés (${dh(minimum)}).`,
+              );
+              input.focus();
+              return;
+            }
             const delta = Math.round((next - previous) * 100) / 100;
             state.balances[name] = next;
             if (delta !== 0)
@@ -2189,16 +2215,18 @@
         .getElementById("contributionForm")
         .addEventListener("submit", (event) => {
           event.preventDefault();
-          const entries = Object.entries(pendingContributions).filter(
-            ([, value]) => value !== "" && Number(value) > 0,
-          );
+          const entries = Object.entries(pendingContributions)
+            .map(([name, value]) => ({
+              name,
+              amount: Math.round(Number(value) * 100) / 100,
+            }))
+            .filter(({ amount }) => Number.isFinite(amount) && amount > 0);
           if (!entries.length) {
             showToast("Saisis au moins un montant supérieur à zéro.");
             return;
           }
           const date = new Date().toISOString();
-          for (const [name, value] of entries) {
-            const amount = Number(value);
+          for (const { name, amount } of entries) {
             state.balances[name] = Number(state.balances[name] || 0) + amount;
             state.payments.push({ name, amount, date });
           }
