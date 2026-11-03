@@ -1,0 +1,10 @@
+{
+  "name": "dev202-admin-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static admin-only contribution tracker. Vendor dependencies are pinned and audited.",
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "jspdf": "4.2.1"
+  }
+}
